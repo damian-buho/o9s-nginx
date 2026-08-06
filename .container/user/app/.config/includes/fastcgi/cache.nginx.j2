@@ -1,0 +1,21 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+    fastcgi_cache                     fastcgi-cache;
+    fastcgi_cache_background_update   {{ ENV.O9S_NGINX_FASTCGI_CACHE_BACKGROUND_UPDATE }};
+    fastcgi_cache_bypass              $cookie_nocache $arg_nocache$arg_comment;
+    fastcgi_cache_bypass              $http_pragma    $http_authorization;
+    fastcgi_cache_key                 $scheme$request_method$host$request_uri;
+    fastcgi_cache_lock                {{ ENV.O9S_NGINX_FASTCGI_CACHE_LOCK }};
+    fastcgi_cache_lock_age            {{ ENV.O9S_NGINX_FASTCGI_CACHE_LOCK_AGE }};
+    fastcgi_cache_lock_timeout        {{ ENV.O9S_NGINX_FASTCGI_CACHE_LOCK_TIMEOUT }};
+    fastcgi_cache_methods             GET HEAD;
+    fastcgi_cache_min_uses            {{ ENV.O9S_NGINX_FASTCGI_CACHE_MIN_USES }};
+    fastcgi_cache_path                {{ ENV.O9S_NGINX_CACHE_PATH }}/fastcgi levels=1:2 keys_zone=fastcgi-cache:{{ ENV.O9S_NGINX_FASTCGI_CACHE_KEYS_SIZE }} inactive={{ ENV.O9S_NGINX_FASTCGI_CACHE_INACTIVE }};
+    fastcgi_cache_valid               200 {{ ENV.O9S_NGINX_FASTCGI_CACHE_VALID_200 }};
+    fastcgi_cache_valid               301 {{ ENV.O9S_NGINX_FASTCGI_CACHE_VALID_301 }};
+    fastcgi_cache_valid               404 {{ ENV.O9S_NGINX_FASTCGI_CACHE_VALID_404 }};
+    fastcgi_cache_valid               any {{ ENV.O9S_NGINX_FASTCGI_CACHE_VALID_ANY }};

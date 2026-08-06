@@ -1,0 +1,8 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_DNS_PREFETCH %}{% for domain in ENV.O9S_NGINX_DNS_PREFETCH | split(",") %}add_header Link "<{{ domain }}>; rel=dns-prefetch";
+{% endfor %}{% endif %}

@@ -1,0 +1,12 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+http3                           {{ ENV.O9S_NGINX_HTTP3 }};
+http3_hq                        {{ ENV.O9S_NGINX_HTTP3_HQ }};
+http3_max_concurrent_streams    {{ ENV.O9S_NGINX_HTTP3_MAX_CONCURRENT_STREAMS }};
+http3_stream_buffer_size        {{ ENV.O9S_NGINX_HTTP3_STREAM_BUFFER_SIZE }};
+quic_gso                        {{ ENV.O9S_NGINX_QUIC_GSO }};
+quic_retry                      {{ ENV.O9S_NGINX_QUIC_RETRY }};

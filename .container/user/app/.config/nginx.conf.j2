@@ -1,0 +1,29 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{%- set _log_levels = {
+    "error": "error",
+    "warn":  "warn",
+    "info":  "info",
+    "debug": "debug"
+} %}
+include modules.conf;
+
+daemon              off;
+error_log           /dev/stderr {{ _log_levels[ENV.B19_VERBOSITY] | default("warn") }};
+pid                 {{ ENV.XDG_STATE_HOME ~ "/nginx.pid" }};
+quic_bpf            {{ ENV.O9S_NGINX_QUIC_BPF }};
+worker_processes    {{ ENV.O9S_NGINX_WORKER_PROCESSES }};
+
+events {
+    worker_connections  {{ ENV.O9S_NGINX_WORKER_CONNECTIONS }};
+}
+
+http {
+    include mime.types;
+    include includes/http/*.nginx;
+    include conf.d/*.conf;
+}

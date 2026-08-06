@@ -1,0 +1,7 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+add_header Strict-Transport-Security "max-age={{ ENV.O9S_NGINX_HSTS_MAX_AGE }}; {{ ENV.O9S_NGINX_HSTS_INCLUDE_SUBDOMAINS }}" always;

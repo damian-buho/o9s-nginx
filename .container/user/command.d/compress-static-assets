@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+# Pre-compress static assets for nginx static file serving.
+#
+# Scans a given directory for files matching configurable extensions, excludes
+# files that are j2 templates (they get rendered at runtime, not served raw),
+# and then produces pre-compressed siblings in gzip, brotli, and/or zstd
+# formats.  nginx can then serve the pre-compressed variant directly via the
+# corresponding module (ngx_http_gzip_static / brotli_static / zstd_static),
+# avoiding on-the-fly compression per request.
+#
+# Usage: compress-static-assets <directory>
+#
+# Behaviour is controlled by O9S_NGINX_PRECOMPRESS_* env vars:
+#   O9S_NGINX_PRECOMPRESS_EXTENSIONS          – space-separated list of file
+#                                               extensions to compress
+#   O9S_NGINX_PRECOMPRESS_{GZIP,BROTLI,ZSTD}_ENABLED  – "on"/"off" per algo
+#   O9S_NGINX_PRECOMPRESS_{GZIP,BROTLI,ZSTD}_LEVEL    – compression level
+set -eo pipefail
+
+# Load i18n helpers: b19-log for structured logging, _p for translatable strings
+# shellcheck source=/dev/null
+. b19-i18n
+
+# The directory containing static assets is passed as the first argument
+ASSETS_DIR="${1}"
+
+if [ -z "${ASSETS_DIR}" ]
+then
+  echo "Usage: compress-static-assets <directory>"
+  exit 1
+fi
+
+# Three working lists used to build the final file manifest:
+#   .assets.include.txt – every file found matching the target extensions
+#   .assets.exclude.txt – j2 template files (already processed at runtime)
+#   .assets.txt         – final list: include minus exclude
+ASSETS_INCLUDE_LIST="${ASSETS_DIR}/.assets.include.txt"
+ASSETS_EXCLUDE_LIST="${ASSETS_DIR}/.assets.exclude.txt"
+ASSETS_LIST="${ASSETS_DIR}/.assets.txt"
+
+# Start with an empty include list (will be populated by fd search below)
+true > "${ASSETS_INCLUDE_LIST}"
+
+# Build the exclude list from the j2 manifest.  .j2.list contains file paths
+# ending in ".j2" (the raw template suffix).  We strip that suffix so the list
+# contains the *output* paths — the files that will be rendered at container
+# startup and therefore must not be pre-compressed now (they don't exist on
+# disk yet, and compressing them would race with j2 rendering).
+if [ -f "${ASSETS_DIR}/.j2.list" ]
+then
+  sed 's/\.j2$//' "${ASSETS_DIR}/.j2.list" | sort > "${ASSETS_EXCLUDE_LIST}"
+else
+  true > "${ASSETS_EXCLUDE_LIST}"
+fi
+
+b19-log info "ASSETS" "$(_p "These extensions will be compressed: %s" "${O9S_NGINX_PRECOMPRESS_EXTENSIONS}")"
+
+# Split the space-separated extensions string into a bash array and find every
+# file (including hidden) matching each extension under the assets directory.
+# Results accumulate into the include list.
+IFS=' ' read -ra EXTENSIONS <<< "${O9S_NGINX_PRECOMPRESS_EXTENSIONS}"
+for EXTENSION in "${EXTENSIONS[@]}"
+do
+  fd . --hidden -e "${EXTENSION}" "${ASSETS_DIR}" >> "${ASSETS_INCLUDE_LIST}"
+done
+
+# Sort the include list in-place (required by comm below, which expects sorted
+# inputs) then compute the set difference: files in include but NOT in exclude.
+# Empty lines are stripped.  The result is the definitive list of assets to
+# compress.
+LC_ALL=C sort "${ASSETS_INCLUDE_LIST}" -o "${ASSETS_INCLUDE_LIST}"
+LC_ALL=C sort "${ASSETS_EXCLUDE_LIST}" -o "${ASSETS_EXCLUDE_LIST}"
+comm -23 "${ASSETS_INCLUDE_LIST}" "${ASSETS_EXCLUDE_LIST}" | grep -v '^[[:space:]]*$' > "${ASSETS_LIST}"
+
+b19-log info "ASSETS" "$(_p "Found: %s assets" "$(wc -l < "${ASSETS_LIST}")")"
+
+# --- Gzip (pigz) -------------------------------------------------------------
+# --keep   : preserve the original uncompressed file
+# -N       : compression level from O9S_NGINX_PRECOMPRESS_GZIP_LEVEL
+# --force  : overwrite any existing .gz sibling
+# xargs distributes the work across all available CPU cores via NUMPROCS.
+if [ "${O9S_NGINX_PRECOMPRESS_GZIP_ENABLED:-on}" = "on" ]
+then
+  b19-run "ASSETS" "$(_p "Parallel gzip (pigz) with level %s" "${O9S_NGINX_PRECOMPRESS_GZIP_LEVEL}")" --  \
+    xargs -P "${NUMPROCS:-4}" -a "${ASSETS_LIST}" -I{} pigz --keep -"${O9S_NGINX_PRECOMPRESS_GZIP_LEVEL}" --force {}
+fi
+
+# --- Brotli ------------------------------------------------------------------
+# --keep        : preserve original
+# --quality=N   : compression level from O9S_NGINX_PRECOMPRESS_BROTLI_LEVEL
+# --force       : overwrite existing .br sibling
+if [ "${O9S_NGINX_PRECOMPRESS_BROTLI_ENABLED:-on}" = "on" ]
+then
+  b19-run "ASSETS" "$(_p "Parallel brotli with level %s" "${O9S_NGINX_PRECOMPRESS_BROTLI_LEVEL}")" --  \
+    xargs -P "${NUMPROCS:-4}" -a "${ASSETS_LIST}" -I{} brotli --keep "--quality=${O9S_NGINX_PRECOMPRESS_BROTLI_LEVEL}" --force {}
+fi
+
+# --- Zstandard ---------------------------------------------------------------
+# --keep   : preserve original
+# -N       : compression level from O9S_NGINX_PRECOMPRESS_ZSTD_LEVEL
+# --force  : overwrite existing .zst sibling
+if [ "${O9S_NGINX_PRECOMPRESS_ZSTD_ENABLED:-on}" = "on" ]
+then
+  b19-run "ASSETS" "$(_p "Parallel zstd with level %s" "${O9S_NGINX_PRECOMPRESS_ZSTD_LEVEL}")" --  \
+    xargs -P "${NUMPROCS:-4}" -a "${ASSETS_LIST}" -I{} zstd --keep -"${O9S_NGINX_PRECOMPRESS_ZSTD_LEVEL}" --force {}
+fi

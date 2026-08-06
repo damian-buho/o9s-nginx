@@ -1,0 +1,15 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+location ~ \.php$ {
+    set            $backend "{{ ENV.O9S_NGINX_FASTCGI_BACKEND_HOST | default('backend-host.invalid', true) }}:{{ ENV.O9S_NGINX_FASTCGI_BACKEND_PORT | default('9000', true) }}";
+    include       includes/fastcgi/common.nginx;
+    fastcgi_pass  $backend;
+}
+
+location / {
+    try_files     $uri /index.php;
+}

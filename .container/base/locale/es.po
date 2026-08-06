@@ -1,0 +1,172 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+# Copyright (C) 2026 b19
+#
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: o9s-nginx\n"
+"Report-Msgid-Bugs-To: i18n@b19.dev\n"
+"POT-Creation-Date: 2026-05-02 16:12-0300\n"
+"PO-Revision-Date: 2026-02-18 00:00+0000\n"
+"Last-Translator: b19 team\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:9
+msgid ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is responding with "
+"HTTP 200"
+msgstr ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) responde con HTTP "
+"200"
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:12
+msgid ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is not responding "
+"(HTTP %s)"
+msgstr ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) no responde (HTTP "
+"%s)"
+
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:9
+msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) not responding"
+msgstr "El servidor HTTP (O9S_NGINX_HTTP_PORT: %s) no responde"
+
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:13
+msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) is responding"
+msgstr "El servidor HTTP (O9S_NGINX_HTTP_PORT: %s) responde"
+
+#: .container/user/command.d/compress-static-assets:55
+msgid "These extensions will be compressed: %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:74
+#, fuzzy
+msgid "Found: %s assets"
+msgstr "Encontrado: %s"
+
+#: .container/user/command.d/compress-static-assets:83
+msgid "Parallel gzip (pigz) with level %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:93
+msgid "Parallel brotli with level %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:103
+msgid "Parallel zstd with level %s"
+msgstr ""
+
+#: .container/user/build.d/user/post/400-dhparams.sh:5
+msgid "not found: %s"
+msgstr "no encontrado: %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:6
+msgid "Generate with %s size"
+msgstr "Generar con tamaño %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:9
+msgid "Found: %s"
+msgstr "Encontrado: %s"
+
+#: .container/user/build.d/user/post/250-generate-modules-conf.sh:5
+msgid "Generate %s"
+msgstr "Generar %s"
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:9
+msgid "Fetching Cloudflare IPs..."
+msgstr "Obteniendo IPs de Cloudflare..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:35
+msgid "Fetching Akamai IPs..."
+msgstr "Obteniendo IPs de Akamai..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:59
+msgid "Fetching AWS IPs..."
+msgstr "Obteniendo IPs de AWS..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:77
+msgid "Fetching Fastly IPs..."
+msgstr "Obteniendo IPs de Fastly..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:101
+msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
+msgstr "Modo no-CDN '%s' seleccionado. Se omite la obtención de IPs."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:107
+msgid "CDN IPs for %s saved to %s"
+msgstr "IPs de CDN para %s guardadas en %s"
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
+msgid "B19_IMMUTABLE=Y, skipping configuration generation"
+msgstr "B19_IMMUTABLE=Y, se omite la generación de configuración"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:8
+msgid "Scanning for preload-hints assets in %s"
+msgstr "Escaneando recursos de preload-hints en %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:58
+msgid "Found %s assets, saved to %s"
+msgstr "Encontrados %s recursos, guardados en %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:60
+msgid "%s does not exist."
+msgstr "%s no existe."
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:10
+msgid "Run %s"
+msgstr "Ejecutar %s"
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:13
+msgid "%s: Ignoring %s, not executable"
+msgstr "%s: Ignorando %s, no es ejecutable"
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:16
+msgid "%s: Ignoring %s"
+msgstr "%s: Ignorando %s"
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:20
+msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
+msgstr "B19_IMMUTABLE=Y, se omite el entrypoint nativo"
+
+#: .container/user/entrypoint.d/3000-start.sh:5
+msgid "Starting server"
+msgstr "Iniciando servidor"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:5
+msgid "Clone %s"
+msgstr "Clonar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:9
+msgid "Configure"
+msgstr "Configurar"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:5
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:6
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:21
+msgid "Export %s"
+msgstr "Exportar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:10
+msgid "Extract %s"
+msgstr "Extraer %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:8
+msgid "Build %s"
+msgstr "Compilar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:13
+msgid "Build"
+msgstr "Compilar"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:14
+msgid "Install"
+msgstr "Instalar"
+
+#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:7
+msgid "Install %s"
+msgstr "Instalar %s"

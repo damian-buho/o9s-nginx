@@ -1,0 +1,35 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{#- robots.txt — generated from ENV at container startup -#}
+{%- set _policy = ENV.O9S_NGINX_ROBOTS_TXT_DEFAULT_POLICY | default("disallow") -%}
+{%- set _cs_parts = [
+  "ai-train=" ~ ("yes" if ENV.CONTENT_SIGNALS_TRAIN | default("N") == "Y" else "no"),
+  "search=" ~ ("yes" if ENV.CONTENT_SIGNALS_SEARCH | default("N") == "Y" else "no"),
+  "ai-input=" ~ ("yes" if ENV.CONTENT_SIGNALS_INPUT | default("N") == "Y" else "no"),
+] -%}
+{%- set _out = "" -%}
+{%- if _policy != "none" -%}
+{%- set _out = "User-agent: *" -%}
+{%- if _policy == "disallow" -%}
+{%- set _out = _out ~ "\nDisallow: /" -%}
+{%- elif _policy == "allow" -%}
+{%- set _out = _out ~ "\nDisallow:" -%}
+{%- endif -%}
+{%- endif -%}
+{%- if _cs_parts | length > 0 -%}
+{%- if _out != "" -%}
+{%- set _out = _out ~ "\n\n" -%}
+{%- endif -%}
+{%- set _out = _out ~ "User-Agent: *\nAllow: /\nContent-Signal: " ~ (_cs_parts | join(", ")) -%}
+{%- endif -%}
+{%- if ENV.O9S_NGINX_ROBOTS_TXT_SITEMAP is defined and ENV.O9S_NGINX_ROBOTS_TXT_SITEMAP != "" -%}
+{%- if _out != "" -%}
+{%- set _out = _out ~ "\n\n" -%}
+{%- endif -%}
+{%- set _out = _out ~ "Sitemap: " ~ ENV.O9S_NGINX_ROBOTS_TXT_SITEMAP -%}
+{%- endif -%}
+{{ _out }}

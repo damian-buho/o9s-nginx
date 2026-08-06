@@ -1,0 +1,11 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+client_body_buffer_size     {{ ENV.O9S_NGINX_CLIENT_BODY_BUFFER_SIZE }};
+client_body_timeout         {{ ENV.O9S_NGINX_CLIENT_BODY_TIMEOUT }};
+client_header_buffer_size   {{ ENV.O9S_NGINX_CLIENT_HEADER_BUFFER_SIZE }};
+client_header_timeout       {{ ENV.O9S_NGINX_CLIENT_HEADER_TIMEOUT }};
+client_max_body_size        {{ ENV.O9S_NGINX_CLIENT_MAX_BODY_SIZE }};

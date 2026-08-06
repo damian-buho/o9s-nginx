@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+cmake                                    # cross-platform, open-source make system
+git                                      # fast, scalable, distributed revision control system
+libaio-dev                               # Linux kernel AIO access library - development files
+libbrotli-dev                            # library implementing brotli encoder and decoder (development files)
+libbrotli1                               # library implementing brotli encoder and decoder (shared libraries)
+libc-ares-dev                            # asynchronous name resolver - development files
+libpcre2-dev
+libre2-dev                               # efficient regular expression library - development files
+libssl-dev                               # Secure Sockets Layer toolkit - development files
+libzstd-dev                              # fast lossless compression algorithm - development files
+openssl                                  # Secure Sockets Layer toolkit - cryptographic utility
+pkg-config                               # manage compile and link flags for libraries
+zlib1g                                   # compression library - runtime
+zlib1g-dev                               # compression library - development

@@ -1,0 +1,12 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_MODULE_ZSTD == "Y" %}
+zstd              {{ ENV.O9S_NGINX_ZSTD }};
+zstd_comp_level   {{ ENV.O9S_NGINX_ZSTD_LEVEL_DYNAMIC }};
+zstd_static       {{ ENV.O9S_NGINX_PRECOMPRESS_ZSTD_ENABLED }};
+zstd_types        {{ ENV.O9S_NGINX_COMPRESS_TYPES }};
+{% endif %}

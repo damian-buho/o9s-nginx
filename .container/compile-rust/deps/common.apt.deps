@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+libclang-dev                             # Clang C language frontend - development files
+libpcre2-dev                             # PCRE2 - development files
+libssl-dev                               # Secure Sockets Layer toolkit - development files
+git                                      # fast, scalable, distributed revision control system

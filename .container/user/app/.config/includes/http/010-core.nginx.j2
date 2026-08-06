@@ -1,0 +1,16 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+absolute_redirect           {{ ENV.O9S_NGINX_ABSOLUTE_REDIRECT }};
+default_type                application/octet-stream;
+large_client_header_buffers {{ ENV.O9S_NGINX_LARGE_CLIENT_HEADERS_BUFFERS_NUM }} {{ ENV.O9S_NGINX_LARGE_CLIENT_HEADERS_BUFFERS_SIZE }};
+map_hash_bucket_size        {{ ENV.O9S_NGINX_MAP_HASH_BUCKET_SIZE }};
+output_buffers              {{ ENV.O9S_NGINX_OUTPUT_BUFFERS_NUM }} {{ ENV.O9S_NGINX_OUTPUT_BUFFERS_SIZE }};
+port_in_redirect            {{ ENV.O9S_NGINX_PORT_IN_REDIRECT }};
+reset_timedout_connection   {{ ENV.O9S_NGINX_RESET_TIMEDOUT_CONNECTION }};
+send_timeout                {{ ENV.O9S_NGINX_SEND_TIMEOUT }};
+tcp_nodelay                 {{ ENV.O9S_NGINX_TCP_NODELAY }};
+tcp_nopush                  {{ ENV.O9S_NGINX_TCP_NOPUSH }};

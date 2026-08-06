@@ -1,0 +1,70 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+# Map MIME types to caching behavior
+map $sent_http_content_type $cache_control_value {
+    default                                 "no-cache"; # Default for non-matching MIME types
+
+    # Audio
+    "audio/mpeg"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "audio/ogg"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "audio/wav"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "audio/x-m4a"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # CSS and JavaScript
+    "application/javascript"                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "text/css"                              "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Documents
+    "application/msword"                                                        "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/pdf"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/rtf"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/vnd.ms-excel"                                                  "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "text/csv"                                                                  "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "text/plain"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Fonts
+    "application/vnd.ms-fontobject"         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "font/otf"                              "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "font/woff"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "font/woff2"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Images
+    "image/bmp"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/gif"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/jpeg"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/png"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/svg+xml"                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/tiff"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/webp"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "image/x-icon"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # JSON and YAML
+    "application/json"                      "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/x-yaml"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Video
+    "video/mp4"                             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "video/webm"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # XML and Feeds
+    "application/atom+xml"                  "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/rss+xml"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/xml"                       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Archives
+    "application/gzip"                      "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/vnd.rar"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/x-7z-compressed"           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/x-tar"                     "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/zip"                       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Specialized Web Assets
+    "application/manifest+json"             "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "application/wasm"                      "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+}

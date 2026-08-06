@@ -1,0 +1,37 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+server
+{
+    # Basic
+    include includes/listen/http.default.nginx;
+    server_name {{ ENV.O9S_NGINX_HOST }};
+
+    include includes/server/*.nginx;
+    include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
+{% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
+{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | split(" ")) %}
+    include includes/opt/{{ _opt }}.nginx;
+{% endfor %}
+{% endif %}
+}
+{% if ENV.O9S_NGINX_SSL_ENABLED == "Y" %}
+
+server
+{
+    # Basic
+    include includes/listen/http3.default.nginx;
+    server_name {{ ENV.O9S_NGINX_HOST }};
+
+    include includes/server/*.nginx;
+    include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
+{% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
+{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | split(" ")) %}
+    include includes/opt/{{ _opt }}.nginx;
+{% endfor %}
+{% endif %}
+}
+{% endif %}

@@ -1,0 +1,19 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_MODULE_OTEL == "Y" %}
+otel_exporter {
+    endpoint {{ ENV.O9S_NGINX_OTEL_ENDPOINT }};
+{% if ENV.O9S_NGINX_OTEL_EXPORTER_INTERVAL %}    interval    {{ ENV.O9S_NGINX_OTEL_EXPORTER_INTERVAL }};
+{% endif %}{% if ENV.O9S_NGINX_OTEL_EXPORTER_BATCH_SIZE %}    batch_size  {{ ENV.O9S_NGINX_OTEL_EXPORTER_BATCH_SIZE }};
+{% endif %}{% if ENV.O9S_NGINX_OTEL_EXPORTER_BATCH_COUNT %}    batch_count {{ ENV.O9S_NGINX_OTEL_EXPORTER_BATCH_COUNT }};
+{% endif %}}
+otel_service_name {{ ENV.O9S_NGINX_OTEL_SERVICE_NAME }};
+{% if ENV.O9S_NGINX_OTEL_TRACE %}otel_trace         {{ ENV.O9S_NGINX_OTEL_TRACE }};
+{% endif %}{% if ENV.O9S_NGINX_OTEL_TRACE_CONTEXT %}otel_trace_context {{ ENV.O9S_NGINX_OTEL_TRACE_CONTEXT }};
+{% endif %}{% if ENV.O9S_NGINX_OTEL_SPAN_NAME %}otel_span_name     {{ ENV.O9S_NGINX_OTEL_SPAN_NAME }};
+{% endif %}{% if ENV.O9S_NGINX_OTEL_SPAN_ATTRS %}{% for pair in ENV.O9S_NGINX_OTEL_SPAN_ATTRS | split(",") %}otel_span_attr {{ (pair | split(":"))[0] }} {{ (pair | split(":"))[1] }};
+{% endfor %}{% endif %}{% endif %}

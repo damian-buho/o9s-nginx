@@ -1,0 +1,16 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_MODULE_BROTLI == "Y" %}load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_http_brotli_filter_module.so;
+load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_http_brotli_static_module.so;
+{% endif %}
+{% if ENV.O9S_NGINX_MODULE_ZSTD == "Y" %}load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_http_zstd_filter_module.so;
+load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_http_zstd_static_module.so;
+{% endif %}
+{% if ENV.O9S_NGINX_MODULE_OTEL == "Y" %}load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_otel_module.so;
+{% endif %}
+{% if ENV.O9S_NGINX_MODULE_ACME == "Y" %}load_module {{ ENV.O9S_NGINX_MODULES_PATH }}/ngx_http_acme_module.so;
+{% endif %}

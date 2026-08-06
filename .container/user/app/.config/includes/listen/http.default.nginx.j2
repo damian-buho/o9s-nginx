@@ -1,0 +1,7 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+listen {{ ENV.O9S_NGINX_HTTP_PORT }} default_server{{ " reuseport" if ENV.O9S_NGINX_LISTEN_REUSEPORT == "Y" else "" }}{{ " rcvbuf=" ~ ENV.O9S_NGINX_LISTEN_RCVBUF if ENV.O9S_NGINX_LISTEN_RCVBUF else "" }}{{ " sndbuf=" ~ ENV.O9S_NGINX_LISTEN_SNDBUF if ENV.O9S_NGINX_LISTEN_SNDBUF else "" }}{{ " deferred" if ENV.O9S_NGINX_LISTEN_DEFERRED == "Y" else "" }}{{ " backlog=" ~ ENV.O9S_NGINX_LISTEN_BACKLOG if ENV.O9S_NGINX_LISTEN_BACKLOG else "" }}{{ " fastopen=" ~ ENV.O9S_NGINX_LISTEN_FASTOPEN if ENV.O9S_NGINX_LISTEN_FASTOPEN else "" }}{{ " proxy_protocol" if ENV.O9S_NGINX_LISTEN_PROXY_PROTOCOL == "Y" else "" }}{{ " so_keepalive=" ~ ENV.O9S_NGINX_LISTEN_SO_KEEPALIVE if ENV.O9S_NGINX_LISTEN_SO_KEEPALIVE else "" }};  # HTTP/1

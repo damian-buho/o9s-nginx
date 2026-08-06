@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+    # Function to recursively process the configuration file
+    process_config() {
+        local input_file="$1"
+        local output=""
+
+        # Get the directory of the input file to resolve relative includes
+        local _base_dir
+        _base_dir=$(dirname "$input_file")
+
+        # Read the file line by line
+        while IFS= read -r line || [ -n "$line" ]; do
+            # Check if the line contains an include directive
+            if [[ "$line" =~ ^[[:space:]]*include[[:space:]]+([^[:space:]]+)\; ]]; then
+                # Extract the file path from the include directive
+                include_file="${BASH_REMATCH[1]}"
+
+                # Expand variables in the include file path
+                include_file=$(eval echo "$include_file")
+
+                # If the include_file is relative, make it absolute by prepending the base directory
+                if [[ "$include_file" != /* ]]; then
+                    include_file="${XDG_CONFIG_HOME}/$include_file"
+                fi
+
+                # Expand wildcards if present
+                for file in $include_file; do
+                    if [[ -f "$file" ]]; then
+                        # Add a comment before the included content with a separating new line
+                        output+=$'\n'"### START: $file"$'\n\n'
+
+                        # Recursively process the included file
+                        included_content=$(process_config "$file")
+                        output+="$included_content"$'\n'
+
+                        # Add a comment after the included content with a separating new line
+                        output+=$'\n'"### END: $file"$'\n\n'
+                    else
+                        echo "Warning: File '$file' not found, skipping." >&2
+                    fi
+                done
+            else
+                # Keep the line if it doesn't contain an include directive
+                output+="$line"$'\n'
+            fi
+        done < "$input_file"
+
+        echo "$output"
+    }
+
+    # Ensure B19_HOME is set
+    if [[ -z "$B19_HOME" ]]; then
+        echo "Error: B19_HOME environment variable is not set."
+        exit 1
+    fi
+
+    # Check if the script is called with an argument
+    if [[ $# -ne 1 ]]; then
+        echo "Usage: $0 <config-name>"
+        echo "Example: $0 storage-docker"
+        exit 1
+    fi
+
+    # Input argument (e.g., "storage-docker")
+    config_name="$1"
+
+    # Construct the full path to the configuration file
+    config_file="${XDG_CONFIG_HOME}/conf.d/${config_name}.conf"
+
+    # Check if the input file exists
+    if [[ ! -f "$config_file" ]]; then
+        echo "Error: File '$config_file' not found."
+        exit 1
+    fi
+
+    # Process the configuration file
+    final_output=$(process_config "$config_file")
+
+    # Print the final output
+    echo "$final_output"

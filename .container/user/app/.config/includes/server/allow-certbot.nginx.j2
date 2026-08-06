@@ -1,0 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+location /.well-known/acme-challenge/ {
+    root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
+}

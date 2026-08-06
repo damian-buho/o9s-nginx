@@ -1,0 +1,12 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_MODULE_BROTLI == "Y" %}
+brotli              {{ ENV.O9S_NGINX_BROTLI }};
+brotli_comp_level   {{ ENV.O9S_NGINX_BROTLI_LEVEL_DYNAMIC }};
+brotli_static       {{ ENV.O9S_NGINX_PRECOMPRESS_BROTLI_ENABLED }};
+brotli_types        {{ ENV.O9S_NGINX_COMPRESS_TYPES }};
+{% endif %}

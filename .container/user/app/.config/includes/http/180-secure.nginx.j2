@@ -1,0 +1,16 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+ssl_buffer_size             {{ ENV.O9S_NGINX_SSL_BUFFER_SIZE }};
+ssl_ciphers                 {{ ENV.O9S_NGINX_SSL_CIPHERS }};
+ssl_conf_command            Options PrioritizeChaCha,NoRenegotiation,NoResumptionOnRenegotiation;
+ssl_dhparam                 {{ ENV.B19_CA_DHPARAMS_PATH }};
+ssl_ecdh_curve              {{ ENV.O9S_NGINX_SSL_ECDH_CURVE }};
+ssl_prefer_server_ciphers   {{ ENV.O9S_NGINX_SSL_PREFER_SERVER_CIPHERS }};
+ssl_protocols               {{ ENV.O9S_NGINX_SSL_PROTOCOLS }};
+ssl_session_cache           shared:nginx:{{ ENV.O9S_NGINX_SSL_SESSION_CACHE_SIZE }};
+ssl_session_tickets         {{ ENV.O9S_NGINX_SSL_SESSION_TICKETS }};
+ssl_session_timeout         {{ ENV.O9S_NGINX_SSL_SESSION_TIMEOUT }};

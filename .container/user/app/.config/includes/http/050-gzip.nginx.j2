@@ -1,0 +1,14 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+gzip                {{ ENV.O9S_NGINX_GZIP }};
+gzip_comp_level     {{ ENV.O9S_NGINX_GZIP_LEVEL_DYNAMIC }};
+gzip_disable        msie6;
+gzip_min_length     {{ ENV.O9S_NGINX_GZIP_MIN_LENGTH }};
+gzip_proxied        any;
+gzip_static         {{ ENV.O9S_NGINX_PRECOMPRESS_GZIP_ENABLED }};
+gzip_types          {{ ENV.O9S_NGINX_COMPRESS_TYPES }};
+gzip_vary           on;

@@ -1,0 +1,166 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+#
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: nginx development\n"
+"Report-Msgid-Bugs-To: i18n@b19.dev\n"
+"POT-Creation-Date: 2026-05-02 16:12-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:9
+msgid ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is responding with "
+"HTTP 200"
+msgstr ""
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:12
+msgid ""
+"NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is not responding "
+"(HTTP %s)"
+msgstr ""
+
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:9
+msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) not responding"
+msgstr ""
+
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:13
+msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) is responding"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:55
+msgid "These extensions will be compressed: %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:74
+msgid "Found: %s assets"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:83
+msgid "Parallel gzip (pigz) with level %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:93
+msgid "Parallel brotli with level %s"
+msgstr ""
+
+#: .container/user/command.d/compress-static-assets:103
+msgid "Parallel zstd with level %s"
+msgstr ""
+
+#: .container/user/build.d/user/post/400-dhparams.sh:5
+msgid "not found: %s"
+msgstr ""
+
+#: .container/user/build.d/user/post/400-dhparams.sh:6
+msgid "Generate with %s size"
+msgstr ""
+
+#: .container/user/build.d/user/post/400-dhparams.sh:9
+msgid "Found: %s"
+msgstr ""
+
+#: .container/user/build.d/user/post/250-generate-modules-conf.sh:5
+msgid "Generate %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:9
+msgid "Fetching Cloudflare IPs..."
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:35
+msgid "Fetching Akamai IPs..."
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:59
+msgid "Fetching AWS IPs..."
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:77
+msgid "Fetching Fastly IPs..."
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:101
+msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:107
+msgid "CDN IPs for %s saved to %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
+msgid "B19_IMMUTABLE=Y, skipping configuration generation"
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:8
+msgid "Scanning for preload-hints assets in %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:58
+msgid "Found %s assets, saved to %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:60
+msgid "%s does not exist."
+msgstr ""
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:10
+msgid "Run %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:13
+msgid "%s: Ignoring %s, not executable"
+msgstr ""
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:16
+msgid "%s: Ignoring %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:20
+msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
+msgstr ""
+
+#: .container/user/entrypoint.d/3000-start.sh:5
+msgid "Starting server"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:5
+msgid "Clone %s"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:9
+msgid "Configure"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:5
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:6
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:21
+msgid "Export %s"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:10
+msgid "Extract %s"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:8
+msgid "Build %s"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:13
+msgid "Build"
+msgstr ""
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:14
+msgid "Install"
+msgstr ""
+
+#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:7
+msgid "Install %s"
+msgstr ""

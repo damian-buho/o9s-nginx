@@ -1,0 +1,14 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+location /{{ ENV.O9S_NGINX_STATUS_URL }} {
+    allow   127.0.0.1;
+    deny    all;
+
+    access_log      off;
+    default_type    text/plain;
+    stub_status     on;
+}

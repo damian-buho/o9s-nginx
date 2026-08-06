@@ -1,0 +1,8 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+sendfile            {{ ENV.O9S_NGINX_SENDFILE }};
+sendfile_max_chunk  {{ ENV.O9S_NGINX_SENDFILE_MAX_CHUNK }};

@@ -1,0 +1,103 @@
+<!--
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>It works!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --fg: #22223b;
+            --accent: #4169e1;
+            --shadow: 0 4px 32px 0 rgba(0,0,0,0.13);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #181a20;
+                --fg: #e0e1dd;
+                --accent: #7ab4ff;
+                --shadow: 0 4px 32px 0 rgba(0,0,0,0.50);
+            }
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
+            width: 100vw;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .ok-container {
+            background: var(--bg);
+            box-shadow: var(--shadow);
+            border-radius: 18px;
+            padding: 2.5rem 2rem 1.5rem 2rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .ok-code {
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -1.2px;
+            margin-bottom: 0.5em;
+            font-family: inherit;
+        }
+        .ok-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin-bottom: 0.2em;
+            letter-spacing: -0.5px;
+        }
+        .ok-desc {
+            font-size: 1.08rem;
+            color: var(--fg);
+            margin-bottom: 0.7em;
+            opacity: 0.86;
+        }
+        .ok-footer {
+            font-size: 0.98rem;
+            opacity: 0.72;
+            margin-top: 1.5em;
+        }
+        a { color: var(--accent);}
+        @media (max-width: 520px) {
+            .ok-container {
+                padding: 1.8rem 0.5rem 1.1rem 0.5rem;
+                max-width: 97vw;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="ok-container">
+    <div class="ok-code">200 OK</div>
+    <div class="ok-title">It works!</div>
+    <div class="ok-desc">
+        Your web server is up and running.<br>
+        Replace this page with your own content to get started.
+    </div>
+    <div class="ok-footer">
+        <span>&copy; 2026</span>
+    </div>
+</div>
+</body>
+</html>

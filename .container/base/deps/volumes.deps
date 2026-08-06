@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+${O9S_NGINX_CACHE_PATH}
+${O9S_NGINX_LOG_PATH}
+${O9S_NGINX_TEMP_PATH}
+${O9S_NGINX_TLS_PATH}
+${XDG_CONFIG_HOME}/conf.d

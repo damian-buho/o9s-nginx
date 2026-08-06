@@ -1,0 +1,47 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+proxy_buffer_size                   {{ ENV.O9S_NGINX_PROXY_BUFFER_SIZE }};
+proxy_buffering                     {{ ENV.O9S_NGINX_PROXY_BUFFERING }};
+proxy_buffers                       {{ ENV.O9S_NGINX_PROXY_BUFFERS_NUM }} {{ ENV.O9S_NGINX_PROXY_BUFFERS_SIZE }};
+proxy_cache_bypass                  $cookie_nocache $arg_nocache$arg_comment;
+proxy_cache_min_uses                {{ ENV.O9S_NGINX_PROXY_CACHE_MIN_USES }};
+proxy_cache_path                    {{ ENV.O9S_NGINX_CACHE_PATH }}/proxy levels=1:2 keys_zone=proxy-cache:{{ ENV.O9S_NGINX_PROXY_CACHE_KEYS_SIZE }} inactive={{ ENV.O9S_NGINX_PROXY_CACHE_INACTIVE }}{{ ENV.O9S_NGINX_PROXY_CACHE_MAX_SIZE }} use_temp_path=off;
+proxy_cache_valid                   200 {{ ENV.O9S_NGINX_PROXY_CACHE_VALID_200 }};
+proxy_cache_valid                   301 {{ ENV.O9S_NGINX_PROXY_CACHE_VALID_301 }};
+proxy_cache_valid                   404 {{ ENV.O9S_NGINX_PROXY_CACHE_VALID_404 }};
+proxy_cache_valid                   any {{ ENV.O9S_NGINX_PROXY_CACHE_VALID_ANY }};
+proxy_cache_background_update       {{ ENV.O9S_NGINX_PROXY_CACHE_BACKGROUND_UPDATE }};
+proxy_cache_lock                    {{ ENV.O9S_NGINX_PROXY_CACHE_LOCK }};
+proxy_cache_lock_timeout            {{ ENV.O9S_NGINX_PROXY_CACHE_LOCK_TIMEOUT }};
+proxy_cache_methods                 {{ ENV.O9S_NGINX_PROXY_CACHE_METHODS }};
+proxy_cache_revalidate              {{ ENV.O9S_NGINX_PROXY_CACHE_REVALIDATE }};
+proxy_cache_use_stale               {{ ENV.O9S_NGINX_PROXY_CACHE_USE_STALE }};
+proxy_connect_timeout               {{ ENV.O9S_NGINX_PROXY_CONNECT_TIMEOUT }};
+proxy_headers_hash_bucket_size      {{ ENV.O9S_NGINX_PROXY_HEADERS_HASH_BUCKET_SIZE }};
+proxy_headers_hash_max_size         {{ ENV.O9S_NGINX_PROXY_HEADERS_HASH_MAX_SIZE }};
+proxy_http_version                  1.1;
+proxy_force_ranges                  {{ ENV.O9S_NGINX_PROXY_FORCE_RANGES }};
+proxy_ignore_client_abort           {{ ENV.O9S_NGINX_PROXY_IGNORE_CLIENT_ABORT }};
+proxy_intercept_errors              {{ ENV.O9S_NGINX_PROXY_INTERCEPT_ERRORS }};
+proxy_max_temp_file_size            {{ ENV.O9S_NGINX_PROXY_MAX_TEMP_FILE_SIZE }};
+proxy_no_cache                      $http_pragma $http_authorization;
+proxy_read_timeout                  {{ ENV.O9S_NGINX_PROXY_READ_TIMEOUT }};
+proxy_redirect                      off;
+proxy_send_timeout                  {{ ENV.O9S_NGINX_PROXY_SEND_TIMEOUT }};
+proxy_set_header                    Connection          "upgrade";
+proxy_set_header                    Host                $host;
+proxy_set_header                    Upgrade             $http_upgrade;
+proxy_set_header                    X-Forwarded-For     $proxy_add_x_forwarded_for;
+proxy_set_header                    X-Forwarded-Host    $host;
+proxy_set_header                    X-Forwarded-Port    $server_port;
+proxy_set_header                    X-Forwarded-Proto   $scheme;
+proxy_set_header                    X-NginX-Proxy       true;
+proxy_set_header                    X-Original-URI      $request_uri;
+proxy_set_header                    X-Real-IP           $http_x_forwarded_for;  # Use the last IP in X-Forwarded-For as the real client IP
+proxy_socket_keepalive              on;
+proxy_ssl_server_name               {{ ENV.O9S_NGINX_PROXY_SSL_SERVER_NAME }};
+recursive_error_pages               {{ ENV.O9S_NGINX_RECURSIVE_ERROR_PAGES }};

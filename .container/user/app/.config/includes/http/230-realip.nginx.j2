@@ -1,0 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+real_ip_recursive   {{ ENV.O9S_NGINX_REALIP_RECURSIVE }};
+real_ip_header      {{ ENV.O9S_NGINX_REALIP_HEADER }};
+include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;

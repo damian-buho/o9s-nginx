@@ -1,0 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+# Preload hints restricted to HTML responses — map defined in http/135-preload-hints-map.nginx
+{% if assets %}add_header Link $o9s_nginx_preload_hints;
+{% endif %}

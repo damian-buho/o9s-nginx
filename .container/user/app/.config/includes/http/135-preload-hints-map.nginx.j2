@@ -1,0 +1,12 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+map $sent_http_content_type $o9s_nginx_preload_hints {
+{% if assets %}
+    ~text/html  "{% for asset in assets %}</{{ asset.path }}>; rel=preload; as={{ asset.type }}; crossorigin=anonymous{% if not loop.last %}, {% endif %}{% endfor %}";
+{% endif %}
+    default     "";
+}

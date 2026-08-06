@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+brotli                         # lossless compression algorithm and format (command line utility) | deps: libbrotli1, libc6
+libcares2                      # asynchronous name resolver | deps: libc6
+libpcre2-8-0
+libre2-11                      # efficient, principled regular expression library | deps: libabsl20240722, libc6, libgcc-s1, libstdc++6
+libzstd1                       # fast lossless compression algorithm | deps: libc6
+jq                                       # lightweight and flexible command-line JSON processor
+zstd                           # fast lossless compression algorithm -- CLI tool | deps: libc6, libgcc-s1, liblz4-1, liblzma5, libstdc++6, zlib1g

@@ -1,0 +1,55 @@
+---
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+$schema: https://projectfile.org/schema/v1.json
+identity:
+  created: "2026-05-19"
+  name: nginx
+  summary: O9S custom distribution of Nginx compiled with HTTP3 brotli zstd and ACME
+  title: O9S / Nginx
+includes:
+  - .makefile/b19/ci.yaml
+  - .makefile/b19/images/gcc.yaml
+  - .makefile/b19/images/rust.yaml
+  - .makefile/b19/images/ubuntu.yaml
+  - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
+  - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
+kind: SoftwareSourceCode
+links:
+  - label: O9S / Nginx on Codeberg
+    type: source-code
+    url: https://codeberg.org/o9s/nginx
+  - label: O9S / Nginx on GitHub
+    type: source-code
+    url: https://github.com/damian-buho/o9s-nginx
+  - label: O9S / Nginx on kiota.ch
+    type: source-code
+    url: https://kiota.ch/o9s/nginx
+  - label: Issues on Codeberg
+    type: bugs
+    url: https://codeberg.org/o9s/nginx/issues
+  - label: Issues on GitHub
+    type: bugs
+    url: https://github.com/damian-buho/o9s-nginx/issues
+  - label: Packages on crates.io
+    type: package-registry
+    url: https://crates.io/crates/nginx
+org:
+  projectfile:
+    conventions:
+      fragments:
+        parents:
+          - url: ssh://git@kiota.ch/b19/ubuntu.git
+    status: maintained
+repositories:
+  - issues: true
+    role: mirror
+    type: git
+    url: ssh://git@codeberg.org/o9s/nginx.git
+  - role: mirror
+    type: git
+    url: git@github.com:damian-buho/o9s-nginx.git
+  - role: origin
+    type: git
+    url: ssh://git@kiota.ch/o9s/nginx.git

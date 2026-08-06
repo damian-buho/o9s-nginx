@@ -1,0 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_MODULE_ACME == "Y" %}
+acme_certificate {{ ENV.O9S_NGINX_ACME_ISSUER_NAME }} {{ ENV.O9S_NGINX_HOST }};
+{% endif %}

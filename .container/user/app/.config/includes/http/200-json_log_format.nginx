@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+log_format json_combined escape=json '{'
+    '"time_local":"$time_iso8601",'
+    '"status":$status,'
+    '"request":"$request",'
+    '"body_bytes_sent":$body_bytes_sent,'
+    '"remote_addr":"$remote_addr",'
+    '"http_user_agent":"$http_user_agent",'
+    '"http_referer":"$http_referer"'
+'}';

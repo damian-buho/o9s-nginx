@@ -1,0 +1,10 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+http2                           {{ ENV.O9S_NGINX_HTTP2 }};
+http2_body_preread_size         {{ ENV.O9S_NGINX_HTTP2_BODY_PREREAD_SIZE }};
+http2_max_concurrent_streams    {{ ENV.O9S_NGINX_HTTP2_MAX_CONCURRENT_STREAMS }};
+http2_recv_buffer_size          {{ ENV.O9S_NGINX_HTTP2_RECV_BUFFER_SIZE }};
