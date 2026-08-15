@@ -6,8 +6,9 @@ $schema: https://projectfile.org/schema/v1.json
 identity:
   created: "2026-05-19"
   name: nginx
-  summary: O9S custom distribution of Nginx compiled with HTTP3 brotli zstd and ACME
+  summary: Community-maintained distribution of Nginx based on B19/GCC
   title: O9S / Nginx
+  description: Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
 includes:
   - .makefile/b19/ci.yaml
   - .makefile/b19/images/gcc.yaml
@@ -17,19 +18,47 @@ includes:
   - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
 kind: SoftwareSourceCode
 links:
-  - label: O9S / Nginx on Codeberg
+  - label:
+      en: O9S / Nginx on Codeberg
+      es: O9S / Nginx en Codeberg
+      uk: O9S / Nginx на Codeberg
+    tags:
+      - public
+      - badges
+      - badges-gitea
     type: source-code
     url: https://codeberg.org/o9s/nginx
-  - label: O9S / Nginx on GitHub
+  - label:
+      en: O9S / Nginx on GitHub
+      es: O9S / Nginx en GitHub
+      uk: O9S / Nginx на GitHub
+    tags:
+      - public
+      - badges
+      - badges-github
     type: source-code
     url: https://github.com/damian-buho/o9s-nginx
-  - label: O9S / Nginx on kiota.ch
+  - label:
+      en: O9S / Nginx on kiota.ch
+      es: O9S / Nginx en kiota.ch
+      uk: O9S / Nginx на kiota.ch
+    preferred: true
     type: source-code
     url: https://kiota.ch/o9s/nginx
-  - label: Issues on Codeberg
+  - label:
+      en: Issues on Codeberg
+      es: Incidencias en Codeberg
+      uk: Issues на Codeberg
+    tags:
+      - support
     type: bugs
     url: https://codeberg.org/o9s/nginx/issues
-  - label: Issues on GitHub
+  - label:
+      en: Issues on GitHub
+      es: Incidencias en GitHub
+      uk: Issues на GitHub
+    tags:
+      - support
     type: bugs
     url: https://github.com/damian-buho/o9s-nginx/issues
   - label: Packages on crates.io
@@ -53,3 +82,11 @@ repositories:
   - role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
+keywords:
+  - nginx
+  - web-server
+  - reverse-proxy
+  - http3
+  - docker
+technologies:
+  - c
