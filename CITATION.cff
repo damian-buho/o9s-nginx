@@ -10,7 +10,7 @@ cff-version: 1.2.0
 message: Please cite this software using the metadata from this file.
 type: software
 title: O9S / Nginx
-abstract: O9S custom distribution of Nginx compiled with HTTP3 brotli zstd and ACME
+abstract: Community-maintained distribution of Nginx based on B19/GCC
 authors:
   - family-names: Búho
     given-names: Damián
@@ -25,3 +25,9 @@ contact:
     website: https://dbuho.me
 license: MIT
 repository-code: https://kiota.ch/o9s/nginx
+keywords:
+  - nginx
+  - web-server
+  - reverse-proxy
+  - http3
+  - docker
