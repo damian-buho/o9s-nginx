@@ -6,9 +6,15 @@ $schema: https://projectfile.org/schema/v1.json
 identity:
   created: "2026-05-19"
   name: nginx
-  summary: Community-maintained distribution of Nginx based on B19/GCC
+  summary:
+    en: Community-maintained distribution of Nginx based on B19/GCC
+    es: Distribución de Nginx mantenida por la comunidad, basada en B19/GCC
+    uk: Дистрибуція Nginx з підтримкою спільноти на основі B19/GCC
   title: O9S / Nginx
-  description: Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
+  description:
+    en: Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
+    es: Distribución de Nginx mantenida por la comunidad, construida sobre B19/GCC. Este repositorio contiene únicamente el empaquetado — Dockerfile, scripts de compilación y configuración, todo con licencia MIT; el código original de Nginx se obtiene en tiempo de compilación y conserva su propia licencia.
+    uk: Дистрибуція Nginx з підтримкою спільноти, зібрана на основі B19/GCC. Цей репозиторій містить лише пакування — Dockerfile, скрипти збирання та конфігурацію, усе під ліцензією MIT; вихідний код Nginx отримують під час збирання, і він зберігає власну ліцензію.
 includes:
   - .makefile/b19/ci.yaml
   - .makefile/b19/images/gcc.yaml
