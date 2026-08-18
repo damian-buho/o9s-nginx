@@ -4,6 +4,8 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
+<!-- textlint-disable terminology,common-misspellings -->
+
 # Передстиснення статичних ресурсів
 
 - Статичні файли передстискаються у трьох форматах (gzip через pigz, brotli, zstd), тож nginx віддає готові `.gz`/`.br`/`.zst` файли напряму — без витрат CPU на кожен запит.
@@ -11,3 +13,5 @@ SPDX-License-Identifier: MIT
 - Розширення файлів для стиснення налаштовуються (`O9S_NGINX_PRECOMPRESS_EXTENSIONS`); вихідні файли шаблонів Jinja2 виключаються автоматично.
 - Для кожного алгоритму є незалежні перемикачі та рівні стиснення (передстиснення використовує максимальні рівні: gzip 9, brotli 11, zstd 19).
 - Окрема команда `compress-static-assets` доступна для ручного запуску на будь-якому каталозі.
+
+<!-- textlint-enable -->

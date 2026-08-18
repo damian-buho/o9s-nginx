@@ -4,6 +4,8 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
+<!-- textlint-disable terminology,common-misspellings -->
+
 # Ієрархія шаблонів на основі включень Jinja2
 
 - Усе дерево конфігурації nginx існує як шаблони Jinja2 (`.j2`) у `${XDG_CONFIG_HOME}/`, скомпоновані директивами `include` — без монолітного файлу конфігурації.
@@ -11,3 +13,5 @@ SPDX-License-Identifier: MIT
 - Серверні блоки компонуються з модульних включень: `listen/` (конфігурація сокета), `server/` (сторінки помилок, ETag, DNS-prefetch, preload-підказки), `index/` (обробник вмісту), `opt/` (перемикачі функцій) і `realip/` (визначення IP з урахуванням CDN).
 - Шаблони з умовною логікою використовують блоки Jinja2 `{% if %}`; безумовні фрагменти — звичайні файли `.nginx`, що рендеряться як є.
 - Нові поведінки додаються розміщенням файлу у відповідному каталозі `includes/` — редагувати наявні шаблони не потрібно.
+
+<!-- textlint-enable -->

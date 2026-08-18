@@ -4,6 +4,8 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
+<!-- textlint-disable terminology,common-misspellings -->
+
 # Модель споживання downstream-образами
 
 - Дочірні образи успадковують усі понад 200 типових ENV, ієрархію шаблонів, entrypoint-хуки, перевірки стану та логіку передстиснення з єдиного рядка `FROM`.
@@ -11,3 +13,5 @@ SPDX-License-Identifier: MIT
 - Нові обробники вмісту додаються розміщенням файлу `.nginx.j2` у `includes/index/` із заданням `O9S_NGINX_INDEX_TYPE` — шлях включення динамічний.
 - Нові перемикачі функцій додаються розміщенням файлу в `includes/opt/` і зазначенням його назви в `O9S_NGINX_INCLUDE_OPTIONAL`.
 - Монтування файлів конфігурації ніколи не потрібні — модель суто ENV від базового образу до всіх downstream-похідних.
+
+<!-- textlint-enable -->

@@ -4,6 +4,8 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
+<!-- textlint-disable terminology,common-misspellings -->
+
 # Модуль трасування OpenTelemetry
 
 - Модуль OpenTelemetry скомпільований як динамічний модуль nginx для експорту розподіленого трасування через OTLP/gRPC.
@@ -11,3 +13,5 @@ SPDX-License-Identifier: MIT
 - Ендпоінт OTLP (`O9S_OTEL_ENDPOINT`), назва служби (`O9S_OTEL_SERVICE_NAME`) і поширення контексту трасування налаштовуються через ENV.
 - Підтримуються тюнінг експортера (інтервал, розмір і кількість пакетів) та власні атрибути span.
 - Трасування для окремого сервера вмикається через opt/-включення `enable-otel`.
+
+<!-- textlint-enable -->
