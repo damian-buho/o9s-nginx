@@ -51,8 +51,8 @@ COPY --chown=${B19_UID}:${B19_GID}                               .container/comp
 RUN --mount=type=bind,from=fetch,source=.,target=/fetch                                           \
     --mount=type=cache,target=${B19_DOWNLOAD_PATH},sharing=shared                                 \
     --mount=type=cache,target=${B19_COMPILE_CACHE_PATH},sharing=shared                            \
-    --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES},target=/var/cache/apt,sharing=shared     \
-    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES},target=/var/lib/apt,sharing=shared       \
+    --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/cache/apt,sharing=shared     \
+    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/lib/apt,sharing=shared       \
     --mount=type=tmpfs,target=${B19_TEMP_PATH}                                                    \
     build-stage compile-gcc
 
@@ -92,8 +92,8 @@ USER 0
 # fixed upstream. The inherited ARG below is shadowed by this ENV for RUN shells.
 ENV B19_COMPILE_CACHE=off
 
-RUN --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES},target=/var/cache/apt,sharing=shared     \
-    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES},target=/var/lib/apt,sharing=shared       \
+RUN --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/cache/apt,sharing=shared     \
+    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/lib/apt,sharing=shared       \
     --mount=type=tmpfs,target=${B19_TEMP_PATH}                                                    \
     build-stage compile-rust
 
@@ -348,8 +348,8 @@ COPY --chown=${B19_UID}:${B19_GID}                                  .container/b
 
 RUN --mount=type=bind,from=fetch,source=.,target=/fetch                                           \
     --mount=type=cache,target=${B19_DOWNLOAD_PATH},sharing=shared                                 \
-    --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES},target=/var/cache/apt,sharing=shared     \
-    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES},target=/var/lib/apt,sharing=shared       \
+    --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/cache/apt,sharing=shared     \
+    --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/lib/apt,sharing=shared       \
     --mount=type=tmpfs,target=${B19_TEMP_PATH}                                                    \
     build-stage base
 
