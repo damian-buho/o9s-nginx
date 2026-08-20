@@ -62,11 +62,11 @@
     # Check if the script is called with an argument
     if [[ $# -ne 1 ]]; then
         echo "Usage: $0 <config-name>"
-        echo "Example: $0 storage-docker"
+        echo "Example: $0 example.com"
         exit 1
     fi
 
-    # Input argument (e.g., "storage-docker")
+    # Input argument (e.g., "example.com")
     config_name="$1"
 
     # Construct the full path to the configuration file
