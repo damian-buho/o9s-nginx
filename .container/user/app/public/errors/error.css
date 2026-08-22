@@ -1,0 +1,127 @@
+/*
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+*/
+
+/* Dark-first: no expressed OS preference renders dark, prefers-color-scheme
+   flips both ways through light-dark(). Plain values are legacy fallbacks. */
+:root {
+  color-scheme: dark light;
+  --accent: #82aaff;
+  --bg: #0d1017;
+  --fg: #e7eaf2;
+  --muted: #a8b0c4;
+  --accent: light-dark(oklch(0.55 0.19 264), oklch(0.79 0.1 264));
+  --bg: light-dark(oklch(0.975 0.004 264), oklch(0.17 0.014 264));
+  --fg: light-dark(oklch(0.24 0.02 264), oklch(0.93 0.008 264));
+  --muted: light-dark(oklch(0.5 0.02 264), oklch(0.74 0.02 264));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  background: var(--bg);
+  background: radial-gradient(60rem 30rem at 50% -10rem, color-mix(in oklab, var(--accent) 9%, var(--bg)), var(--bg));
+  color: var(--fg);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+.page {
+  position: relative;
+  max-width: 34rem;
+  padding: 3rem 1rem 4rem;
+  text-align: center;
+}
+
+.ghost {
+  font-size: clamp(7rem, 28vw, 15rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 55%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+.title {
+  position: relative;
+  margin: -0.75rem 0 0.5rem;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.desc {
+  margin: 0 auto 2rem;
+  max-width: 26rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+  text-wrap: pretty;
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.65em 1.6em;
+  border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--fg);
+  font-weight: 550;
+  text-decoration: none;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+
+.cta:hover {
+  background: color-mix(in oklab, var(--accent) 28%, transparent);
+  border-color: color-mix(in oklab, var(--accent) 65%, transparent);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.page {
+  animation: rise 320ms ease-out;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page {
+    animation: none;
+  }
+
+  .cta {
+    transition: none;
+  }
+}

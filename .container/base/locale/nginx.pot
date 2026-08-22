@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: nginx 1.0.0-3-gfe85856\n"
+"Project-Id-Version: nginx development\n"
 "Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-08-07 22:09+0000\n"
+"POT-Creation-Date: 2026-08-22 23:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,8 +53,107 @@ msgstr ""
 msgid "Generate %s"
 msgstr ""
 
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:29
+msgid "Bad Request"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:30
+msgid "Unauthorized"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:31
+msgid "Payment Required"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:32
+msgid "Forbidden"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:33
+msgid "Not Found"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:34
+msgid "Too Many Requests"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:35
+msgid "Internal Server Error"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:36
+msgid "Bad Gateway"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:37
+msgid "Service Unavailable"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:38
+msgid "Gateway Timeout"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:44
+msgid "The server could not understand the request."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:45
+msgid "Authentication is required to access this resource."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:46
+msgid "Payment is required to access this resource."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:47
+msgid "You do not have permission to access this resource."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:48
+msgid "The requested resource could not be found."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:49
+msgid ""
+"Too many requests were sent in a short time. Please wait a moment and try "
+"again."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:50
+msgid "Something went wrong on the server side. Please try again later."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:51
+msgid "The server received an invalid response from an upstream service."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:52
+msgid "The service is temporarily unavailable. Please try again later."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:53
+msgid "The server did not receive a timely response from an upstream service."
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:66
+msgid "No generated locale for %s — rendering in English"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:68
+msgid "Go to the home page"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:80
+msgid "Rendered %s error pages for %s"
+msgstr ""
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:86
+msgid "Negotiable languages: %s"
+msgstr ""
+
 #: .container/user/build.d/user/post/400-dhparams.sh:9
 #: .container/user/test.d/1300-nginx-modules.sh:27
+#: .container/user/test.d/1400-error-pages.sh:21
 msgid "not found: %s"
 msgstr ""
 
@@ -64,6 +163,7 @@ msgstr ""
 
 #: .container/user/build.d/user/post/400-dhparams.sh:13
 #: .container/user/test.d/1300-nginx-modules.sh:25
+#: .container/user/test.d/1400-error-pages.sh:19
 msgid "Found: %s"
 msgstr ""
 

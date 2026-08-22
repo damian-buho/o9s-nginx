@@ -1,0 +1,16 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+# Accept-Language → error-page language. First-position match only, so a
+# browser listing its preferred language first never gets a secondary one.
+# Language list comes from 260-generate-error-pages.sh via the companion data
+# file; English is the fallback for every unmatched header.
+map $http_accept_language $error_lang {
+    default en;
+{%- for lang in langs if lang != "en" %}
+    "~*^{{ lang }}([;-]|$)" {{ lang }};
+{%- endfor %}
+}

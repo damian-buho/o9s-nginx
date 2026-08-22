@@ -4,17 +4,22 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
-error_page 400 /errors/400.html;
-error_page 401 /errors/401.html;
-error_page 402 /errors/402.html;
-error_page 403 /errors/403.html;
-error_page 404 /errors/404.html;
-error_page 429 /errors/429.html;
-error_page 500 /errors/500.html;
-error_page 502 /errors/502.html;
-error_page 503 /errors/503.html;
-error_page 504 /errors/504.html;
+# /__error/<code> resolves the negotiated language ($error_lang from the
+# 175-error-pages map) and falls back to English when a page is missing.
+# Keep the code list in sync with 260-generate-error-pages.sh.
+error_page 400 /__error/400;
+error_page 401 /__error/401;
+error_page 402 /__error/402;
+error_page 403 /__error/403;
+error_page 404 /__error/404;
+error_page 429 /__error/429;
+error_page 500 /__error/500;
+error_page 502 /__error/502;
+error_page 503 /__error/503;
+error_page 504 /__error/504;
 
-location /errors/ {
+location ~ "^/__error/(?<error_code>\d{3})$" {
+    internal;
     root {{ ENV.B19_HOME }};
+    try_files /errors/$error_lang/$error_code.html /errors/en/$error_code.html =404;
 }

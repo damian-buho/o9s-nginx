@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: o9s-nginx\n"
-"Report-Msgid-Bugs-To: i18n@b19.dev\n"
-"POT-Creation-Date: 2026-05-02 16:12-0300\n"
+"Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
+"POT-Creation-Date: 2026-08-22 23:08+0000\n"
 "PO-Revision-Date: 2026-02-18 00:00+0000\n"
 "Last-Translator: b19 team\n"
 "Language-Team: Spanish\n"
@@ -16,7 +16,207 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .container/user/healthcheck.d/1100-check-ping-status.sh:9
+#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:14
+msgid "Extract %s"
+msgstr "Extraer %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:9
+msgid "Clone %s"
+msgstr "Clonar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:14
+msgid "Configure"
+msgstr "Configurar"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:9
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:10
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:26
+msgid "Export %s"
+msgstr "Exportar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:12
+msgid "Build %s"
+msgstr "Compilar %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:18
+msgid "Build"
+msgstr "Compilar"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:19
+msgid "Install"
+msgstr "Instalar"
+
+#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:11
+msgid "Install %s"
+msgstr "Instalar %s"
+
+#: .container/user/build.d/user/post/250-generate-modules-conf.sh:9
+msgid "Generate %s"
+msgstr "Generar %s"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:29
+msgid "Bad Request"
+msgstr "Solicitud incorrecta"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:30
+msgid "Unauthorized"
+msgstr "No autorizado"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:31
+msgid "Payment Required"
+msgstr "Pago requerido"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:32
+msgid "Forbidden"
+msgstr "Prohibido"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:33
+msgid "Not Found"
+msgstr "No encontrado"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:34
+msgid "Too Many Requests"
+msgstr "Demasiadas solicitudes"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:35
+msgid "Internal Server Error"
+msgstr "Error interno del servidor"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:36
+msgid "Bad Gateway"
+msgstr "Puerta de enlace incorrecta"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:37
+msgid "Service Unavailable"
+msgstr "Servicio no disponible"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:38
+msgid "Gateway Timeout"
+msgstr "Tiempo de espera de la puerta de enlace agotado"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:44
+msgid "The server could not understand the request."
+msgstr "El servidor no pudo entender la solicitud."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:45
+msgid "Authentication is required to access this resource."
+msgstr "Se requiere autenticación para acceder a este recurso."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:46
+msgid "Payment is required to access this resource."
+msgstr "Se requiere un pago para acceder a este recurso."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:47
+msgid "You do not have permission to access this resource."
+msgstr "No tienes permiso para acceder a este recurso."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:48
+msgid "The requested resource could not be found."
+msgstr "No se pudo encontrar el recurso solicitado."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:49
+msgid ""
+"Too many requests were sent in a short time. Please wait a moment and try "
+"again."
+msgstr ""
+"Se han enviado demasiadas solicitudes en poco tiempo. Espera un momento e "
+"inténtalo de nuevo."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:50
+msgid "Something went wrong on the server side. Please try again later."
+msgstr "Algo ha fallado en el servidor. Inténtalo de nuevo más tarde."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:51
+msgid "The server received an invalid response from an upstream service."
+msgstr "El servidor recibió una respuesta no válida de un servicio ascendente."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:52
+msgid "The service is temporarily unavailable. Please try again later."
+msgstr ""
+"El servicio no está disponible temporalmente. Inténtalo de nuevo más tarde."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:53
+msgid "The server did not receive a timely response from an upstream service."
+msgstr ""
+"El servidor no recibió a tiempo una respuesta de un servicio ascendente."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:66
+msgid "No generated locale for %s — rendering in English"
+msgstr "No hay una configuración regional generada para %s — se genera en inglés"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:68
+msgid "Go to the home page"
+msgstr "Ir a la página de inicio"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:80
+msgid "Rendered %s error pages for %s"
+msgstr "Generadas %s páginas de error para %s"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:86
+msgid "Negotiable languages: %s"
+msgstr "Idiomas negociables: %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:9
+#: .container/user/test.d/1300-nginx-modules.sh:27
+#: .container/user/test.d/1400-error-pages.sh:21
+msgid "not found: %s"
+msgstr "no encontrado: %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:10
+msgid "Generate with %s size"
+msgstr "Generar con tamaño %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:13
+#: .container/user/test.d/1300-nginx-modules.sh:25
+#: .container/user/test.d/1400-error-pages.sh:19
+msgid "Found: %s"
+msgstr "Encontrado: %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:12
+msgid "Scanning for preload-hints assets in %s"
+msgstr "Escaneando recursos de preload-hints en %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:63
+msgid "Found %s assets, saved to %s"
+msgstr "Encontrados %s recursos, guardados en %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:65
+msgid "%s does not exist."
+msgstr "%s no existe."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:13
+msgid "Fetching Cloudflare IPs..."
+msgstr "Obteniendo IPs de Cloudflare..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:39
+msgid "Fetching Akamai IPs..."
+msgstr "Obteniendo IPs de Akamai..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:63
+msgid "Fetching AWS IPs..."
+msgstr "Obteniendo IPs de AWS..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:81
+msgid "Fetching Fastly IPs..."
+msgstr "Obteniendo IPs de Fastly..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:105
+msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
+msgstr "Modo no-CDN '%s' seleccionado. Se omite la obtención de IPs."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
+msgid "CDN IPs for %s saved to %s"
+msgstr "IPs de CDN para %s guardadas en %s"
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:115
+msgid "B19_IMMUTABLE=Y, skipping configuration generation"
+msgstr "B19_IMMUTABLE=Y, se omite la generación de configuración"
+
+#: .container/user/entrypoint.d/5000-start.sh:9
+msgid "Starting server"
+msgstr "Iniciando servidor"
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:14
 msgid ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is responding with "
 "HTTP 200"
@@ -24,7 +224,7 @@ msgstr ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) responde con HTTP "
 "200"
 
-#: .container/user/healthcheck.d/1100-check-ping-status.sh:12
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:17
 msgid ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is not responding "
 "(HTTP %s)"
@@ -32,141 +232,42 @@ msgstr ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) no responde (HTTP "
 "%s)"
 
-#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:9
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:14
 msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) not responding"
 msgstr "El servidor HTTP (O9S_NGINX_HTTP_PORT: %s) no responde"
 
-#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:13
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:18
 msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) is responding"
 msgstr "El servidor HTTP (O9S_NGINX_HTTP_PORT: %s) responde"
 
-#: .container/user/command.d/compress-static-assets:55
+#: .container/user/command.d/compress-static-assets:61
 msgid "These extensions will be compressed: %s"
-msgstr ""
+msgstr "Se comprimirán estas extensiones: %s"
 
-#: .container/user/command.d/compress-static-assets:74
-#, fuzzy
+#: .container/user/command.d/compress-static-assets:80
 msgid "Found: %s assets"
-msgstr "Encontrado: %s"
+msgstr "Encontrados: %s recursos"
 
-#: .container/user/command.d/compress-static-assets:83
+#: .container/user/command.d/compress-static-assets:89
 msgid "Parallel gzip (pigz) with level %s"
-msgstr ""
+msgstr "Gzip en paralelo (pigz) con nivel %s"
 
-#: .container/user/command.d/compress-static-assets:93
+#: .container/user/command.d/compress-static-assets:99
 msgid "Parallel brotli with level %s"
-msgstr ""
+msgstr "Brotli en paralelo con nivel %s"
 
-#: .container/user/command.d/compress-static-assets:103
+#: .container/user/command.d/compress-static-assets:109
 msgid "Parallel zstd with level %s"
-msgstr ""
+msgstr "Zstd en paralelo con nivel %s"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:5
-msgid "not found: %s"
-msgstr "no encontrado: %s"
+#~ msgid "Run %s"
+#~ msgstr "Ejecutar %s"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:6
-msgid "Generate with %s size"
-msgstr "Generar con tamaño %s"
+#~ msgid "%s: Ignoring %s, not executable"
+#~ msgstr "%s: Ignorando %s, no es ejecutable"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:9
-msgid "Found: %s"
-msgstr "Encontrado: %s"
+#~ msgid "%s: Ignoring %s"
+#~ msgstr "%s: Ignorando %s"
 
-#: .container/user/build.d/user/post/250-generate-modules-conf.sh:5
-msgid "Generate %s"
-msgstr "Generar %s"
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:9
-msgid "Fetching Cloudflare IPs..."
-msgstr "Obteniendo IPs de Cloudflare..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:35
-msgid "Fetching Akamai IPs..."
-msgstr "Obteniendo IPs de Akamai..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:59
-msgid "Fetching AWS IPs..."
-msgstr "Obteniendo IPs de AWS..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:77
-msgid "Fetching Fastly IPs..."
-msgstr "Obteniendo IPs de Fastly..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:101
-msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
-msgstr "Modo no-CDN '%s' seleccionado. Se omite la obtención de IPs."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:107
-msgid "CDN IPs for %s saved to %s"
-msgstr "IPs de CDN para %s guardadas en %s"
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
-msgid "B19_IMMUTABLE=Y, skipping configuration generation"
-msgstr "B19_IMMUTABLE=Y, se omite la generación de configuración"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:8
-msgid "Scanning for preload-hints assets in %s"
-msgstr "Escaneando recursos de preload-hints en %s"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:58
-msgid "Found %s assets, saved to %s"
-msgstr "Encontrados %s recursos, guardados en %s"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:60
-msgid "%s does not exist."
-msgstr "%s no existe."
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:10
-msgid "Run %s"
-msgstr "Ejecutar %s"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:13
-msgid "%s: Ignoring %s, not executable"
-msgstr "%s: Ignorando %s, no es ejecutable"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:16
-msgid "%s: Ignoring %s"
-msgstr "%s: Ignorando %s"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:20
-msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
-msgstr "B19_IMMUTABLE=Y, se omite el entrypoint nativo"
-
-#: .container/user/entrypoint.d/3000-start.sh:5
-msgid "Starting server"
-msgstr "Iniciando servidor"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:5
-msgid "Clone %s"
-msgstr "Clonar %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:9
-msgid "Configure"
-msgstr "Configurar"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:5
-#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:6
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:21
-msgid "Export %s"
-msgstr "Exportar %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:10
-msgid "Extract %s"
-msgstr "Extraer %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:8
-msgid "Build %s"
-msgstr "Compilar %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:13
-msgid "Build"
-msgstr "Compilar"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:14
-msgid "Install"
-msgstr "Instalar"
-
-#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:7
-msgid "Install %s"
-msgstr "Instalar %s"
+#~ msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
+#~ msgstr "B19_IMMUTABLE=Y, se omite el entrypoint nativo"

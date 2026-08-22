@@ -60,6 +60,14 @@ SPDX-License-Identifier: MIT
 - New feature toggles can be added by placing a file in `includes/opt/` and listing its name in `O9S_NGINX_INCLUDE_OPTIONAL`.
 - No config file mounts are ever required — the pattern is ENV-only from base image through all downstream derivatives.
 
+### Localized, self-contained error pages
+
+- Custom error pages for the ten standard status codes (400–504), generated at build time from a single template instead of nginx’s bare built-in pages.
+- Visitors get their own language: the server negotiates `Accept-Language` per request (English, Spanish, Ukrainian) with automatic fallback to English — no JavaScript involved.
+- Dark by default and follows the operating system’s light/dark preference through native CSS color-scheme switching.
+- Fully self-contained: system fonts and no third-party requests, so pages render identically offline and under a strict Content-Security-Policy.
+- Adding a language is one gettext `.po` file — pages and negotiation extend automatically on the next build.
+
 ### Feature toggle includes (opt/ system)
 
 - Self-contained nginx snippets in `includes/opt/` are conditionally included per server block via `O9S_NGINX_INCLUDE_OPTIONAL` (space-delimited list of names).

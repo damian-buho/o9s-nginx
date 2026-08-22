@@ -62,6 +62,14 @@ SPDX-License-Identifier: MIT
 - Se pueden añadir nuevos conmutadores de características colocando un archivo en `includes/opt/` y listando su nombre en `O9S_NGINX_INCLUDE_OPTIONAL`.
 - Nunca se requieren montajes de archivos de configuración: el patrón es solo ENV desde la imagen base hasta todos los derivados descendentes.
 
+### Páginas de error localizadas y autosuficientes
+
+- Páginas de error propias para los diez códigos de estado estándar (400–504), generadas en tiempo de construcción a partir de una única plantilla, en lugar de las páginas integradas de nginx.
+- Cada visitante recibe su idioma: el servidor negocia `Accept-Language` por petición (inglés, español, ucraniano) con retorno automático al inglés — sin JavaScript.
+- Oscuras por defecto y siguen la preferencia clara/oscura del sistema operativo mediante el cambio nativo de esquema de color de CSS.
+- Completamente autosuficientes: tipografías del sistema y sin peticiones a terceros, así que se renderizan igual sin conexión y bajo una Content-Security-Policy estricta.
+- Añadir un idioma es un solo archivo gettext `.po` — las páginas y la negociación se amplían automáticamente en la siguiente construcción.
+
 ### Includes de conmutadores de características (sistema opt/)
 
 - Fragmentos de nginx autocontenidos en `includes/opt/` se incluyen condicionalmente por bloque de servidor mediante `O9S_NGINX_INCLUDE_OPTIONAL` (lista de nombres separados por espacios).

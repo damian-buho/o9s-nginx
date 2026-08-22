@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: o9s-nginx\n"
-"Report-Msgid-Bugs-To: i18n@b19.dev\n"
-"POT-Creation-Date: 2026-05-02 16:12-0300\n"
+"Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
+"POT-Creation-Date: 2026-08-22 23:08+0000\n"
 "PO-Revision-Date: 2026-02-18 00:00+0000\n"
 "Last-Translator: b19 team\n"
 "Language-Team: Ukrainian\n"
@@ -17,7 +17,205 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: .container/user/healthcheck.d/1100-check-ping-status.sh:9
+#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:14
+msgid "Extract %s"
+msgstr "Розпакувати %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:9
+msgid "Clone %s"
+msgstr "Клонувати %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:14
+msgid "Configure"
+msgstr "Налаштувати"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:9
+#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:10
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:26
+msgid "Export %s"
+msgstr "Експортувати %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:12
+msgid "Build %s"
+msgstr "Зібрати %s"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:18
+msgid "Build"
+msgstr "Зібрати"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:19
+msgid "Install"
+msgstr "Встановити"
+
+#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:11
+msgid "Install %s"
+msgstr "Встановити %s"
+
+#: .container/user/build.d/user/post/250-generate-modules-conf.sh:9
+msgid "Generate %s"
+msgstr "Згенерувати %s"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:29
+msgid "Bad Request"
+msgstr "Некоректний запит"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:30
+msgid "Unauthorized"
+msgstr "Неавторизовано"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:31
+msgid "Payment Required"
+msgstr "Потрібна оплата"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:32
+msgid "Forbidden"
+msgstr "Заборонено"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:33
+msgid "Not Found"
+msgstr "Не знайдено"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:34
+msgid "Too Many Requests"
+msgstr "Забагато запитів"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:35
+msgid "Internal Server Error"
+msgstr "Внутрішня помилка сервера"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:36
+msgid "Bad Gateway"
+msgstr "Помилковий шлюз"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:37
+msgid "Service Unavailable"
+msgstr "Служба недоступна"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:38
+msgid "Gateway Timeout"
+msgstr "Перевищено час очікування шлюзу"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:44
+msgid "The server could not understand the request."
+msgstr "Сервер не зміг зрозуміти запит."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:45
+msgid "Authentication is required to access this resource."
+msgstr "Для доступу до цього ресурсу потрібна автентифікація."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:46
+msgid "Payment is required to access this resource."
+msgstr "Для доступу до цього ресурсу потрібна оплата."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:47
+msgid "You do not have permission to access this resource."
+msgstr "У вас немає прав доступу до цього ресурсу."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:48
+msgid "The requested resource could not be found."
+msgstr "Запитуваний ресурс не знайдено."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:49
+msgid ""
+"Too many requests were sent in a short time. Please wait a moment and try "
+"again."
+msgstr ""
+"Надіслано забагато запитів за короткий час. Зачекайте трохи й спробуйте ще "
+"раз."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:50
+msgid "Something went wrong on the server side. Please try again later."
+msgstr "На сервері щось пішло не так. Спробуйте ще раз пізніше."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:51
+msgid "The server received an invalid response from an upstream service."
+msgstr "Сервер отримав недійсну відповідь від вихідної служби."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:52
+msgid "The service is temporarily unavailable. Please try again later."
+msgstr "Служба тимчасово недоступна. Спробуйте ще раз пізніше."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:53
+msgid "The server did not receive a timely response from an upstream service."
+msgstr "Сервер не отримав своєчасної відповіді від вихідної служби."
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:66
+msgid "No generated locale for %s — rendering in English"
+msgstr "Нема згенерованої локалі для %s — сторінки буде згенеровано англійською"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:68
+msgid "Go to the home page"
+msgstr "Перейти на головну сторінку"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:80
+msgid "Rendered %s error pages for %s"
+msgstr "Згенеровано %s сторінок помилок для %s"
+
+#: .container/user/build.d/user/post/260-generate-error-pages.sh:86
+msgid "Negotiable languages: %s"
+msgstr "Доступні мови: %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:9
+#: .container/user/test.d/1300-nginx-modules.sh:27
+#: .container/user/test.d/1400-error-pages.sh:21
+msgid "not found: %s"
+msgstr "не знайдено: %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:10
+msgid "Generate with %s size"
+msgstr "Згенерувати з розміром %s"
+
+#: .container/user/build.d/user/post/400-dhparams.sh:13
+#: .container/user/test.d/1300-nginx-modules.sh:25
+#: .container/user/test.d/1400-error-pages.sh:19
+msgid "Found: %s"
+msgstr "Знайдено: %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:12
+msgid "Scanning for preload-hints assets in %s"
+msgstr "Сканування ресурсів preload-hints у %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:63
+msgid "Found %s assets, saved to %s"
+msgstr "Знайдено %s ресурсів, збережено до %s"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:65
+msgid "%s does not exist."
+msgstr "%s не існує."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:13
+msgid "Fetching Cloudflare IPs..."
+msgstr "Отримання IP-адрес Cloudflare..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:39
+msgid "Fetching Akamai IPs..."
+msgstr "Отримання IP-адрес Akamai..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:63
+msgid "Fetching AWS IPs..."
+msgstr "Отримання IP-адрес AWS..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:81
+msgid "Fetching Fastly IPs..."
+msgstr "Отримання IP-адрес Fastly..."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:105
+msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
+msgstr "Вибрано не-CDN режим '%s'. Отримання IP-адрес пропущено."
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
+msgid "CDN IPs for %s saved to %s"
+msgstr "IP-адреси CDN для %s збережено до %s"
+
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:115
+msgid "B19_IMMUTABLE=Y, skipping configuration generation"
+msgstr "B19_IMMUTABLE=Y, генерацію конфігурації пропущено"
+
+#: .container/user/entrypoint.d/5000-start.sh:9
+msgid "Starting server"
+msgstr "Запуск сервера"
+
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:14
 msgid ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is responding with "
 "HTTP 200"
@@ -25,7 +223,7 @@ msgstr ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) відповідає з HTTP "
 "200"
 
-#: .container/user/healthcheck.d/1100-check-ping-status.sh:12
+#: .container/user/healthcheck.d/1100-check-ping-status.sh:17
 msgid ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) is not responding "
 "(HTTP %s)"
@@ -33,141 +231,42 @@ msgstr ""
 "NGINX (O9S_NGINX_HTTP_PORT: %s, O9S_NGINX_STATUS_URL: %s) не відповідає "
 "(HTTP %s)"
 
-#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:9
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:14
 msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) not responding"
 msgstr "HTTP сервер (O9S_NGINX_HTTP_PORT: %s) не відповідає"
 
-#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:13
+#: .container/user/healthcheck.d/1200-check-nginx-actual-response.sh:18
 msgid "HTTP server (O9S_NGINX_HTTP_PORT: %s) is responding"
 msgstr "HTTP сервер (O9S_NGINX_HTTP_PORT: %s) відповідає"
 
-#: .container/user/command.d/compress-static-assets:55
+#: .container/user/command.d/compress-static-assets:61
 msgid "These extensions will be compressed: %s"
-msgstr ""
+msgstr "Буде стиснуто ці розширення: %s"
 
-#: .container/user/command.d/compress-static-assets:74
-#, fuzzy
+#: .container/user/command.d/compress-static-assets:80
 msgid "Found: %s assets"
-msgstr "Знайдено: %s"
+msgstr "Знайдено ресурсів: %s"
 
-#: .container/user/command.d/compress-static-assets:83
+#: .container/user/command.d/compress-static-assets:89
 msgid "Parallel gzip (pigz) with level %s"
-msgstr ""
+msgstr "Паралельний gzip (pigz) з рівнем %s"
 
-#: .container/user/command.d/compress-static-assets:93
+#: .container/user/command.d/compress-static-assets:99
 msgid "Parallel brotli with level %s"
-msgstr ""
+msgstr "Паралельний brotli з рівнем %s"
 
-#: .container/user/command.d/compress-static-assets:103
+#: .container/user/command.d/compress-static-assets:109
 msgid "Parallel zstd with level %s"
-msgstr ""
+msgstr "Паралельний zstd з рівнем %s"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:5
-msgid "not found: %s"
-msgstr "не знайдено: %s"
+#~ msgid "Run %s"
+#~ msgstr "Запустити %s"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:6
-msgid "Generate with %s size"
-msgstr "Згенерувати з розміром %s"
+#~ msgid "%s: Ignoring %s, not executable"
+#~ msgstr "%s: Ігноруємо %s, не є виконуваним"
 
-#: .container/user/build.d/user/post/400-dhparams.sh:9
-msgid "Found: %s"
-msgstr "Знайдено: %s"
+#~ msgid "%s: Ignoring %s"
+#~ msgstr "%s: Ігноруємо %s"
 
-#: .container/user/build.d/user/post/250-generate-modules-conf.sh:5
-msgid "Generate %s"
-msgstr "Згенерувати %s"
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:9
-msgid "Fetching Cloudflare IPs..."
-msgstr "Отримання IP-адрес Cloudflare..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:35
-msgid "Fetching Akamai IPs..."
-msgstr "Отримання IP-адрес Akamai..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:59
-msgid "Fetching AWS IPs..."
-msgstr "Отримання IP-адрес AWS..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:77
-msgid "Fetching Fastly IPs..."
-msgstr "Отримання IP-адрес Fastly..."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:101
-msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
-msgstr "Вибрано не-CDN режим '%s'. Отримання IP-адрес пропущено."
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:107
-msgid "CDN IPs for %s saved to %s"
-msgstr "IP-адреси CDN для %s збережено до %s"
-
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
-msgid "B19_IMMUTABLE=Y, skipping configuration generation"
-msgstr "B19_IMMUTABLE=Y, генерацію конфігурації пропущено"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:8
-msgid "Scanning for preload-hints assets in %s"
-msgstr "Сканування ресурсів preload-hints у %s"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:58
-msgid "Found %s assets, saved to %s"
-msgstr "Знайдено %s ресурсів, збережено до %s"
-
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:60
-msgid "%s does not exist."
-msgstr "%s не існує."
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:10
-msgid "Run %s"
-msgstr "Запустити %s"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:13
-msgid "%s: Ignoring %s, not executable"
-msgstr "%s: Ігноруємо %s, не є виконуваним"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:16
-msgid "%s: Ignoring %s"
-msgstr "%s: Ігноруємо %s"
-
-#: .container/user/entrypoint.d/2200-run-native-entrypoint.sh:20
-msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
-msgstr "B19_IMMUTABLE=Y, нативну точку входу пропущено"
-
-#: .container/user/entrypoint.d/3000-start.sh:5
-msgid "Starting server"
-msgstr "Запуск сервера"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/200-install-modules.sh:5
-msgid "Clone %s"
-msgstr "Клонувати %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/300-configure-nginx.sh:9
-msgid "Configure"
-msgstr "Налаштувати"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:5
-#: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:6
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:21
-msgid "Export %s"
-msgstr "Експортувати %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/100-download-source.sh:10
-msgid "Extract %s"
-msgstr "Розпакувати %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:8
-msgid "Build %s"
-msgstr "Зібрати %s"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:13
-msgid "Build"
-msgstr "Зібрати"
-
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:14
-msgid "Install"
-msgstr "Встановити"
-
-#: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:7
-msgid "Install %s"
-msgstr "Встановити %s"
+#~ msgid "B19_IMMUTABLE=Y, skipping native entrypoint"
+#~ msgstr "B19_IMMUTABLE=Y, нативну точку входу пропущено"

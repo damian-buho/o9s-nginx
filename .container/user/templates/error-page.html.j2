@@ -1,0 +1,24 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="robots" content="noindex">
+  <title>{{ code }} · {{ title }}</title>
+  <link rel="stylesheet" href="/errors/error.css">
+</head>
+<body>
+<main class="page">
+  <div class="ghost" aria-hidden="true">{{ code }}</div>
+  <h1 class="title">{{ title }}</h1>
+  <p class="desc">{{ desc }}</p>
+  <a class="cta" href="/">{{ cta }}</a>
+</main>
+</body>
+</html>
