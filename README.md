@@ -25,6 +25,7 @@ Community-maintained distribution of Nginx based on B19/GCC
 - Content-Signal and robots.txt directives
 - DH parameters pre-generation
 - Downstream consumption pattern
+- Localized, self-contained error pages
 - Feature toggle includes (opt/ system)
 - HTTP/3 (QUIC) support
 - OpenTelemetry tracing module

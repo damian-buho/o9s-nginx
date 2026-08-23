@@ -27,6 +27,7 @@ Distribución de Nginx mantenida por la comunidad, basada en B19/GCC
 - Directivas Content-Signal y robots.txt
 - Pregeneración de parámetros DH
 - Patrón de consumo descendente
+- Páginas de error localizadas y autosuficientes
 - Includes de conmutadores de características (sistema opt/)
 - Soporte de HTTP/3 (QUIC)
 - Módulo de trazado OpenTelemetry
