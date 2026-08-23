@@ -192,6 +192,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_MODULE_*`            | Dynamic module on/off (brotli, zstd, otel, acme)                  |
 | `O9S_NGINX_LISTEN_*`            | Socket options (reuseport, deferred, backlog, etc.)               |
 | `O9S_NGINX_SSL_*`               | TLS protocols, ciphers, session settings                          |
+| `O9S_NGINX_ACCESS_LOG`          | Full `access_log` value — `/dev/stdout default`; `off` disables   |
 | `O9S_NGINX_PRECOMPRESS_*`       | Build-time and startup pre-compression                            |
 | `O9S_NGINX_REALIP_*`            | Real-IP header and CDN mode                                       |
 | `O9S_NGINX_OTEL_*`              | OpenTelemetry endpoint and tracing                                |
