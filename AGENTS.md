@@ -168,6 +168,13 @@ Child images (e.g., `r8e/http-cache`) consume o9s/nginx by:
 1. Override specific `ENV` in Dockerfile (e.g., `O9S_NGINX_INDEX_TYPE=cache`, cache durations)
 1. Optionally add custom `includes/index/*.nginx.j2` or `includes/opt/*.nginx.j2` for new behaviors
 1. Never mount or map config files — everything is ENV-driven
+1. After `COPY`ing real content into `${O9S_NGINX_PUBLIC_PATH}`, set
+   `O9S_NGINX_PRECOMPRESS_ENTRYPOINT_ENABLED=Y` in the child image: `COPY` only
+   overwrites files the source carries, so the base’s precompressed placeholder
+   siblings (`index.html.{br,gz,zst}`) survive, and nginx’s `*_static` modules
+   serve them to every Accept-Encoding client — CDNs always send one. Stages
+   that run `build-stage user` are covered by the inherited
+   `900-static-compression.i.sh`; the entrypoint ENV is the bare-stage path.
 
 Example (r8e/http-cache): overrides 15 proxy cache ENV defaults and adds a single `includes/index/cache.nginx.j2` file. No config mounts needed.
 
