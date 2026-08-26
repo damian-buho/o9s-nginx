@@ -132,6 +132,14 @@ include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
 | `auto`           | `auto.nginx`            | Directory listing (`autoindex on`)                                           |
 | `cache`          | `cache.nginx.j2`        | (downstream) HTTP caching proxy — see r8e/http-cache                         |
 
+> **Warning — `fastcgi_intercept_errors on`.** `includes/fastcgi/common.nginx`
+> enables interception, and every server block maps `400…504` to the localized
+> static error pages. An upstream that answers `403 Forbidden` with its own HTML
+> (Matomo’s deactivated-plugin page, a framework debug screen…) gets its body
+> silently REPLACED by the o9s/nginx page — you debug the wrong thing. To see
+> what the backend actually said, flip `fastcgi_intercept_errors off`
+> temporarily in the rendered include (`show-config` finds the file) and reload.
+
 Downstream images can add new index types by placing a `.nginx.j2` file in `includes/index/` and setting `O9S_NGINX_INDEX_TYPE`.
 
 ### listen/ includes — ENV-driven socket config
