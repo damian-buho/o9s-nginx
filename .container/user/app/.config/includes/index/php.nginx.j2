@@ -4,6 +4,10 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
+root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
+
+index index.php;
+
 location ~ \.php$ {
     set            $backend "{{ ENV.O9S_NGINX_FASTCGI_BACKEND_HOST | default('backend-host.invalid', true) }}:{{ ENV.O9S_NGINX_FASTCGI_BACKEND_PORT | default('9000', true) }}";
     include       includes/fastcgi/common.nginx;
@@ -11,5 +15,5 @@ location ~ \.php$ {
 }
 
 location / {
-    try_files     $uri /index.php;
+    try_files     $uri $uri/ /index.php$is_args$args;
 }
