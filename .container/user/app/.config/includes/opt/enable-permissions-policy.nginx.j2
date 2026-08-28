@@ -4,17 +4,4 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
-add_header Permissions-Policy "
-    autoplay={{ ENV.O9S_NGINX_PERMISSION_AUTOPLAY }};
-    bluetooth={{ ENV.O9S_NGINX_PERMISSION_BLUETOOTH }};
-    camera={{ ENV.O9S_NGINX_PERMISSION_CAMERA }};
-    clipboard-read={{ ENV.O9S_NGINX_PERMISSION_CLIPBOARD_READ }};
-    display-capture={{ ENV.O9S_NGINX_PERMISSION_DISPLAY_CAPTURE }};
-    fullscreen={{ ENV.O9S_NGINX_PERMISSION_FULLSCREEN }};
-    geolocation={{ ENV.O9S_NGINX_PERMISSION_GEOLOCATION }};
-    microphone={{ ENV.O9S_NGINX_PERMISSION_MICROPHONE }};
-    payment={{ ENV.O9S_NGINX_PERMISSION_PAYMENT }};
-    serial={{ ENV.O9S_NGINX_PERMISSION_SERIAL }};
-    usb={{ ENV.O9S_NGINX_PERMISSION_USB }};
-    web-share={{ ENV.O9S_NGINX_PERMISSION_WEB_SHARE }};
-" always;
+add_header Permissions-Policy "autoplay={{ ENV.O9S_NGINX_PERMISSION_AUTOPLAY }}; bluetooth={{ ENV.O9S_NGINX_PERMISSION_BLUETOOTH }}; camera={{ ENV.O9S_NGINX_PERMISSION_CAMERA }}; clipboard-read={{ ENV.O9S_NGINX_PERMISSION_CLIPBOARD_READ }}; display-capture={{ ENV.O9S_NGINX_PERMISSION_DISPLAY_CAPTURE }}; fullscreen={{ ENV.O9S_NGINX_PERMISSION_FULLSCREEN }}; geolocation={{ ENV.O9S_NGINX_PERMISSION_GEOLOCATION }}; microphone={{ ENV.O9S_NGINX_PERMISSION_MICROPHONE }}; payment={{ ENV.O9S_NGINX_PERMISSION_PAYMENT }}; serial={{ ENV.O9S_NGINX_PERMISSION_SERIAL }}; usb={{ ENV.O9S_NGINX_PERMISSION_USB }}; web-share={{ ENV.O9S_NGINX_PERMISSION_WEB_SHARE }};" always;
