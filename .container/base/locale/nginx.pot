@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: nginx development\n"
+"Project-Id-Version: nginx 1.4.0\n"
 "Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-08-22 23:08+0000\n"
+"POT-Creation-Date: 2026-08-28 03:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -153,7 +153,7 @@ msgstr ""
 
 #: .container/user/build.d/user/post/400-dhparams.sh:9
 #: .container/user/test.d/1300-nginx-modules.sh:27
-#: .container/user/test.d/1400-error-pages.sh:21
+#: .container/user/test.d/1400-error-pages.sh:20
 msgid "not found: %s"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 
 #: .container/user/build.d/user/post/400-dhparams.sh:13
 #: .container/user/test.d/1300-nginx-modules.sh:25
-#: .container/user/test.d/1400-error-pages.sh:19
+#: .container/user/test.d/1400-error-pages.sh:18
 msgid "Found: %s"
 msgstr ""
 
@@ -205,6 +205,22 @@ msgstr ""
 
 #: .container/user/entrypoint.d/0800-update-realip-sources.sh:115
 msgid "B19_IMMUTABLE=Y, skipping configuration generation"
+msgstr ""
+
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:17
+msgid "No token directory at %s, serving the configured directives unchanged"
+msgstr ""
+
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:30
+msgid "Ignoring %s: %s is not a directive this image renders"
+msgstr ""
+
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:39
+msgid "Skipping %s: it carries no tokens"
+msgstr ""
+
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:48
+msgid "Appended %s token(s) from %s to %s"
 msgstr ""
 
 #: .container/user/entrypoint.d/5000-start.sh:9

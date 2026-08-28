@@ -229,12 +229,29 @@ Dockerfile ARG `O9S_NGINX_UPSTREAM_VERSION` differs from `deps/nginx/version.dep
 
 `entrypoint.d/0800-update-realip-sources.sh` fetches live Cloudflare/Akamai/AWS/Fastly IP ranges at every container start. Skipped when `B19_IMMUTABLE=Y`.
 
+## CSP tokens from downstream
+
+`entrypoint.d/0900-csp-hashes.sh` reads `${O9S_NGINX_CSP_DIR}` (default
+`/app/.csp`) and appends each `<directive>.txt`'s whitespace-separated tokens to
+the matching `O9S_NGINX_CSP_<DIRECTIVE>` before the templates render. It is how a
+consumer drops `'sha256-…'` for its own inline scripts into `script-src` without
+`'unsafe-inline'` and without this image knowing anything about that site.
+
+The tokens must hash the exact bytes between `>` and `</script>` — CSP does not
+trim or normalise them, and a consumer that hashes a trimmed body ships a header
+that blocks every script it meant to allow. Hashes never cover inline event
+handlers (`onload="…"`); those need removing at the source, not `'unsafe-hashes'`.
+
+Keep the directory OUT of the document root. The policy is already public in the
+header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
+
 ## Entrypoint order
 
 | Script                          | Purpose                                                                    |
 | ------------------------------- | -------------------------------------------------------------------------- |
 | `0800-scan-preload-assets.sh`   | Scan `${O9S_NGINX_ROOT}/${O9S_NGINX_PH_SCAN_PATH}` for CSS/JS/images/fonts |
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
+| `0900-csp-hashes.sh`            | Append `${O9S_NGINX_CSP_DIR}/<directive>.txt` tokens to `O9S_NGINX_CSP_*`  |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
 | `5000-start.sh`                 | `b19-exec --stdout-level warn --stderr-level warn -- nginx`                |
 
