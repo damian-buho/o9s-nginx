@@ -13,8 +13,10 @@ server
     include includes/server/*.nginx;
     include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
 {% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
-{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | split(" ")) %}
-    include includes/opt/{{ _opt }}.nginx;
+{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | replace('"', '') | replace("'", '') | trim | split(",")) %}
+{% if _opt | trim != "" %}
+    include includes/opt/{{ _opt | trim }}.nginx;
+{% endif %}
 {% endfor %}
 {% endif %}
 }
@@ -29,8 +31,10 @@ server
     include includes/server/*.nginx;
     include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
 {% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
-{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | split(" ")) %}
-    include includes/opt/{{ _opt }}.nginx;
+{% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | replace('"', '') | replace("'", '') | trim | split(",")) %}
+{% if _opt | trim != "" %}
+    include includes/opt/{{ _opt | trim }}.nginx;
+{% endif %}
 {% endfor %}
 {% endif %}
 }

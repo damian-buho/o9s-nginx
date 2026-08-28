@@ -70,7 +70,7 @@ Each server block template (`conf.d/default.conf.j2`) then includes:
 include includes/listen/http.default.nginx;             # listen directives (ENV-controlled)
 include includes/server/*.nginx;                        # error pages, etag, dns-prefetch, status, etc.
 include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;  # content handler
-include includes/opt/{{ _opt }}.nginx;                  # per O9S_NGINX_INCLUDE_OPTIONAL (space-delimited names)
+include includes/opt/{{ _opt }}.nginx;                  # per O9S_NGINX_INCLUDE_OPTIONAL (comma-separated)
 ```
 
 The realip include is itself dynamic — controlled by `O9S_NGINX_REALIP_MODE`:
@@ -213,7 +213,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_OTEL_*`              | OpenTelemetry endpoint and tracing                                |
 | `O9S_NGINX_PH_*`                | Preload hint scanning                                             |
 | `O9S_NGINX_CACHE_*`             | Cache paths and policies                                          |
-| `O9S_NGINX_INCLUDE_OPTIONAL`    | Space-delimited opt/ includes (e.g. `"enable-cache enable-cors"`) |
+| `O9S_NGINX_INCLUDE_OPTIONAL`    | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`) |
 | `O9S_NGINX_OPEN_FILE_CACHE_*`   | File descriptor caching                                           |
 | `CONTENT_SIGNALS_*`             | robots.txt Content-Signal directives                              |
 
