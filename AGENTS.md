@@ -30,7 +30,7 @@ nginx compiled from source with HTTP/3 (QUIC), brotli, zstd, and optional ACME/O
 The entire nginx config tree lives as Jinja2 (`.j2`) templates inside the image at `${XDG_CONFIG_HOME}/`:
 
 ```text
-app/etc/
+app/.config/
 ├── nginx.conf.j2          ← main config
 ├── modules.conf.j2        ← dynamic module loading
 ├── conf.d/

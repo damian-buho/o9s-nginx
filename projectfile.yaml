@@ -20,6 +20,7 @@ includes:
   - .makefile/b19/images/gcc.yaml
   - .makefile/b19/images/rust.yaml
   - .makefile/b19/images/ubuntu.yaml
+  - .makefile/container/traits/nginx.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
   - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
 kind: SoftwareSourceCode
@@ -72,6 +73,15 @@ links:
     url: https://crates.io/crates/nginx
 org:
   projectfile:
+    ci:
+      nodes:
+        # This project’s OWN container is always the nginx server, on every
+        # plane, so the default (unmodified M6E_CONTAINER_INSTANCE) row from
+        # nginx-gixy.yaml applies unchanged — no override needed here.
+        container-ready-to-test:
+          needs:
+            gixy: true
+            gixy-config-extract: true
     conventions:
       fragments:
         parents:

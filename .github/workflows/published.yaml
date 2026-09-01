@@ -106,6 +106,14 @@ jobs:
         with:
           container: ${{ env.M6E_CONTAINER_INSTANCE }}
           run: test.d
+      - name: gixy
+        uses: projectfile/ci-actions/run-tool@v1
+        with:
+          image: ${{ vars.D9T_PYTHON_TOOLS_IMAGE || format('{0}/d9t/python-tools', vars.SOURCE_DOCKER_REGISTRY || 'ghcr.io/damian-buho') }}
+          version: ${{ env.M6E_TAG }}
+          run: auto-gixy reports/nginx-config/nginx.conf
+      - name: gixy-config-extract
+        run: M6E_EXTRACT_PATHS=/app/.config .makefile/container/scripts/extract-artifact.sh reports/nginx-config
       - name: dc-down
         if: ${{ always() }}
         run: docker compose --project-name "$M6E_COMPOSE_PROJECT_NAME" --file .compose/pipeline.yaml down --volumes </dev/null
