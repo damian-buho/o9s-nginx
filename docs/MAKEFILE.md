@@ -237,6 +237,14 @@ Run a fresh container from the built image (with mounted secrets) and shell into
 
 Run the test.d suite inside the running container
 
+### `gixy`
+
+Statically analyze the rendered nginx config for misconfigurations
+
+`auto-gixy reports/nginx-config/nginx.conf`
+
+> Image: D9T_PYTHON_TOOLS_IMAGE
+
 ### `hadolint`
 
 Lint the Dockerfile for best practices
