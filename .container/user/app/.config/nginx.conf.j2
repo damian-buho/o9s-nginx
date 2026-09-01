@@ -17,6 +17,7 @@ error_log           /dev/stderr {{ _log_levels[ENV.B19_VERBOSITY] | default("war
 pid                 {{ ENV.XDG_STATE_HOME ~ "/nginx.pid" }};
 quic_bpf            {{ ENV.O9S_NGINX_QUIC_BPF }};
 worker_processes    {{ ENV.O9S_NGINX_WORKER_PROCESSES }};
+worker_rlimit_nofile {{ ENV.O9S_NGINX_WORKER_RLIMIT_NOFILE }};
 
 events {
     worker_connections  {{ ENV.O9S_NGINX_WORKER_CONNECTIONS }};
