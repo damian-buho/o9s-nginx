@@ -11,8 +11,8 @@ SPDX-License-Identifier: MIT
 
 ### Live reload without dropping connections
 
-- **Problem.** The minijinja config renders only at startup, so changing any `O9S_NGINX_*` value or include file means restarting the container and cutting in-flight requests.
-- **Under consideration.** Forward SIGHUP (and an optional inotify watch on the include tree) to re-render the `.j2` templates and run `nginx -s reload`, updating listeners and server blocks without a process restart.
+- **Problem.** The minijinja config renders only at startup, so changing any env value or include file means restarting the container and cutting in-flight requests.
+- **Under consideration.** Forward a reload signal (and an optional inotify watch on the include tree) to re-render the templates and reload, updating listeners and server blocks without a process restart.
 - **Rests on.** nginx’s native reload signal; the render step already invoked at startup; tini’s group signal forwarding.
 
 ### Request-ID and trace context in access logs
@@ -24,5 +24,5 @@ SPDX-License-Identifier: MIT
 ### Mounted TLS certificates with a dev fallback
 
 - **Problem.** The only certificate source is the built-in ACME module, which needs a real domain and DNS or HTTP validation; an operator with existing certs, an internal CA, or a plain localhost HTTPS need has no env path and must hand-author includes.
-- **Under consideration.** An env-driven cert pair (`O9S_NGINX_SSL_CERT` / `_KEY`) that wires `ssl_certificate` and `ssl_certificate_key` through the existing TLS server-block gate, plus a one-flag self-signed generator for local development.
-- **Rests on.** nginx’s `ssl_certificate` directives and the existing `O9S_NGINX_SSL_ENABLED` gate; b19 Docker-secrets auto-loading for key material.
+- **Under consideration.** An env-driven cert pair that wires the certificate and key through the existing TLS server-block gate, plus a one-flag self-signed generator for local development.
+- **Rests on.** nginx’s certificate directives and the existing TLS-enabled gate; b19 Docker-secrets auto-loading for key material.
