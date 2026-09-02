@@ -1437,6 +1437,14 @@ Report every pinned dependency that lags upstream
 
 > Goal — lowered to its own CI workflow.
 
+### `gixy-checked`
+
+Nginx config checked for misconfigurations
+
+### `nginx-config-extracted`
+
+Nginx config extracted and ready for analysis
+
 ### `pre-commit`
 
 Run the commit gate — the fast static checks
