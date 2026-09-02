@@ -80,8 +80,7 @@ org:
         # nginx-gixy.yaml applies unchanged — no override needed here.
         container-ready-to-test:
           needs:
-            gixy: true
-            gixy-config-extract: true
+            gixy-checked: true
     conventions:
       fragments:
         parents:
