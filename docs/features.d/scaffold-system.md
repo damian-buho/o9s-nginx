@@ -6,6 +6,6 @@ SPDX-License-Identifier: MIT
 
 # Scaffold system for downstream nginx-based images
 
-- A `scaffold/` directory provides a Dockerfile template and `stack.conf` for bootstrapping new nginx-derived projects.
-- Uses m6e stack integration (`STACK_ROOT_STAGE=base`, `STACK_EXTENSIONS=nginx`) so new projects inherit the full build pipeline automatically.
-- Downstream projects only need to override specific `ENV` values and optionally add custom `includes/` files — the base Dockerfile, entrypoint, healthcheck, and template hierarchy are all inherited.
+- Configuration is assembled from composable templates — base config, includes, and overrides merge automatically at startup.
+- New projects inherit the full build pipeline, entrypoint, healthcheck, and template hierarchy without manual setup.
+- Downstream projects only need to override specific environment values and optionally add custom includes.
