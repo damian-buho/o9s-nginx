@@ -34,10 +34,10 @@ SPDX-License-Identifier: MIT
 
 ### Environment-driven configuration (zero config mounts)
 
-- Every nginx directive is controlled through 200+ `O9S_NGINX_*` environment variables with sensible defaults baked into the Dockerfile — the image is fully functional with `docker run` and no mounted config files.
-- Downstream images and compose files tune nginx via `environment:` or `ENV` overrides only; no `/etc/nginx/` volume mounts or `.conf` files are needed.
-- All templates are rendered at startup by the standard Jinja2 rendering hook, with every container ENV variable available as `ENV.VAR_NAME`.
-- Variable categories cover ports, HTTP/2+3, compression, proxy, FastCGI, TLS, logging, caching, CSP, CORS, Permissions-Policy, real IP, OpenTelemetry, and socket options.
+- Every nginx directive is environment-driven — the image is fully functional with no mounted config files.
+- Configuration is generated from environment variables at startup — no manual config editing.
+- Downstream images tune nginx through environment overrides only; no volume mounts needed.
+- Categories cover ports, compression, proxy, TLS, logging, caching, CORS, CSP, real IP, and OpenTelemetry.
 
 ### Content-Signal and robots.txt directives
 
@@ -70,10 +70,10 @@ SPDX-License-Identifier: MIT
 
 ### Feature toggle includes (opt/ system)
 
-- Self-contained nginx snippets in `includes/opt/` are conditionally included per server block via `O9S_NGINX_INCLUDE_OPTIONAL` (comma-separated list of names).
-- Available toggles: CORS (`enable-cors`, 6 vars), Content-Security-Policy (`enable-csp`, 18 vars), HSTS (`enable-hsts`), Permissions-Policy (`enable-permissions-policy`, 12 vars), stub status (`enable-status`), ACME cert (`enable-acme`), OTel per-server (`enable-otel`), cache-control (`enable-cache`), favicon (`enable-favicon`), certbot paths (`enable-certbot`), X-Frame-Options DENY (`enable-sameorigin`), X-Content-Type-Options nosniff (`enable-nosniff`), HTTP-to-HTTPS redirect (`redirect-to-https`).
-- Each toggle is entirely ENV-driven — no editing of nginx config files required.
-- Downstream images can add new opt/ snippets by dropping a `.nginx` or `.nginx.j2` file into `includes/opt/`.
+- HTTP/3, Brotli compression, real-IP extraction, and other features are toggleable without rebuilding.
+- Each feature is enabled or disabled entirely through environment variables — no config file edits required.
+- Downstream images can add new features by dropping a snippet into the opt/ directory.
+- Available toggles include CORS, Content-Security-Policy, HSTS, Permissions-Policy, ACME certificates, and OpenTelemetry tracing.
 
 ### HTTP/3 (QUIC) support
 
@@ -99,9 +99,9 @@ SPDX-License-Identifier: MIT
 
 ### Scaffold system for downstream nginx-based images
 
-- A `scaffold/` directory provides a Dockerfile template and `stack.conf` for bootstrapping new nginx-derived projects.
-- Uses m6e stack integration (`STACK_ROOT_STAGE=base`, `STACK_EXTENSIONS=nginx`) so new projects inherit the full build pipeline automatically.
-- Downstream projects only need to override specific `ENV` values and optionally add custom `includes/` files — the base Dockerfile, entrypoint, healthcheck, and template hierarchy are all inherited.
+- Configuration is assembled from composable templates — base config, includes, and overrides merge automatically at startup.
+- New projects inherit the full build pipeline, entrypoint, healthcheck, and template hierarchy without manual setup.
+- Downstream projects only need to override specific environment values and optionally add custom includes.
 
 ### Pre-compression of static assets
 
@@ -113,11 +113,10 @@ SPDX-License-Identifier: MIT
 
 ### Jinja2 include-based template hierarchy
 
-- The entire nginx config tree lives as Jinja2 (`.j2`) templates under `${XDG_CONFIG_HOME}/`, composed via `include` directives — no monolithic config file.
-- The `http {}` block pulls in 24 numbered snippets (`includes/http/*.nginx`) sorted by prefix: core, AIO, DNS, compression, ACME, client/IO, HTTP/2+3, keepalive, proxy, caching, TLS, logging, real IP, and OpenTelemetry.
-- Server blocks compose from modular includes: `listen/` (socket config), `server/` (error pages, ETag, DNS prefetch, preload hints), `index/` (content handler), `opt/` (feature toggles), and `realip/` (CDN-aware IP resolution).
-- Templates needing conditional logic use Jinja2 `{% if %}` blocks; non-conditional snippets are plain `.nginx` files rendered as-is.
-- New behaviors can be added by dropping a file into the appropriate `includes/` directory — no editing of existing templates required.
+- Configuration templates layer predictably — base, includes, and per-project overrides merge in a clear order.
+- The http block pulls in numbered snippets covering core settings, compression, proxy, TLS, logging, and telemetry.
+- Server blocks compose from modular includes for socket config, error pages, content handlers, and feature toggles.
+- New behaviors are added by placing a file into the appropriate includes directory — no editing of existing templates required.
 
 ## Inherited from B19/Ubuntu
 
@@ -191,11 +190,12 @@ SPDX-License-Identifier: MIT
 
 ### Built-in health monitoring (healthcheck.d)
 
-- Docker-native healthcheck declared in the base image and inherited by all downstream images with no extra configuration.
-- Eight default checks ship in the base image: disk space, filesystem writability and a TCP listen probe run everywhere; HTTPS connectivity, DNS resolution and TCP reachability run only where `B19_HEALTH_EGRESS=true`, so a container that never reaches the internet carries no check a third party can fail.
-- Egress checks are fault-tolerant — success on any target counts as pass.
-- All egress checks automatically skip in offgrid mode; all checks can be disabled at runtime.
-- Downstream images add service-specific checks (HTTP endpoints, database connections, process liveness) by dropping scripts into a directory.
+- Docker-native healthcheck inherited by every downstream image with no extra configuration.
+- Egress checks are opt-in: a container that never reaches the internet carries no check a third party can fail, while one whose job is the internet reports unhealthy the moment the outside is gone.
+- Works the same offline as online — egress checks stand down automatically under offgrid mode.
+- Adding a check is dropping a script in a directory, not writing Docker plumbing.
+
+See [use-healthcheck.d](../how-to/use-healthcheck.d.md) for the check list, slot numbering, and configuration.
 
 ### Multilingual shell output (b19-i18n)
 
@@ -281,6 +281,7 @@ SPDX-License-Identifier: MIT
 - Jinja2-compatible template rendering at both build time and container startup.
 - Drop a `.j2` file anywhere in the app directory; it is discovered at build time and rendered at every startup with all environment variables available.
 - Runtime rendering is parallel and automatic — downstream images get it with zero configuration.
+- Skip specific templates at runtime with `B19_J2_SKIP_FILES` (comma-separated basenames).
 - Immutable mode (`B19_IMMUTABLE=Y`) locks the filesystem to build-time state, skipping all runtime rendering.
 
 ### Built-in test framework (test.d)
