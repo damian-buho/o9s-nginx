@@ -4,20 +4,28 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
-# /__error/<code> resolves the negotiated language ($error_lang from the
-# 175-error-pages map) and falls back to English when a page is missing.
+# Per-code error page paths — override any via O9S_NGINX_ERROR_PAGE_<code>.
+# Default routes through the internal resolver for locale-negotiated pages.
 # Keep the code list in sync with 260-generate-error-pages.sh.
-error_page 400 /__error/400;
-error_page 401 /__error/401;
-error_page 402 /__error/402;
-error_page 403 /__error/403;
-error_page 404 /__error/404;
-error_page 429 /__error/429;
-error_page 500 /__error/500;
-error_page 502 /__error/502;
-error_page 503 /__error/503;
-error_page 504 /__error/504;
+error_page 400 {{ ENV.O9S_NGINX_ERROR_PAGE_400 | default('/__error/400') }};
+error_page 401 {{ ENV.O9S_NGINX_ERROR_PAGE_401 | default('/__error/401') }};
+error_page 402 {{ ENV.O9S_NGINX_ERROR_PAGE_402 | default('/__error/402') }};
+error_page 403 {{ ENV.O9S_NGINX_ERROR_PAGE_403 | default('/__error/403') }};
+error_page 404 {{ ENV.O9S_NGINX_ERROR_PAGE_404 | default('/__error/404') }};
+error_page 429 {{ ENV.O9S_NGINX_ERROR_PAGE_429 | default('/__error/429') }};
+error_page 500 {{ ENV.O9S_NGINX_ERROR_PAGE_500 | default('/__error/500') }};
+error_page 502 {{ ENV.O9S_NGINX_ERROR_PAGE_502 | default('/__error/502') }};
+error_page 503 {{ ENV.O9S_NGINX_ERROR_PAGE_503 | default('/__error/503') }};
+error_page 504 {{ ENV.O9S_NGINX_ERROR_PAGE_504 | default('/__error/504') }};
 
+# Custom error pages served from the public path (downstream override).
+# try_files falls back to the internal resolver when the file is absent.
+location ~ "^/errors/(?<error_code>\d{3})\.html$" {
+    root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
+    try_files /errors/$error_code.html /__error/$error_code =404;
+}
+
+# Locale-negotiated fallback — the original error page system.
 location ~ "^/__error/(?<error_code>\d{3})$" {
     internal;
     root {{ ENV.B19_HOME }};
