@@ -23,6 +23,12 @@ includes:
   - .makefile/container/traits/nginx.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
   - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
+keywords:
+  - nginx
+  - web-server
+  - reverse-proxy
+  - http3
+  - docker
 kind: SoftwareSourceCode
 links:
   - label:
@@ -97,11 +103,5 @@ repositories:
   - role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
-keywords:
-  - nginx
-  - web-server
-  - reverse-proxy
-  - http3
-  - docker
 technologies:
   - c
