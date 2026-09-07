@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: nginx 1.4.0\n"
+"Project-Id-Version: nginx 1.6.0\n"
 "Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-08-28 03:40+0000\n"
+"POT-Creation-Date: 2026-09-07 03:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
