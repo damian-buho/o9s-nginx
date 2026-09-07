@@ -186,6 +186,12 @@ Child images (e.g., `r8e/http-cache`) consume o9s/nginx by:
 
 Example (r8e/http-cache): overrides 15 proxy cache ENV defaults and adds a single `includes/index/cache.nginx.j2` file. No config mounts needed.
 
+`O9S_NGINX_PRECOMPRESS_DIR` (default `${O9S_NGINX_ROOT}`, i.e. `${B19_HOME}`)
+scopes `compress-static-assets` when `O9S_NGINX_PUBLIC_PATH` is overridden to a
+path elsewhere on a mounted volume (e.g. a release dir a sibling container
+swaps in via symlink) — set it to that same path so precompression never
+wanders into unrelated sibling content sharing the mount.
+
 ## scaffold/
 
 `scaffold/` directory contains a Dockerfile template and `stack.conf` for creating new nginx-based projects. It uses `STACK_ROOT_STAGE=base` and `STACK_EXTENSIONS=nginx` for m6e stack integration.

@@ -6,5 +6,5 @@
 
   if [ "${O9S_NGINX_PRECOMPRESS_ENABLED:-N}" = "Y" ] && [ "${O9S_NGINX_PRECOMPRESS_ENTRYPOINT_ENABLED:-N}" = "Y" ]
   then
-    compress-static-assets "${B19_HOME}"
+    compress-static-assets "${O9S_NGINX_PRECOMPRESS_DIR:-${B19_HOME}}"
   fi
