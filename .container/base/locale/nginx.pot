@@ -4,9 +4,9 @@
 # SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: nginx 1.6.0\n"
+"Project-Id-Version: nginx 1.6.0-4-g7623f96\n"
 "Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-09-07 03:48+0000\n"
+"POT-Creation-Date: 2026-09-07 06:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -221,6 +221,14 @@ msgstr ""
 
 #: .container/user/entrypoint.d/0900-csp-hashes.sh:48
 msgid "Appended %s token(s) from %s to %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:21
+msgid "%s changed; recompressing"
+msgstr ""
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:28
+msgid "Watching %s for changes every %ss"
 msgstr ""
 
 #: .container/user/entrypoint.d/5000-start.sh:9

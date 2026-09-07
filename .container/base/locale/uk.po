@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: o9s-nginx\n"
 "Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-08-28 03:40+0000\n"
+"POT-Creation-Date: 2026-09-07 06:50+0000\n"
 "PO-Revision-Date: 2026-02-18 00:00+0000\n"
 "Last-Translator: b19 team\n"
 "Language-Team: Ukrainian\n"
@@ -227,6 +227,14 @@ msgstr "Пропускається %s: він не містить токенів
 #: .container/user/entrypoint.d/0900-csp-hashes.sh:48
 msgid "Appended %s token(s) from %s to %s"
 msgstr "Додано %s токен(ів) з %s до %s"
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:21
+msgid "%s changed; recompressing"
+msgstr "%s змінено; повторне стиснення"
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:28
+msgid "Watching %s for changes every %ss"
+msgstr "Стеження за %s на предмет змін кожні %sс"
 
 #: .container/user/entrypoint.d/5000-start.sh:9
 msgid "Starting server"

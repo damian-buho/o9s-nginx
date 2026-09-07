@@ -190,7 +190,13 @@ Example (r8e/http-cache): overrides 15 proxy cache ENV defaults and adds a singl
 scopes `compress-static-assets` when `O9S_NGINX_PUBLIC_PATH` is overridden to a
 path elsewhere on a mounted volume (e.g. a release dir a sibling container
 swaps in via symlink) — set it to that same path so precompression never
-wanders into unrelated sibling content sharing the mount.
+wanders into unrelated sibling content sharing the mount. That first pass only
+runs once, at container start; `O9S_NGINX_PRECOMPRESS_WATCH_ENABLED=Y` adds a
+background poll (`O9S_NGINX_PRECOMPRESS_WATCH_INTERVAL`, default `30` seconds)
+that re-runs it whenever `O9S_NGINX_PRECOMPRESS_DIR` resolves to a new target —
+entirely in-container, no signal from the writer needed. It only catches a
+retarget (a symlink swap, as above), not an in-place file overwrite in a
+directory whose path never changes.
 
 ## scaffold/
 
@@ -259,6 +265,7 @@ header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
 | `0900-csp-hashes.sh`            | Append `${O9S_NGINX_CSP_DIR}/<directive>.txt` tokens to `O9S_NGINX_CSP_*`  |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
+| `1310-precompress-watch.sh`     | Poll `O9S_NGINX_PRECOMPRESS_DIR`; recompress on retarget                   |
 | `5000-start.sh`                 | `b19-exec --stdout-level warn --stderr-level warn -- nginx`                |
 
 ## Commands
