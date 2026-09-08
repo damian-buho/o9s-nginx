@@ -1309,14 +1309,6 @@ Scan project source for vulnerabilities (grype)
 
 > Image: D9T_GO_TOOLS_IMAGE
 
-### `grype-scan-source-gha`
-
-Scan project source for vulnerabilities (grype), self-healing its own GHA cache
-
-`auto-grype`
-
-> Image: D9T_GO_TOOLS_IMAGE
-
 ### `osv-scanner-db-update`
 
 Mirror the offline OSV databases for the fleet’s ecosystems
@@ -1421,14 +1413,6 @@ Scan project source for vulnerabilities (trivy)
 
 > Image: D9T_GO_TOOLS_IMAGE
 
-### `trivy-scan-source-gha`
-
-Scan project source for vulnerabilities (trivy), self-healing its own GHA cache
-
-`auto-trivy fs`
-
-> Image: D9T_GO_TOOLS_IMAGE
-
 ## Workflow
 
 ### `all`
@@ -1465,19 +1449,23 @@ Report every pinned dependency that lags upstream
 
 Nginx config checked for misconfigurations
 
+### `inputs-are-ok`
+
+Verify every build input — source, documentation and the projectfile
+
 ### `nginx-config-extracted`
 
 Nginx config extracted and ready for analysis
 
 ### `pre-commit`
 
-Run the commit gate — the fast static checks
+Run the commit gate — the fast syntax checks
 
 ### `pre-push`
 
-Run the push gate — every static check plus the vulnerability scans
+Run the push gate — every input check, including tests and the vulnerability scans
 
-### `projectfile-is-synced`
+### `projectfile-is-ok`
 
 Verify every projectfile-derived file still matches the projectfile
 
@@ -1495,12 +1483,8 @@ Build, test, scan and publish the release artifacts
 
 Run the pseudo-CI pipeline locally — build, test and scan, without publishing
 
-### `static-passes`
+### `syntax-is-ok`
 
-Run every static check — lint, documentation, licence compliance and vulnerability scans
-
-### `static-passes-quick`
-
-Run the fast static checks — lint, documentation and licence compliance
+Run the fast syntax checks — source lint and the projectfile projections
 
 <!-- textlint-enable -->
