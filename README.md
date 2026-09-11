@@ -66,32 +66,9 @@ Community-maintained distribution of Nginx based on B19/GCC
 
 See [FEATURES.md](FEATURES.md) for the full list.
 
-## What this provides
-
-- **Container image** `ghcr.io/damian-buho/o9s/nginx:latest`
-- **Container image** `docker.io/damianbuho/o9s-nginx:latest`
-
 ## Installation
 
-Pull the published container image:
-
-### Pull from GHCR
-
-```sh
-docker pull ghcr.io/damian-buho/o9s/nginx:latest
-```
-
-### Pull from DockerHub
-
-```sh
-docker pull docker.io/damianbuho/o9s-nginx:latest
-```
-
-Stable releases also publish `X.Y.Z`, `X.Y` and `X` tags — pull the precision you want to pin.
-
 If the registries above are unreachable, pull from the origin instead:
-
-### Pull from Kiota
 
 ```sh
 docker pull kiota.ch/o9s/nginx:latest

@@ -68,32 +68,9 @@ pf-cli-managed: yes
 
 Див. [FEATURES.md](FEATURES.md), щоб переглянути повний перелік.
 
-## Що надає цей проєкт
-
-- **Образ контейнера** `ghcr.io/damian-buho/o9s/nginx:latest`
-- **Образ контейнера** `docker.io/damianbuho/o9s-nginx:latest`
-
 ## Встановлення
 
-Завантажте опублікований образ контейнера:
-
-### Завантажити з GHCR
-
-```sh
-docker pull ghcr.io/damian-buho/o9s/nginx:latest
-```
-
-### Завантажити з DockerHub
-
-```sh
-docker pull docker.io/damianbuho/o9s-nginx:latest
-```
-
-Стабільні випуски також публікують теґи `X.Y.Z`, `X.Y` і `X` — завантажте той рівень точності, який хочете зафіксувати.
-
 Якщо наведені вище реєстри недоступні, завантажте з джерела:
-
-### Завантажити з Kiota
 
 ```sh
 docker pull kiota.ch/o9s/nginx:latest
