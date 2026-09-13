@@ -15,6 +15,7 @@ identity:
     en: Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
     es: Distribución de Nginx mantenida por la comunidad, construida sobre B19/GCC. Este repositorio contiene únicamente el empaquetado — Dockerfile, scripts de compilación y configuración, todo con licencia MIT; el código original de Nginx se obtiene en tiempo de compilación y conserva su propia licencia.
     uk: Дистрибуція Nginx з підтримкою спільноти, зібрана на основі B19/GCC. Цей репозиторій містить лише пакування — Dockerfile, скрипти збирання та конфігурацію, усе під ліцензією MIT; вихідний код Nginx отримують під час збирання, і він зберігає власну ліцензію.
+  version: 1.7.0
 includes:
   - .makefile/b19/ci.yaml
   - .makefile/b19/images/gcc.yaml
@@ -100,7 +101,8 @@ repositories:
   - role: mirror
     type: git
     url: git@github.com:damian-buho/o9s-nginx.git
-  - role: origin
+  - branch: main
+    role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
 technologies:
