@@ -31,3 +31,4 @@ keywords:
   - reverse-proxy
   - http3
   - docker
+version: 1.7.0
