@@ -31,53 +31,6 @@ keywords:
   - http3
   - docker
 kind: SoftwareSourceCode
-links:
-  - label:
-      en: O9S / Nginx on Codeberg
-      es: O9S / Nginx en Codeberg
-      uk: O9S / Nginx на Codeberg
-    tags:
-      - public
-      - badges
-      - badges-gitea
-    type: source-code
-    url: https://codeberg.org/o9s/nginx
-  - label:
-      en: O9S / Nginx on GitHub
-      es: O9S / Nginx en GitHub
-      uk: O9S / Nginx на GitHub
-    tags:
-      - public
-      - badges
-      - badges-github
-    type: source-code
-    url: https://github.com/damian-buho/o9s-nginx
-  - label:
-      en: O9S / Nginx on kiota.ch
-      es: O9S / Nginx en kiota.ch
-      uk: O9S / Nginx на kiota.ch
-    preferred: true
-    type: source-code
-    url: https://kiota.ch/o9s/nginx
-  - label:
-      en: Issues on Codeberg
-      es: Incidencias en Codeberg
-      uk: Issues на Codeberg
-    tags:
-      - support
-    type: bugs
-    url: https://codeberg.org/o9s/nginx/issues
-  - label:
-      en: Issues on GitHub
-      es: Incidencias en GitHub
-      uk: Issues на GitHub
-    tags:
-      - support
-    type: bugs
-    url: https://github.com/damian-buho/o9s-nginx/issues
-  - label: Packages on crates.io
-    type: package-registry
-    url: https://crates.io/crates/nginx
 org:
   projectfile:
     ci:
@@ -93,17 +46,18 @@ org:
         parents:
           - url: ssh://git@kiota.ch/b19/ubuntu.git
     status: maintained
+technologies:
+  - c
+links:
+  - label:
+      en: O9S / Nginx on kiota.ch
+      es: O9S / Nginx en kiota.ch
+      uk: O9S / Nginx на kiota.ch
+    preferred: true
+    type: source-code
+    url: https://kiota.ch/o9s/nginx
 repositories:
-  - issues: true
-    role: mirror
-    type: git
-    url: ssh://git@codeberg.org/o9s/nginx.git
-  - role: mirror
-    type: git
-    url: git@github.com:damian-buho/o9s-nginx.git
   - branch: main
     role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
-technologies:
-  - c
