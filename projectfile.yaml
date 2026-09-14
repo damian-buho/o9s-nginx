@@ -31,6 +31,14 @@ keywords:
   - http3
   - docker
 kind: SoftwareSourceCode
+links:
+  - label:
+      en: O9S / Nginx on kiota.ch
+      es: O9S / Nginx en kiota.ch
+      uk: O9S / Nginx на kiota.ch
+    preferred: true
+    type: source-code
+    url: https://kiota.ch/o9s/nginx
 org:
   projectfile:
     ci:
@@ -46,18 +54,10 @@ org:
         parents:
           - url: ssh://git@kiota.ch/b19/ubuntu.git
     status: maintained
-technologies:
-  - c
-links:
-  - label:
-      en: O9S / Nginx on kiota.ch
-      es: O9S / Nginx en kiota.ch
-      uk: O9S / Nginx на kiota.ch
-    preferred: true
-    type: source-code
-    url: https://kiota.ch/o9s/nginx
 repositories:
   - branch: main
     role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
+technologies:
+  - c
