@@ -39,7 +39,7 @@ app/.config/
     ├── http/     (25 files, numbered 010–240)
     ├── listen/   (6 files)
     ├── server/   (8 files)
-    ├── opt/      (14 files)
+    ├── opt/      (12 files)
     ├── index/    (4 files — html, php, proxy, auto)
     ├── fastcgi/  (2 files)
     └── realip/   (7 files)
@@ -105,7 +105,6 @@ Files in `includes/opt/` are conditionally included by server-block templates in
 - `enable-cors.nginx.j2` — CORS via `O9S_NGINX_CORS_*` (6 vars)
 - `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (18 vars)
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
-- `enable-status.nginx.j2` — stub_status at `O9S_NGINX_STATUS_URL`
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)
 - `enable-acme.nginx.j2` — per-server ACME certificate (conditional)
@@ -296,6 +295,11 @@ Jinja template (`.container/user/app/public/robots.txt.j2`), rendered at startup
 | `user/post/900-static-compression.i.sh`  | user  | Pre-compresses static assets (inheritable — `.i.`) |
 
 ## Healthchecks
+
+The stub_status endpoint is mandatory infrastructure, not an opt toggle: it lives
+in `includes/server/status.nginx.j2` (auto-included via `server/*.nginx`) because
+both healthchecks curl it. Never re-add it through `O9S_NGINX_INCLUDE_OPTIONAL` —
+a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 
 1. `1100-check-ping-status.sh` — cURL HTTP 200 on `${O9S_NGINX_HTTP_PORT}/${O9S_NGINX_STATUS_URL}`
 1. `1200-check-nginx-actual-response.sh` — cURL HEAD on `${O9S_NGINX_HTTP_PORT}`

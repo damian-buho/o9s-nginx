@@ -73,7 +73,7 @@ SPDX-License-Identifier: MIT
 ### Включення-перемикачі функцій (система opt/)
 
 - Самодостатні фрагменти nginx у `includes/opt/` умовно включаються для кожного серверного блоку через `O9S_NGINX_INCLUDE_OPTIONAL` (список назв, розділених комами).
-- Доступні перемикачі: CORS (`enable-cors`, 6 змінних), Content-Security-Policy (`enable-csp`, 18 змінних), HSTS (`enable-hsts`), Permissions-Policy (`enable-permissions-policy`, 12 змінних), stub status (`enable-status`), сертифікат ACME (`enable-acme`), OTel на сервер (`enable-otel`), cache-control (`enable-cache`), favicon (`enable-favicon`), шляхи certbot (`enable-certbot`), X-Frame-Options DENY (`enable-sameorigin`), X-Content-Type-Options nosniff (`enable-nosniff`), перенаправлення HTTP на HTTPS (`redirect-to-https`).
+- Доступні перемикачі: CORS (`enable-cors`, 6 змінних), Content-Security-Policy (`enable-csp`, 18 змінних), HSTS (`enable-hsts`), Permissions-Policy (`enable-permissions-policy`, 12 змінних), сертифікат ACME (`enable-acme`), OTel на сервер (`enable-otel`), cache-control (`enable-cache`), favicon (`enable-favicon`), шляхи certbot (`enable-certbot`), X-Frame-Options DENY (`enable-sameorigin`), X-Content-Type-Options nosniff (`enable-nosniff`), перенаправлення HTTP на HTTPS (`redirect-to-https`).
 - Кожен перемикач керується виключно через ENV — редагувати файли конфігурації nginx не потрібно.
 - Downstream-образи можуть додавати нові opt/-фрагменти, поклавши файл `.nginx` або `.nginx.j2` у `includes/opt/`.
 
@@ -121,7 +121,7 @@ SPDX-License-Identifier: MIT
 - Шаблони з умовною логікою використовують блоки Jinja2 `{% if %}`; безумовні фрагменти — звичайні файли `.nginx`, що рендеряться як є.
 - Нові поведінки додаються розміщенням файлу у відповідному каталозі `includes/` — редагувати наявні шаблони не потрібно.
 
-## Успадковано від B19/Ubuntu
+## Успадковано від B19 / Ubuntu
 
 ### Постійний APT-кеш між збираннями
 

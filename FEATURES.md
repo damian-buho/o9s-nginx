@@ -118,7 +118,7 @@ SPDX-License-Identifier: MIT
 - Server blocks compose from modular includes for socket config, error pages, content handlers, and feature toggles.
 - New behaviors are added by placing a file into the appropriate includes directory — no editing of existing templates required.
 
-## Inherited from B19/Ubuntu
+## Inherited from B19 / Ubuntu
 
 ### Persistent APT cache across builds
 
