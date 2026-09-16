@@ -298,7 +298,7 @@ Jinja template (`.container/user/app/public/robots.txt.j2`), rendered at startup
 
 The stub_status endpoint is mandatory infrastructure, not an opt toggle: it lives
 in `includes/server/status.nginx.j2` (auto-included via `server/*.nginx`) because
-both healthchecks curl it. Never re-add it through `O9S_NGINX_INCLUDE_OPTIONAL` —
+both healthchecks cURL it. Never re-add it through `O9S_NGINX_INCLUDE_OPTIONAL` —
 a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 
 1. `1100-check-ping-status.sh` — cURL HTTP 200 on `${O9S_NGINX_HTTP_PORT}/${O9S_NGINX_STATUS_URL}`
