@@ -36,7 +36,7 @@ Distribución de Nginx mantenida por la comunidad, basada en B19/GCC
 - Precompresión de recursos estáticos
 - Jerarquía de plantillas basada en includes Jinja2
 
-### Heredado de B19/Ubuntu
+### Heredado de B19 / Ubuntu
 
 - Caché APT persistente entre compilaciones
 - Gestión de procesos de servicio con enrutado de logs (b19-exec)
