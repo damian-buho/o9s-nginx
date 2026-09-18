@@ -37,6 +37,7 @@ links:
       es: O9S / Nginx en kiota.ch
       uk: O9S / Nginx на kiota.ch
     preferred: true
+    priority: 10
     type: source-code
     url: https://kiota.ch/o9s/nginx
 org:
