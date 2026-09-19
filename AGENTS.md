@@ -278,7 +278,7 @@ header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
 Jinja template (`.container/user/app/public/robots.txt.j2`), rendered at startup:
 
 - `O9S_NGINX_ROBOTS_TXT_DEFAULT_POLICY` — `disallow` (default), `allow`, `none` (omit default block)
-- `CONTENT_SIGNALS_SEARCH=Y` / `CONTENT_SIGNALS_TRAIN=Y` / `CONTENT_SIGNALS_INPUT=Y` — emit `Content-Signal:` directive per contentsignals.org (`ai-train`, `search`, `ai-input` with `yes`/`no` values)
+- `CONTENT_SIGNALS_SEARCH=Y` / `CONTENT_SIGNALS_AI_TRAIN=Y` / `CONTENT_SIGNALS_AI_INPUT=Y` — emit `Content-Signal:` directive per contentsignals.org (`ai-train`, `search`, `ai-input` with `yes`/`no` values)
 - `O9S_NGINX_ROBOTS_TXT_SITEMAP` — if set, adds `Sitemap:` line
 
 ## Pre-generated assets
