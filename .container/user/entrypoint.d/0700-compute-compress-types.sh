@@ -9,8 +9,7 @@
 
 set -euo pipefail
 
-# shellcheck source=.container/foundation/tools.d/b19-i18n
-# shellcheck disable=SC1091
+# shellcheck source=/dev/null
 . b19-i18n
 b19-log debug "COMPRESS_TYPES" "computing from category variables"
 
