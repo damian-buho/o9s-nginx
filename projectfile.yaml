@@ -80,7 +80,6 @@ org:
     architecture:
       - amd64
       - arm64
-      - riscv64
     ci:
       nodes:
         # This project’s OWN container is always the nginx server, on every

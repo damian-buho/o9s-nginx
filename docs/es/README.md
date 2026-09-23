@@ -79,7 +79,6 @@ Consulta [FEATURES.md](FEATURES.md) para ver la lista completa.
 
 - `linux/amd64`
 - `linux/arm64`
-- `linux/riscv64`
 
 ## Instalación
 

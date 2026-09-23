@@ -79,7 +79,6 @@ pf-cli-managed: yes
 
 - `linux/amd64`
 - `linux/arm64`
-- `linux/riscv64`
 
 ## Встановлення
 
