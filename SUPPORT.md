@@ -11,6 +11,12 @@ pf-cli-managed: yes
 Thanks for using **O9S / Nginx**!
 This document explains where to get help and how to ask effective questions.
 
+## Before You Ask
+
+Please check these first — your question may already be answered:
+
+- [Issues on GitHub](https://github.com/damian-buho/o9s-nginx/issues)
+
 ## Where to Ask
 
 - **Report a security vulnerability** — [SECURITY.md](SECURITY.md)

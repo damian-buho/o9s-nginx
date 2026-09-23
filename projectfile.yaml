@@ -21,8 +21,11 @@ includes:
   - .makefile/b19/images/gcc.yaml
   - .makefile/b19/images/rust.yaml
   - .makefile/b19/images/ubuntu.yaml
+  - .makefile/b19/traits/release.yaml
   - .makefile/container/traits/nginx.yaml
+  - https://kiota.ch/damian-buho/metadata/raw/branch/main/forge/github.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
+  - https://kiota.ch/damian-buho/metadata/raw/branch/main/registry/dockerhub.yaml
   - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
 keywords:
   - nginx
@@ -40,6 +43,38 @@ links:
     priority: 10
     type: source-code
     url: https://kiota.ch/o9s/nginx
+  - label:
+      en: O9S / Nginx on GitHub
+      es: O9S / Nginx en GitHub
+      uk: O9S / Nginx на GitHub
+    priority: 80
+    tags:
+      - public
+      - badges
+      - badges-github
+    type: source-code
+    url: https://github.com/damian-buho/o9s-nginx
+  - label:
+      en: Issues on GitHub
+      es: Incidencias en GitHub
+      uk: Задачі на GitHub
+    priority: 80
+    tags:
+      - support
+    type: bugs
+    url: https://github.com/damian-buho/o9s-nginx/issues
+  - label:
+      en: Packages on GHCR
+      es: Paquetes en GHCR
+      uk: Пакунки на GHCR
+    type: package-registry
+    url: https://github.com/damian-buho/o9s-nginx/pkgs/container/o9s%2Fnginx
+  - label:
+      en: Packages on Docker Hub
+      es: Paquetes en Docker Hub
+      uk: Пакунки на Docker Hub
+    type: package-registry
+    url: https://hub.docker.com/r/damianbuho/o9s-nginx
 org:
   projectfile:
     architecture:
@@ -64,5 +99,8 @@ repositories:
     role: origin
     type: git
     url: ssh://git@kiota.ch/o9s/nginx.git
+  - role: mirror
+    type: git
+    url: git@github.com:damian-buho/o9s-nginx.git
 technologies:
   - c
