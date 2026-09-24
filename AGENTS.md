@@ -256,6 +256,17 @@ handlers (`onload="…"`); those need removing at the source, not `'unsafe-hashe
 Keep the directory OUT of the document root. The policy is already public in the
 header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
 
+## Security headers and `always`
+
+Every security `add_header` in `includes/opt/` (`Content-Security-Policy`,
+`Strict-Transport-Security`, `Permissions-Policy`, `X-Frame-Options`,
+`X-Content-Type-Options`, `Cache-Control`) carries the `always` argument so the
+header survives on 4xx/5xx responses — including the localized
+`/__error/<code>` pages. Resource hints (`Link` preconnect/dns-prefetch/
+preload) and `Alt-Svc` intentionally omit `always`: they are not security
+controls and have no referent on a bare error page, so dropping them on errors
+is correct.
+
 ## Entrypoint order
 
 | Script                          | Purpose                                                                    |
