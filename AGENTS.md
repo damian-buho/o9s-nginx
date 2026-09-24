@@ -103,7 +103,7 @@ include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;
 Files in `includes/opt/` are conditionally included by server-block templates in downstream images. Each is a self-contained feature:
 
 - `enable-cors.nginx.j2` — CORS via `O9S_NGINX_CORS_*` (6 vars)
-- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (18 vars)
+- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (20 vars)
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)
@@ -255,6 +255,9 @@ handlers (`onload="…"`); those need removing at the source, not `'unsafe-hashe
 
 Keep the directory OUT of the document root. The policy is already public in the
 header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
+`O9S_NGINX_CSP_UPGRADE_INSECURE_REQUESTS` defaults to `upgrade-insecure-requests;`.
+`O9S_NGINX_CSP_REQUIRE_TRUSTED_TYPES_FOR` is empty until a consumer opts in with
+`require-trusted-types-for 'script';` — only after its scripts run clean under enforcement.
 
 ## Security headers and `always`
 
