@@ -1,0 +1,42 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+# Fills upstream mime.types gaps so renderable assets are not served as application/octet-stream.
+types {
+    application/javascript           mjs;
+    application/json                 map;
+    application/ld+json              jsonld;
+    application/yaml                 yaml yml;
+    application/toml                 toml;
+    application/geo+json             geojson;
+    application/dash+xml             mpd;
+    application/epub+zip             epub;
+    application/gzip                 gz tgz;
+    application/x-tar                tar;
+    application/x-bzip2              bz2;
+    application/zstd                 zst;
+    application/x-subrip             srt;
+    application/manifest+json        webmanifest;
+    text/markdown                    md markdown;
+    text/vtt                         vtt;
+    text/csv                         csv;
+    text/calendar                    ics;
+    text/xsl                         xsl;
+    audio/ogg                        oga opus;
+    audio/flac                       flac;
+    audio/wav                        wav;
+    audio/webm                       weba;
+    audio/mp4                        m4b;
+    video/ogg                        ogv;
+    video/x-matroska                 mkv;
+    video/iso.segment                m4s;
+    image/apng                       apng;
+    image/heic                       heic;
+    image/heif                       heif;
+    image/jxl                        jxl;
+    model/gltf+json                  gltf;
+    model/gltf-binary                glb;
+    font/ttf                         ttf;
+    font/otf                         otf;
+}

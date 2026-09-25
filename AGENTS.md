@@ -298,14 +298,19 @@ Jinja template (`.container/user/app/public/robots.txt.j2`), rendered at startup
 ## Text charset and extra MIME types
 
 `includes/http/015-charset.nginx.j2` sets `charset` from `O9S_NGINX_CHARSET`
-(default `utf-8`) with `charset_types` from `O9S_NGINX_CHARSET_TYPES`, and maps
-the two types upstream `mime.types` lacks: `text/markdown` (`md`, `markdown`)
-and `application/manifest+json` (`webmanifest`). Without this, `.txt` serves
-with no charset (browsers misread UTF-8 accents as latin-1) and `.md` /
-`.webmanifest` fall to `application/octet-stream`. `170-cache` matches
-`$sent_http_content_type` with `~^…` prefix regexes so entries keep matching
-once charset appends `; charset=…` — an exact match would silently fall to
-`no-cache`.
+(default `utf-8`) with `charset_types` from `O9S_NGINX_CHARSET_TYPES`.
+`includes/http/016-mime-types.nginx` maps the extensions upstream
+`mime.types` lacks — `md`, `mjs`, `vtt`, `xsl`, modern audio/image/video
+(`opus`, `flac`, `heic`, `jxl`, `mkv`…), data (`yaml`, `toml`, `jsonld`…),
+`webmanifest` and archives. Without this, `.txt` serves with no charset
+(browsers misread UTF-8 accents as latin-1) and the rest fall to
+`application/octet-stream` (browsers download instead of rendering; module
+scripts and `<track>` captions break under `nosniff`). New text-ish types
+also join `O9S_NGINX_CHARSET_TYPES` and the compress categories (new `DATA`
+one included); already-compressed media and archives stay out of compression.
+`170-cache` matches `$sent_http_content_type` with `~^…` prefix regexes so
+entries keep matching once charset appends `; charset=…` — an exact match
+would silently fall to `no-cache`.
 
 ## Pre-generated assets
 

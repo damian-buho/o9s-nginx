@@ -25,36 +25,64 @@ map $sent_http_content_type $cache_control_value {
     "~^application/vnd.ms-excel"                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/vnd.openxmlformats-officedocument.wordprocessingml.document" "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/epub\+zip"                                                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/x-subrip"                                                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^text/calendar"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^text/csv"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^text/markdown"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^text/plain"                                                              "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^text/vtt"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^text/xsl"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Fonts
     "~^application/vnd.ms-fontobject"       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^font/otf"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^font/ttf"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^font/woff"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^font/woff2"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Images
+    "~^image/apng"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/bmp"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/gif"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^image/heic"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^image/heif"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/jpeg"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^image/jxl"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/png"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/svg\+xml"                      "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/tiff"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/webp"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/x-icon"                        "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
-    # JSON and YAML
+    # Audio
+    "~^audio/flac"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/mpeg"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/mp4"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/ogg"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/wav"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/webm"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/x-m4a"                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # JSON and structured data
+    "~^application/geo\+json"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/json"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/x-yaml"                  "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/ld\+json"                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/toml"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/yaml"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^model/gltf-binary"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^model/gltf\+json"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Video
+    "~^video/iso.segment"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^video/mp4"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^video/ogg"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^video/webm"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^video/x-matroska"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # XML and Feeds
     "~^application/atom\+xml"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/dash\+xml"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/rss\+xml"                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/xml"                     "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
@@ -62,8 +90,10 @@ map $sent_http_content_type $cache_control_value {
     "~^application/gzip"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/vnd.rar"                 "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/x-7z-compressed"         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/x-bzip2"                 "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/x-tar"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^application/zip"                     "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/zstd"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Specialized Web Assets
     "~^application/manifest\+json"          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
