@@ -14,7 +14,7 @@ set -euo pipefail
 b19-log debug "COMPRESS_TYPES" "computing from category variables"
 
 # Category variables with defaults matching Dockerfile
-COMPRESS_TYPES_TEXT="${O9S_NGINX_COMPRESS_TYPES_TEXT:-text/css text/plain text/xml text/x-component}"
+COMPRESS_TYPES_TEXT="${O9S_NGINX_COMPRESS_TYPES_TEXT:-text/css text/plain text/xml text/x-component text/markdown}"
 COMPRESS_TYPES_JAVASCRIPT="${O9S_NGINX_COMPRESS_TYPES_JAVASCRIPT:-application/javascript application/x-javascript text/javascript}"
 COMPRESS_TYPES_JSON="${O9S_NGINX_COMPRESS_TYPES_JSON:-application/json application/manifest+json application/vnd.api+json}"
 COMPRESS_TYPES_XML="${O9S_NGINX_COMPRESS_TYPES_XML:-application/atom+xml application/rss+xml application/xml+rss application/xhtml+xml application/xml}"
