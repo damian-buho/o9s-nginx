@@ -168,6 +168,8 @@ Every socket option is controlled by a `O9S_NGINX_LISTEN_*` env var. Empty vars 
 
 CDN modes (`cloudflare`, `akamai`, `aws`, `fastly`) use `.j2` templates rendered at startup with live IP data fetched by `entrypoint.d/0800-update-realip-sources.sh`. Data is written to `.nginx.data.json` sidecar files.
 
+One mode names one trust set, which is not enough behind two proxies: with a CDN in front of Traefik the chain is `client, edge`, and the mode’s set alone stops the recursive scan at the edge. `O9S_NGINX_REALIP_EXTRA_CIDRS` (static comma list) and `O9S_NGINX_REALIP_EXTRA_PROVIDERS` (comma subset of `cloudflare,akamai,fastly,aws`, live-fetched at startup by `entrypoint.d/0810-realip-extra.sh`) stack extra `set_real_ip_from` lines onto the mode instead of replacing it, so `docker` mode plus the CDN ranges resolves the real client on both the direct and the proxied path. An unknown provider refuses to start; a failed fetch warns and keeps the remaining sources.
+
 ### Downstream consumption pattern
 
 Child images (e.g., `r8e/http-cache`) consume o9s/nginx by:
@@ -221,7 +223,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_SSL_*`               | TLS protocols, ciphers, session settings                          |
 | `O9S_NGINX_ACCESS_LOG`          | Full `access_log` value — `/dev/stdout default`; `off` disables   |
 | `O9S_NGINX_PRECOMPRESS_*`       | Build-time and startup pre-compression                            |
-| `O9S_NGINX_REALIP_*`            | Real-IP header and CDN mode                                       |
+| `O9S_NGINX_REALIP_*`            | Real-IP header, CDN mode, extra trust                             |
 | `O9S_NGINX_OTEL_*`              | OpenTelemetry endpoint and tracing                                |
 | `O9S_NGINX_PH_*`                | Preload hint scanning                                             |
 | `O9S_NGINX_CACHE_*`             | Cache paths and policies                                          |
@@ -277,6 +279,7 @@ is correct.
 | ------------------------------- | -------------------------------------------------------------------------- |
 | `0800-scan-preload-assets.sh`   | Scan `${O9S_NGINX_ROOT}/${O9S_NGINX_PH_SCAN_PATH}` for CSS/JS/images/fonts |
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
+| `0810-realip-extra.sh`          | Append extra providers’ live ranges to `REALIP_EXTRA_CIDRS`                |
 | `0900-csp-hashes.sh`            | Append `${O9S_NGINX_CSP_DIR}/<directive>.txt` tokens to `O9S_NGINX_CSP_*`  |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
 | `1310-precompress-watch.sh`     | Poll `O9S_NGINX_PRECOMPRESS_DIR`; recompress on retarget                   |

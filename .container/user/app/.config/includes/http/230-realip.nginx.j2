@@ -7,3 +7,9 @@ SPDX-License-Identifier: MIT
 real_ip_recursive   {{ ENV.O9S_NGINX_REALIP_RECURSIVE }};
 real_ip_header      {{ ENV.O9S_NGINX_REALIP_HEADER }};
 include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;
+{# Extra trusted peers stack on top of the mode above: a second proxy hop (a CDN in front of Traefik) whose ranges the single mode file cannot name. #}
+{% if ENV.O9S_NGINX_REALIP_EXTRA_CIDRS %}
+{% for cidr in ENV.O9S_NGINX_REALIP_EXTRA_CIDRS | split(',') %}
+set_real_ip_from {{ cidr | trim }};
+{% endfor %}
+{% endif %}
