@@ -8,10 +8,15 @@
 
     REALIP_DIR="${XDG_CONFIG_HOME}/includes/realip"
 
+    # A CDN mode lends its required header through the environment because real_ip_header is emitted exactly once (230-realip.nginx.j2) and nginx refuses a duplicate.
+    DATA_FILE=""
+    PROVIDER_HEADER=""
+
     case "${O9S_NGINX_REALIP_MODE:-docker}" in
       cloudflare)
         b19-log info "REALIP" "$(_ "Fetching Cloudflare IPs...")"
         DATA_FILE="${REALIP_DIR}/cloudflare.nginx.data.json"
+        PROVIDER_HEADER="CF-Connecting-IP"
 
         # Fetch IPv4 and IPv6 addresses
         IPV4=$(curl -s https://www.cloudflare.com/ips-v4)
@@ -38,6 +43,7 @@
       akamai)
         b19-log info "REALIP" "$(_ "Fetching Akamai IPs...")"
         DATA_FILE="${REALIP_DIR}/akamai.nginx.data.json"
+        PROVIDER_HEADER="True-Client-IP"
 
         IPV4=$(curl -s https://techdocs.akamai.com/property-manager/pdfs/akamai_ipv4_CIDRs.txt)
         IPV6=$(curl -s https://techdocs.akamai.com/property-manager/pdfs/akamai_ipv6_CIDRs.txt)
@@ -62,6 +68,7 @@
       aws)
         b19-log info "REALIP" "$(_ "Fetching AWS IPs...")"
         DATA_FILE="${REALIP_DIR}/aws.nginx.data.json"
+        PROVIDER_HEADER="X-Forwarded-For"
 
         IPS=$(curl -s https://ip-ranges.amazonaws.com/ip-ranges.json | jq -r '.prefixes[] | select(.service == "CLOUDFRONT" or .service == "ELB") | .ip_prefix' 2>/dev/null)
 
@@ -80,6 +87,7 @@
       fastly)
         b19-log info "REALIP" "$(_ "Fetching Fastly IPs...")"
         DATA_FILE="${REALIP_DIR}/fastly.nginx.data.json"
+        PROVIDER_HEADER="Fastly-Client-IP"
 
         IPV4=$(curl -s https://api.fastly.com/public-ip-list | jq -r '.addresses[]' 2>/dev/null)
         IPV6=$(curl -s https://api.fastly.com/public-ip-list | jq -r '.ipv6_addresses[]' 2>/dev/null)
@@ -109,6 +117,11 @@
 
     if [ -f "${DATA_FILE:-}" ]; then
       b19-log good "REALIP" "$(_p "CDN IPs for %s saved to %s" "${O9S_NGINX_REALIP_MODE:-docker}" "${DATA_FILE}")"
+    fi
+
+    if [ -n "${PROVIDER_HEADER}" ]; then
+      export O9S_NGINX_REALIP_HEADER="${PROVIDER_HEADER}"
+      b19-log info "REALIP" "$(_p "Real-IP header for %s mode: %s" "${O9S_NGINX_REALIP_MODE}" "${PROVIDER_HEADER}")"
     fi
 
   else

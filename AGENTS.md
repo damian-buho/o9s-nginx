@@ -166,7 +166,7 @@ Every socket option is controlled by a `O9S_NGINX_LISTEN_*` env var. Empty vars 
 | `custom`           | `custom.nginx.j2`     | Uses `O9S_NGINX_REALIP_NETWORK` subnet            |
 | `localhost`        | `localhost.nginx`     | 127.0.0.1                                         |
 
-CDN modes (`cloudflare`, `akamai`, `aws`, `fastly`) use `.j2` templates rendered at startup with live IP data fetched by `entrypoint.d/0800-update-realip-sources.sh`. Data is written to `.nginx.data.json` sidecar files.
+CDN modes (`cloudflare`, `akamai`, `aws`, `fastly`) use `.j2` templates rendered at startup with live IP data fetched by `entrypoint.d/0800-update-realip-sources.sh`. Data is written to `.nginx.data.json` sidecar files. `real_ip_header` is emitted exactly once, in `230-realip.nginx.j2` — nginx answers a duplicate with `emerg` and never starts, so a mode template must never carry its own header line (`test.d/1220` locks this). A CDN mode lends its required header through `O9S_NGINX_REALIP_HEADER` instead, exported by `0800` before the templates render.
 
 One mode names one trust set, which is not enough behind two proxies: with a CDN in front of Traefik the chain is `client, edge`, and the mode’s set alone stops the recursive scan at the edge. `O9S_NGINX_REALIP_EXTRA_CIDRS` (static comma list) and `O9S_NGINX_REALIP_EXTRA_PROVIDERS` (comma subset of `cloudflare,akamai,fastly,aws`, live-fetched at startup by `entrypoint.d/0810-realip-extra.sh`) stack extra `set_real_ip_from` lines onto the mode instead of replacing it, so `docker` mode plus the CDN ranges resolves the real client on both the direct and the proxied path. An unknown provider refuses to start; a failed fetch warns and keeps the remaining sources.
 

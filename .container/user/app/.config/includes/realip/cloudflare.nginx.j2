@@ -4,7 +4,6 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
-# Cloudflare IPs and real_ip_header
-real_ip_header {{ header }};
+# Cloudflare edge ranges (the header is emitted once in 230-realip.nginx.j2).
 {% for ip in ips %}set_real_ip_from {{ ip }};
 {% endfor %}
