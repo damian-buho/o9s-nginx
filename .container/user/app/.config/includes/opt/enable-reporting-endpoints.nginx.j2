@@ -1,0 +1,7 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_REPORTING_ENDPOINTS %}add_header Reporting-Endpoints {{ ENV.O9S_NGINX_REPORTING_ENDPOINTS }} always;{% endif %}

@@ -39,7 +39,7 @@ app/.config/
     ├── http/     (25 files, numbered 010–240)
     ├── listen/   (6 files)
     ├── server/   (8 files)
-    ├── opt/      (12 files)
+    ├── opt/      (13 files)
     ├── index/    (4 files — html, php, proxy, auto)
     ├── fastcgi/  (2 files)
     └── realip/   (7 files)
@@ -103,9 +103,10 @@ include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;
 Files in `includes/opt/` are conditionally included by server-block templates in downstream images. Each is a self-contained feature:
 
 - `enable-cors.nginx.j2` — CORS via `O9S_NGINX_CORS_*` (6 vars)
-- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (20 vars)
+- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (21 vars, report-to/report-uri included when set)
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
+- `enable-reporting-endpoints.nginx.j2` — Reporting-Endpoints via `O9S_NGINX_REPORTING_ENDPOINTS` (emitted only when set)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)
 - `enable-acme.nginx.j2` — per-server ACME certificate (conditional)
 - `enable-certbot.nginx.j2` — certbot certificate paths
@@ -262,7 +263,7 @@ header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
 ## Security headers and `always`
 
 Every security `add_header` in `includes/opt/` (`Content-Security-Policy`,
-`Strict-Transport-Security`, `Permissions-Policy`, `X-Frame-Options`,
+`Strict-Transport-Security`, `Permissions-Policy`, `Reporting-Endpoints`, `X-Frame-Options`,
 `X-Content-Type-Options`, `Cache-Control`) carries the `always` argument so the
 header survives on 4xx/5xx responses — including the localized
 `/__error/<code>` pages. Resource hints (`Link` preconnect/dns-prefetch/
