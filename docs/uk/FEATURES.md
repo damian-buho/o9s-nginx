@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
 - Підтримувані режими CDN (`O9S_NGINX_REALIP_MODE`): `cloudflare` (заголовок CF-Connecting-IP), `akamai` (True-Client-IP), `aws` (діапазони CloudFront + ELB, X-Forwarded-For), `fastly` (Fastly-Client-IP).
 - Доступні й режими без CDN: `docker` (статичні діапазони RFC 1918), `custom` (підмережа користувача через `O9S_NGINX_REALIP_NETWORK`), `localhost`.
 - Відповідний `real_ip_header` встановлюється автоматично під кожен режим CDN.
+- Проксовані бекенди отримують `X-Real-IP` як одну вже визначену адресу клієнта, ніколи не сирий вхідний ланцюжок, щоб одноадресні парсери читали правильне значення.
 - У незмінному режимі (`B19_IMMUTABLE=Y`) отримання IP пропускається.
 
 ### Кілька модулів стиснення (brotli, zstd, gzip)

@@ -10,4 +10,5 @@ SPDX-License-Identifier: MIT
 - Supported CDN modes (`O9S_NGINX_REALIP_MODE`): `cloudflare` (CF-Connecting-IP header), `akamai` (True-Client-IP), `aws` (CloudFront + ELB ranges, X-Forwarded-For), `fastly` (Fastly-Client-IP).
 - Non-CDN modes are also available: `docker` (static RFC 1918 ranges), `custom` (user-specified subnet via `O9S_NGINX_REALIP_NETWORK`), `localhost`.
 - The appropriate `real_ip_header` is set automatically per CDN mode.
+- Proxied backends receive `X-Real-IP` as the resolved single client address, never the raw incoming chain, so single-IP parsers read the right value.
 - IP fetching is skipped in immutable mode (`B19_IMMUTABLE=Y`).
