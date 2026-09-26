@@ -3,5 +3,5 @@
 # SPDX-License-Identifier: MIT
 
 log_format default  '$time_local $status\t'
-                    '$request $body_bytes_sent'
+                    '$request $body_bytes_sent '
                     '$remote_addr $http_user_agent $http_referer';
