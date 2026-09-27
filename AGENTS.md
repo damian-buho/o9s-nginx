@@ -39,7 +39,7 @@ app/.config/
     ├── http/     (25 files, numbered 010–240)
     ├── listen/   (6 files)
     ├── server/   (8 files)
-    ├── opt/      (13 files)
+    ├── opt/      (14 files)
     ├── index/    (4 files — html, php, proxy, auto)
     ├── fastcgi/  (2 files)
     └── realip/   (7 files)
@@ -105,6 +105,7 @@ Files in `includes/opt/` are conditionally included by server-block templates in
 - `enable-cors.nginx.j2` — CORS via `O9S_NGINX_CORS_*` (6 vars)
 - `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (21 vars, report-to/report-uri included when set)
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
+- `enable-coep.nginx.j2` — Cross-Origin-Embedder-Policy via `O9S_NGINX_COEP_*` (policy, Report-Only switch, report-to group)
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
 - `enable-reporting-endpoints.nginx.j2` — Reporting-Endpoints via `O9S_NGINX_REPORTING_ENDPOINTS` (emitted only when set)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)

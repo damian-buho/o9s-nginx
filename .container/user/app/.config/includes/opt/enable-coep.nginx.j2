@@ -1,0 +1,7 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_COEP_REPORT_ONLY %}add_header Cross-Origin-Embedder-Policy-Report-Only "{{ ENV.O9S_NGINX_COEP_POLICY }}{% if ENV.O9S_NGINX_COEP_REPORT_TO %}; report-to={{ ENV.O9S_NGINX_COEP_REPORT_TO }}{% endif %}" always;{% else %}add_header Cross-Origin-Embedder-Policy "{{ ENV.O9S_NGINX_COEP_POLICY }}{% if ENV.O9S_NGINX_COEP_REPORT_TO %}; report-to={{ ENV.O9S_NGINX_COEP_REPORT_TO }}{% endif %}" always;{% endif %}
