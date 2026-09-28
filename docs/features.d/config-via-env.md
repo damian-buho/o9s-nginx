@@ -4,9 +4,8 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
-# Environment-driven configuration (zero config mounts)
+# Configuration through environment variables only
 
-- Every nginx directive is environment-driven — the image is fully functional with no mounted config files.
-- Configuration is generated from environment variables at startup — no manual config editing.
-- Downstream images tune nginx through environment overrides only; no volume mounts needed.
-- Categories cover ports, compression, proxy, TLS, logging, caching, CORS, CSP, real IP, and OpenTelemetry.
+- Every nginx setting has a sane default and an environment override — the image runs with no mounted config files.
+- Ports, TLS, compression, proxying, caching, logging, security headers and tracing are all tuned from `docker run` or compose.
+- Optional behaviors (CORS, security headers, HTTPS redirect, certificates, tracing) are switched on per site by listing them, not by editing config.

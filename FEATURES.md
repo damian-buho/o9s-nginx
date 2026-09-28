@@ -9,57 +9,45 @@ SPDX-License-Identifier: MIT
 
 ## Project Features
 
-### Built-in ACME certificate automation module
+### Built-in ACME certificate automation
 
-- An ACME client module (compiled from Rust) is included as a dynamic nginx module, enabling automatic TLS certificate provisioning without an external agent.
-- Activation is via `O9S_NGINX_MODULE_ACME=Y`; the ACME issuer block is emitted automatically in the HTTP config.
-- ACME server URL (`O9S_NGINX_ACME_SERVER`) and issuer name (`O9S_NGINX_ACME_ISSUER_NAME`) are configurable, supporting any ACME-compatible CA.
-- Per-server certificate configuration is available through the `enable-acme` opt/ include.
+- nginx obtains and renews its own TLS certificates — no certbot sidecar, no cron job, no reload script.
+- Works with any ACME-compatible certificate authority, not only Let’s Encrypt.
+- Off by default; one switch turns it on, and each site opts in separately.
 
-### CDN-aware real IP resolution
+### CDN-aware real client IP
 
-- Trusted proxy IP ranges for major CDNs are fetched live at every container start, ensuring `set_real_ip_from` lists are always current.
-- Supported CDN modes (`O9S_NGINX_REALIP_MODE`): `cloudflare` (CF-Connecting-IP header), `akamai` (True-Client-IP), `aws` (CloudFront + ELB ranges, X-Forwarded-For), `fastly` (Fastly-Client-IP).
-- Non-CDN modes are also available: `docker` (static RFC 1918 ranges), `custom` (user-specified subnet via `O9S_NGINX_REALIP_NETWORK`), `localhost`.
-- The appropriate `real_ip_header` is set automatically per CDN mode.
-- Proxied backends receive `X-Real-IP` as the resolved single client address, never the raw incoming chain, so single-IP parsers read the right value.
-- IP fetching is skipped in immutable mode (`B19_IMMUTABLE=Y`).
+- Logs, rate limits and backends see the visitor’s address, not the CDN edge or the Docker gateway.
+- Presets for Cloudflare, Akamai, AWS CloudFront and Fastly fetch the provider’s current ranges at every start, so the trust list never goes stale; the right client-IP header is chosen per provider.
+- Trust sets stack: a CDN in front of another reverse proxy resolves the real client on both the direct and the proxied path.
+- Proxied backends receive exactly one resolved client address, never the raw forwarding chain.
+- A mistyped provider refuses to start; an unreachable provider list warns and keeps the other sources.
 
-### Multiple compression modules (brotli, zstd, gzip)
+### Brotli, zstd and gzip compression
 
-- Three compression algorithms are compiled as dynamic modules and loaded conditionally via `O9S_NGINX_MODULE_{BROTLI,ZSTD}` (both on by default; gzip is built into nginx core).
-- Each algorithm has independent on/off toggles and compression levels controllable at runtime.
-- Dynamic compression levels can differ from pre-compression levels — runtime uses lower levels for CPU efficiency, pre-compression uses maximum.
-- A shared MIME-type list (`O9S_NGINX_COMPRESS_TYPES`) controls which content types are eligible for compression across all three algorithms.
-- Pre-compressed `.br`, `.zst`, and `.gz` siblings are served directly via the corresponding `*_static` modules when present (see static pre-compression).
+- Brotli and zstd ship alongside gzip, so every modern browser gets its best encoding.
+- All three share one list of compressible types, and already-compressed media and archives are left alone.
+- On-the-fly levels stay low to save CPU; files pre-compressed at build time are served at maximum ratio instead (see static pre-compression).
 
-### Environment-driven configuration (zero config mounts)
+### Configuration through environment variables only
 
-- Every nginx directive is environment-driven — the image is fully functional with no mounted config files.
-- Configuration is generated from environment variables at startup — no manual config editing.
-- Downstream images tune nginx through environment overrides only; no volume mounts needed.
-- Categories cover ports, compression, proxy, TLS, logging, caching, CORS, CSP, real IP, and OpenTelemetry.
+- Every nginx setting has a sane default and an environment override — the image runs with no mounted config files.
+- Ports, TLS, compression, proxying, caching, logging, security headers and tracing are all tuned from `docker run` or compose.
+- Optional behaviors (CORS, security headers, HTTPS redirect, certificates, tracing) are switched on per site by listing them, not by editing config.
 
-### Content-Signal and robots.txt directives
+### robots.txt with AI Content Signals
 
-- A `robots.txt` file is generated at startup from environment variables — no static file needs to be mounted.
-- Default crawl policy is configurable via `O9S_NGINX_ROBOTS_TXT_DEFAULT_POLICY`: `disallow` (default), `allow`, or `none` (omit the default block entirely).
-- Content-Signal directives per contentsignals.org are emitted: `CONTENT_SIGNALS_SEARCH`, `CONTENT_SIGNALS_AI_TRAIN`, `CONTENT_SIGNALS_AI_INPUT` control whether search indexing, AI training, and AI input are permitted (`yes`/`no`).
-- A sitemap URL can be declared via `O9S_NGINX_ROBOTS_TXT_SITEMAP`.
+- `robots.txt` is generated at startup — no file to mount or maintain per environment.
+- Crawling is disallowed by default, so a staging deployment is never indexed by accident.
+- Emits Content Signals (contentsignals.org) to declare whether search indexing, AI training and AI input are permitted.
+- A sitemap reference is added when one is declared.
 
-### DH parameters pre-generation
+### Base for nginx-based images
 
-- A 2048-bit DH parameters file is generated at build time if not already present, avoiding the expensive computation at first request in production.
-- DH parameter size is configurable via `B19_CA_DHPARAMS_SIZE`; the output path is `${O9S_NGINX_TLS_PATH}/dhparams.pem`.
-- The generated file is consumed by the TLS configuration block (`ssl_dhparam`) automatically.
-
-### Downstream consumption pattern
-
-- Child images inherit all 200+ ENV defaults, the template hierarchy, entrypoint hooks, healthchecks, and pre-compression logic from a single `FROM` line.
-- Customization is done by overriding specific `ENV` values in the child Dockerfile (e.g. `O9S_NGINX_INDEX_TYPE=cache`, cache durations, backend host/port).
-- New content handlers can be added by placing a `.nginx.j2` file in `includes/index/` and setting `O9S_NGINX_INDEX_TYPE` — the include path is dynamic.
-- New feature toggles can be added by placing a file in `includes/opt/` and listing its name in `O9S_NGINX_INCLUDE_OPTIONAL`.
-- No config file mounts are ever required — the pattern is ENV-only from base image through all downstream derivatives.
+- A single `FROM` inherits the build pipeline, startup hooks, healthchecks, error pages and pre-compression.
+- Child images customize by overriding environment defaults, never by copying or patching config files.
+- New request handlers and optional behaviors are added by dropping one template file into the image; the existing config stays untouched.
+- A scaffold starts a new nginx-based project with all of the above already wired.
 
 ### Localized, self-contained error pages
 
@@ -69,55 +57,64 @@ SPDX-License-Identifier: MIT
 - Fully self-contained: system fonts and no third-party requests, so pages render identically offline and under a strict Content-Security-Policy.
 - Adding a language is one gettext `.po` file — pages and negotiation extend automatically on the next build.
 
-### Feature toggle includes (opt/ system)
+### HTTP/3 (QUIC)
 
-- HTTP/3, Brotli compression, real-IP extraction, and other features are toggleable without rebuilding.
-- Each feature is enabled or disabled entirely through environment variables — no config file edits required.
-- Downstream images can add new features by dropping a snippet into the opt/ directory.
-- Available toggles include CORS, Content-Security-Policy, HSTS, Permissions-Policy, Cross-Origin-Embedder-Policy (COEP), ACME certificates, and OpenTelemetry tracing.
+- HTTP/3 is compiled in and on by default; browsers are told about it and upgrade on their own.
+- HTTP/2 and HTTP/3 share one port.
+- QUIC transport and socket options are tunable at runtime for high-traffic hosts.
 
-### HTTP/3 (QUIC) support
+### Correct content types and caching
 
-- nginx is compiled from source with full HTTP/3 (QUIC) support, enabled by default (`O9S_NGINX_HTTP3=on`).
-- The `Alt-Svc` header is emitted automatically, advertising the QUIC port so compatible browsers upgrade to HTTP/3 transparently.
-- QUIC transport options are ENV-tunable: GSO (`O9S_NGINX_QUIC_GSO`), retry (`O9S_NGINX_QUIC_RETRY`), BPF (`O9S_NGINX_QUIC_BPF`), max concurrent streams, and stream buffer size.
-- HTTP/2 and HTTP/3 listen on the same port (separate `listen` directives for `ssl` and `quic`), with all socket options independently configurable.
+- Text is served as UTF-8, so accented characters display correctly in plain text, Markdown and CSV.
+- Modern file types missing from stock nginx get the right type: JavaScript modules, subtitles, web manifests, JPEG XL and HEIC images, Opus/FLAC audio, YAML and TOML — browsers render them instead of downloading.
+- Static assets get long-lived browser caching by content type, while HTML stays revalidated.
 
-### OpenTelemetry tracing module
+### OpenTelemetry tracing and JSON access logs
 
-- An OpenTelemetry module is compiled as a dynamic nginx module for distributed tracing export via OTLP/gRPC.
-- Activation is via `O9S_NGINX_MODULE_OTEL=Y`; disabled by default to avoid overhead when tracing is not needed.
-- The OTLP endpoint (`O9S_OTEL_ENDPOINT`), service name (`O9S_OTEL_SERVICE_NAME`), and trace context propagation are all ENV-configurable.
-- Exporter tuning (interval, batch size, batch count) and custom span attributes are supported.
-- Per-server tracing can be enabled via the `enable-otel` opt/ include.
+- Each request can be exported as a trace span to any OpenTelemetry collector, and trace context can be propagated to the backend.
+- Off by default, so there is no overhead until tracing is wanted; each site opts in separately.
+- A JSON access log format ships ready for log pipelines that parse structured lines.
 
-### Preload hint scanning
+### Automatic resource hints
 
-- At container startup, the document root is scanned for CSS, JavaScript, image, and font assets, generating `<Link>` preload headers automatically.
-- Scanning is opt-in via `O9S_NGINX_PH_SCAN_ENABLED=Y`; individual asset types (style, script, image, font) can be toggled independently.
-- The scan path is configurable via `O9S_NGINX_PH_SCAN_PATH` (default `assets`).
-- Discovered assets are written to a JSON sidecar consumed by the Jinja2 template, producing `Link: <...>; rel=preload; as=...` headers on HTML responses.
+- Scans the site’s style sheets, scripts, images and fonts at startup and sends preload headers, so browsers start fetching them before parsing HTML.
+- Each asset type can be switched on or off; scanning is opt-in.
+- Preconnect and DNS-prefetch hints for third-party origins are set from a comma list.
 
-### Scaffold system for downstream nginx-based images
+### Security headers
 
-- Configuration is assembled from composable templates — base config, includes, and overrides merge automatically at startup.
-- New projects inherit the full build pipeline, entrypoint, healthcheck, and template hierarchy without manual setup.
-- Downstream projects only need to override specific environment values and optionally add custom includes.
+- Content-Security-Policy, HSTS, Permissions-Policy, Cross-Origin-Embedder-Policy, Reporting-Endpoints, `nosniff` and frame protection are each one switch away, with restrictive defaults.
+- Child images add hashes for their own inline scripts to the policy, so a strict CSP needs no `'unsafe-inline'`.
+- Headers are sent on error responses too, so a 404 or 502 page is as protected as the site.
+- CORS preflight is answered by nginx directly, without reaching the backend.
+- HTTP-to-HTTPS redirect is available per site.
 
-### Pre-compression of static assets
+### Config validation and nginx-aware healthchecks
 
-- Static files are pre-compressed in three formats (gzip via pigz, brotli, zstd) so nginx serves pre-built `.gz`/`.br`/`.zst` siblings directly — no per-request CPU cost.
-- Compression runs at build time by default (inheritable `.i.sh` hook propagates to downstream images) and optionally again at container start.
-- File extensions to compress are configurable (`O9S_NGINX_PRECOMPRESS_EXTENSIONS`); Jinja2 template outputs are excluded automatically.
-- Each algorithm has independent on/off toggles and compression levels (pre-compression uses maximum levels: gzip 9, brotli 11, zstd 19).
-- A standalone `compress-static-assets` command is available for manual invocation on any directory.
+- The rendered config is tested before nginx starts; on failure every rendered file is logged, so the broken line is visible in the container log.
+- Healthchecks query nginx itself and a real HTTP request, not only whether the process exists.
+- A readiness endpoint is available for load balancers and orchestrators.
+- A debug command prints the full effective config with every include expanded.
 
-### Jinja2 include-based template hierarchy
+### Ready-made serving modes
 
-- Configuration templates layer predictably — base, includes, and per-project overrides merge in a clear order.
-- The http block pulls in numbered snippets covering core settings, compression, proxy, TLS, logging, and telemetry.
-- Server blocks compose from modular includes for socket config, error pages, content handlers, and feature toggles.
-- New behaviors are added by placing a file into the appropriate includes directory — no editing of existing templates required.
+- One setting chooses how a site is served: static files, a PHP application over FastCGI, static files with fallback to an application backend, or a directory listing.
+- Backends are looked up when a request arrives, so nginx starts even if the application is not up yet.
+- WebSocket upgrades and forwarding headers work through the proxy with no extra config.
+- Child images add their own modes with one template file.
+
+### Static asset pre-compression
+
+- Static files are compressed once, at maximum ratio, in gzip, brotli and zstd; nginx serves the ready file with no per-request CPU cost.
+- Runs at build time and is inherited by child images; it can also run at container start for content mounted from a volume.
+- Can watch a mounted release directory and recompress on its own when a new release is swapped in.
+- A standalone command compresses any directory by hand.
+
+### Hardened TLS defaults
+
+- TLS 1.2 and 1.3 only, with forward-secret AEAD ciphers and renegotiation disabled.
+- Diffie-Hellman parameters are generated at build time, so the first handshake never waits on them.
+- The nginx version is hidden from response headers and error pages.
 
 ## Inherited from B19 / Ubuntu
 

@@ -4,11 +4,10 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 -->
 
-# CDN-aware real IP resolution
+# CDN-aware real client IP
 
-- Trusted proxy IP ranges for major CDNs are fetched live at every container start, ensuring `set_real_ip_from` lists are always current.
-- Supported CDN modes (`O9S_NGINX_REALIP_MODE`): `cloudflare` (CF-Connecting-IP header), `akamai` (True-Client-IP), `aws` (CloudFront + ELB ranges, X-Forwarded-For), `fastly` (Fastly-Client-IP).
-- Non-CDN modes are also available: `docker` (static RFC 1918 ranges), `custom` (user-specified subnet via `O9S_NGINX_REALIP_NETWORK`), `localhost`.
-- The appropriate `real_ip_header` is set automatically per CDN mode.
-- Proxied backends receive `X-Real-IP` as the resolved single client address, never the raw incoming chain, so single-IP parsers read the right value.
-- IP fetching is skipped in immutable mode (`B19_IMMUTABLE=Y`).
+- Logs, rate limits and backends see the visitor’s address, not the CDN edge or the Docker gateway.
+- Presets for Cloudflare, Akamai, AWS CloudFront and Fastly fetch the provider’s current ranges at every start, so the trust list never goes stale; the right client-IP header is chosen per provider.
+- Trust sets stack: a CDN in front of another reverse proxy resolves the real client on both the direct and the proxied path.
+- Proxied backends receive exactly one resolved client address, never the raw forwarding chain.
+- A mistyped provider refuses to start; an unreachable provider list warns and keeps the other sources.

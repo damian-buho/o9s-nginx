@@ -6,12 +6,10 @@ SPDX-License-Identifier: MIT
 
 <!-- textlint-disable terminology,common-misspellings -->
 
-# Módulo de trazado OpenTelemetry
+# Trazas OpenTelemetry y registros de acceso en JSON
 
-- Un módulo de OpenTelemetry se compila como módulo dinámico de nginx para la exportación de trazado distribuido vía OTLP/gRPC.
-- Se activa con `O9S_NGINX_MODULE_OTEL=Y`; está desactivado por defecto para evitar sobrecarga cuando no se necesita trazado.
-- El endpoint OTLP (`O9S_OTEL_ENDPOINT`), el nombre del servicio (`O9S_OTEL_SERVICE_NAME`) y la propagación de contexto de traza son configurables por ENV.
-- Se admiten el ajuste del exportador (intervalo, tamaño y cantidad de lotes) y atributos de span personalizados.
-- El trazado por servidor puede activarse mediante el include opt/ `enable-otel`.
+- Cada petición puede exportarse como span a cualquier colector OpenTelemetry, y el contexto de traza puede propagarse al backend.
+- Desactivado por defecto, sin sobrecarga hasta que se necesiten trazas; cada sitio lo habilita por separado.
+- Incluye un formato de registro de acceso en JSON para canalizaciones de registros que procesan líneas estructuradas.
 
 <!-- textlint-enable -->

@@ -11,57 +11,45 @@ SPDX-License-Identifier: MIT
 
 ## Características del proyecto
 
-### Módulo integrado de automatización de certificados ACME
+### Automatización integrada de certificados ACME
 
-- Se incluye un módulo cliente de ACME (compilado desde Rust) como módulo dinámico de nginx, lo que permite el aprovisionamiento automático de certificados TLS sin un agente externo.
-- Se activa con `O9S_NGINX_MODULE_ACME=Y`; el bloque del emisor ACME se emite automáticamente en la configuración HTTP.
-- La URL del servidor ACME (`O9S_NGINX_ACME_SERVER`) y el nombre del emisor (`O9S_NGINX_ACME_ISSUER_NAME`) son configurables, con soporte para cualquier CA compatible con ACME.
-- La configuración de certificados por servidor está disponible mediante el include opt/ `enable-acme`.
+- nginx obtiene y renueva sus propios certificados TLS: sin contenedor de certbot, sin cron, sin script de recarga.
+- Funciona con cualquier autoridad de certificación compatible con ACME, no solo Let’s Encrypt.
+- Desactivado por defecto; un interruptor lo activa y cada sitio lo habilita por separado.
 
-### Resolución de IP real consciente de CDN
+### IP real del cliente detrás de CDN
 
-- Los rangos de IP de proxies de confianza de los principales CDN se obtienen en vivo en cada arranque del contenedor, garantizando que las listas `set_real_ip_from` estén siempre actualizadas.
-- Modos de CDN admitidos (`O9S_NGINX_REALIP_MODE`): `cloudflare` (cabecera CF-Connecting-IP), `akamai` (True-Client-IP), `aws` (rangos de CloudFront + ELB, X-Forwarded-For), `fastly` (Fastly-Client-IP).
-- También hay modos sin CDN: `docker` (rangos estáticos de la RFC 1918), `custom` (subred especificada por el usuario mediante `O9S_NGINX_REALIP_NETWORK`), `localhost`.
-- El `real_ip_header` apropiado se establece automáticamente según el modo de CDN.
-- Los backends proxificados reciben `X-Real-IP` como la dirección única ya resuelta del cliente, nunca la cadena cruda entrante, para que los analizadores de una sola IP lean el valor correcto.
-- La obtención de IP se omite en modo inmutable (`B19_IMMUTABLE=Y`).
+- Los registros, los límites de tasa y los backends ven la dirección del visitante, no el nodo de la CDN ni la pasarela de Docker.
+- Los ajustes para Cloudflare, Akamai, AWS CloudFront y Fastly descargan los rangos vigentes del proveedor en cada arranque, así la lista de confianza nunca queda obsoleta; la cabecera de IP del cliente se elige según el proveedor.
+- Los conjuntos de confianza se combinan: una CDN delante de otro proxy inverso resuelve el cliente real tanto en la ruta directa como en la proxificada.
+- Los backends proxificados reciben exactamente una dirección de cliente resuelta, nunca la cadena de reenvío completa.
+- Un proveedor mal escrito impide el arranque; una lista de proveedor inaccesible genera un aviso y conserva las demás fuentes.
 
-### Múltiples módulos de compresión (brotli, zstd, gzip)
+### Compresión Brotli, zstd y gzip
 
-- Tres algoritmos de compresión se compilan como módulos dinámicos y se cargan condicionalmente mediante `O9S_NGINX_MODULE_{BROTLI,ZSTD}` (ambos activados por defecto; gzip está integrado en el núcleo de nginx).
-- Cada algoritmo tiene conmutadores de activación/desactivación y niveles de compresión independientes, controlables en tiempo de ejecución.
-- Los niveles de compresión dinámica pueden diferir de los de precompresión: en tiempo de ejecución se usan niveles menores por eficiencia de CPU; la precompresión usa el máximo.
-- Una lista compartida de tipos MIME (`O9S_NGINX_COMPRESS_TYPES`) controla qué tipos de contenido son aptos para compresión en los tres algoritmos.
-- Los hermanos precomprimidos `.br`, `.zst` y `.gz` se sirven directamente mediante los módulos `*_static` correspondientes cuando existen (véase la precompresión estática).
+- Brotli y zstd se incluyen junto a gzip, de modo que cada navegador moderno recibe su mejor codificación.
+- Los tres comparten una única lista de tipos comprimibles, y los medios y archivos ya comprimidos se dejan intactos.
+- Los niveles al vuelo se mantienen bajos para ahorrar CPU; los archivos precomprimidos en la compilación se sirven con la máxima compresión (ver precompresión estática).
 
-### Configuración dirigida por el entorno (cero montajes de configuración)
+### Configuración solo mediante variables de entorno
 
-- Cada directiva de nginx se controla mediante más de 200 variables de entorno `O9S_NGINX_*` con valores predeterminados razonables integrados en el Dockerfile — la imagen funciona por completo con `docker run` y sin archivos de configuración montados.
-- Las imágenes descendentes y los archivos compose ajustan nginx solo con sobrescrituras de `environment:` o `ENV`; no hacen falta montajes de volumen en `/etc/nginx/` ni archivos `.conf`.
-- Todas las plantillas se generan al arrancar mediante el hook estándar de renderizado Jinja2, con cada variable ENV del contenedor disponible como `ENV.VAR_NAME`.
-- Las categorías de variables cubren puertos, HTTP/2+3, compresión, proxy, FastCGI, TLS, registro, caché, CSP, CORS, Permissions-Policy, IP real, OpenTelemetry y opciones de socket.
+- Cada ajuste de nginx tiene un valor por defecto sensato y una variable de entorno que lo sobrescribe: la imagen funciona sin montar archivos de configuración.
+- Puertos, TLS, compresión, proxy, caché, registros, cabeceras de seguridad y trazas se ajustan desde `docker run` o compose.
+- Los comportamientos opcionales (CORS, cabeceras de seguridad, redirección a HTTPS, certificados, trazas) se activan por sitio listándolos, sin editar la configuración.
 
-### Directivas Content-Signal y robots.txt
+### robots.txt con Content Signals para IA
 
-- Un archivo `robots.txt` se genera al arrancar desde variables de entorno — no hay que montar ningún archivo estático.
-- La política de rastreo predeterminada se configura con `O9S_NGINX_ROBOTS_TXT_DEFAULT_POLICY`: `disallow` (predeterminado), `allow` o `none` (omite el bloque predeterminado por completo).
-- Se emiten directivas Content-Signal según contentsignals.org: `CONTENT_SIGNALS_SEARCH`, `CONTENT_SIGNALS_AI_TRAIN`, `CONTENT_SIGNALS_AI_INPUT` controlan si se permiten la indexación para búsqueda, el entrenamiento de IA y la entrada a la IA (`yes`/`no`).
-- Puede declararse una URL de sitemap mediante `O9S_NGINX_ROBOTS_TXT_SITEMAP`.
+- `robots.txt` se genera al arrancar: no hay archivo que montar ni mantener por entorno.
+- El rastreo está prohibido por defecto, así un despliegue de pruebas nunca se indexa por accidente.
+- Emite Content Signals (contentsignals.org) para declarar si se permiten la indexación en buscadores, el entrenamiento de IA y el uso como entrada de IA.
+- Se añade una referencia al sitemap cuando se declara uno.
 
-### Pregeneración de parámetros DH
+### Base para imágenes basadas en nginx
 
-- Un archivo de parámetros DH de 2048 bits se genera en tiempo de compilación si no existe ya, evitando el costoso cálculo en la primera petición en producción.
-- El tamaño de los parámetros DH es configurable mediante `B19_CA_DHPARAMS_SIZE`; la ruta de salida es `${O9S_NGINX_TLS_PATH}/dhparams.pem`.
-- El archivo generado lo consume automáticamente el bloque de configuración TLS (`ssl_dhparam`).
-
-### Patrón de consumo descendente
-
-- Las imágenes hijas heredan los más de 200 valores ENV predeterminados, la jerarquía de plantillas, los hooks del entrypoint, las comprobaciones de estado y la lógica de precompresión desde una sola línea `FROM`.
-- La personalización se hace sobrescribiendo valores `ENV` concretos en el Dockerfile hijo (p. ej. `O9S_NGINX_INDEX_TYPE=cache`, duraciones de caché, host/puerto del backend).
-- Se pueden añadir nuevos gestores de contenido colocando un archivo `.nginx.j2` en `includes/index/` y estableciendo `O9S_NGINX_INDEX_TYPE` — la ruta de include es dinámica.
-- Se pueden añadir nuevos conmutadores de características colocando un archivo en `includes/opt/` y listando su nombre en `O9S_NGINX_INCLUDE_OPTIONAL`.
-- Nunca se requieren montajes de archivos de configuración: el patrón es solo ENV desde la imagen base hasta todos los derivados descendentes.
+- Un solo `FROM` hereda el proceso de compilación, los hooks de arranque, los healthchecks, las páginas de error y la precompresión.
+- Las imágenes hijas se personalizan sobrescribiendo valores de entorno, nunca copiando ni parcheando archivos de configuración.
+- Nuevos manejadores de peticiones y comportamientos opcionales se añaden colocando un archivo de plantilla en la imagen; la configuración existente queda intacta.
+- Un scaffold inicia un nuevo proyecto basado en nginx con todo lo anterior ya conectado.
 
 ### Páginas de error localizadas y autosuficientes
 
@@ -71,56 +59,64 @@ SPDX-License-Identifier: MIT
 - Completamente autosuficientes: tipografías del sistema y sin peticiones a terceros, así que se renderizan igual sin conexión y bajo una Content-Security-Policy estricta.
 - Añadir un idioma es un solo archivo gettext `.po` — las páginas y la negociación se amplían automáticamente en la siguiente construcción.
 
-### Includes de conmutadores de características (sistema opt/)
+### HTTP/3 (QUIC)
 
-- Fragmentos de nginx autocontenidos en `includes/opt/` se incluyen condicionalmente por bloque de servidor mediante `O9S_NGINX_INCLUDE_OPTIONAL` (lista de nombres separados por comas).
-- Conmutadores disponibles: CORS (`enable-cors`, 6 variables), Content-Security-Policy (`enable-csp`, 20 variables), HSTS (`enable-hsts`), Permissions-Policy (`enable-permissions-policy`, 12 variables), Cross-Origin-Embedder-Policy (`enable-coep`), certificado ACME (`enable-acme`), OTel por servidor (`enable-otel`), cache-control (`enable-cache`), favicon (`enable-favicon`), rutas de certbot (`enable-certbot`), X-Frame-Options DENY (`enable-sameorigin`), X-Content-Type-Options nosniff (`enable-nosniff`), redirección de HTTP a HTTPS (`redirect-to-https`).
-- Cada conmutador se gobierna por completo mediante ENV — no hay que editar archivos de configuración de nginx.
-- Las imágenes descendentes pueden añadir nuevos fragmentos opt/ depositando un archivo `.nginx` o `.nginx.j2` en `includes/opt/`.
+- HTTP/3 viene compilado y activado por defecto; los navegadores reciben el anuncio y lo adoptan por sí solos.
+- HTTP/2 y HTTP/3 comparten un mismo puerto.
+- Las opciones de transporte QUIC y de socket se ajustan en tiempo de ejecución para servidores con mucho tráfico.
 
-### Soporte de HTTP/3 (QUIC)
+### Tipos de contenido y caché correctos
 
-- nginx se compila desde el código fuente con soporte completo de HTTP/3 (QUIC), activado por defecto (`O9S_NGINX_HTTP3=on`).
-- La cabecera `Alt-Svc` se emite automáticamente, anunciando el puerto QUIC para que los navegadores compatibles pasen a HTTP/3 de forma transparente.
-- Las opciones de transporte de QUIC son ajustables por ENV: GSO (`O9S_NGINX_QUIC_GSO`), retry (`O9S_NGINX_QUIC_RETRY`), BPF (`O9S_NGINX_QUIC_BPF`), flujos concurrentes máximos y tamaño del búfer de flujo.
-- HTTP/2 y HTTP/3 escuchan en el mismo puerto (directivas `listen` separadas para `ssl` y `quic`), con todas las opciones de socket configurables de forma independiente.
+- El texto se sirve como UTF-8, así los caracteres acentuados se muestran bien en texto plano, Markdown y CSV.
+- Los tipos de archivo modernos que faltan en nginx de serie reciben el tipo correcto: módulos de JavaScript, subtítulos, manifiestos web, imágenes JPEG XL y HEIC, audio Opus/FLAC, YAML y TOML; el navegador los muestra en lugar de descargarlos.
+- Los recursos estáticos reciben caché de navegador de larga duración según su tipo, mientras que el HTML se revalida.
 
-### Módulo de trazado OpenTelemetry
+### Trazas OpenTelemetry y registros de acceso en JSON
 
-- Un módulo de OpenTelemetry se compila como módulo dinámico de nginx para la exportación de trazado distribuido vía OTLP/gRPC.
-- Se activa con `O9S_NGINX_MODULE_OTEL=Y`; está desactivado por defecto para evitar sobrecarga cuando no se necesita trazado.
-- El endpoint OTLP (`O9S_OTEL_ENDPOINT`), el nombre del servicio (`O9S_OTEL_SERVICE_NAME`) y la propagación de contexto de traza son configurables por ENV.
-- Se admiten el ajuste del exportador (intervalo, tamaño y cantidad de lotes) y atributos de span personalizados.
-- El trazado por servidor puede activarse mediante el include opt/ `enable-otel`.
+- Cada petición puede exportarse como span a cualquier colector OpenTelemetry, y el contexto de traza puede propagarse al backend.
+- Desactivado por defecto, sin sobrecarga hasta que se necesiten trazas; cada sitio lo habilita por separado.
+- Incluye un formato de registro de acceso en JSON para canalizaciones de registros que procesan líneas estructuradas.
 
-### Escaneo de pistas de precarga
+### Indicaciones de recursos automáticas
 
-- Al arrancar el contenedor, la raíz de documentos se escanea en busca de recursos CSS, JavaScript, imágenes y fuentes, generando automáticamente cabeceras de precarga `<Link>`.
-- El escaneo es opcional mediante `O9S_NGINX_PH_SCAN_ENABLED=Y`; los tipos de recurso individuales (style, script, image, font) pueden conmutarse de forma independiente.
-- La ruta de escaneo es configurable mediante `O9S_NGINX_PH_SCAN_PATH` (predeterminado `assets`).
-- Los recursos descubiertos se escriben en un sidecar JSON que consume la plantilla Jinja2, produciendo cabeceras `Link: <...>; rel=preload; as=...` en las respuestas HTML.
+- Al arrancar recorre las hojas de estilo, scripts, imágenes y fuentes del sitio y envía cabeceras de precarga, así el navegador empieza a descargarlos antes de analizar el HTML.
+- Cada tipo de recurso se puede activar o desactivar; el escaneo es opcional.
+- Las indicaciones de preconexión y de prerresolución DNS para orígenes de terceros se definen con una lista separada por comas.
 
-### Sistema de andamiaje para imágenes descendentes basadas en nginx
+### Cabeceras de seguridad
 
-- Un directorio `scaffold/` aporta una plantilla de Dockerfile y `stack.conf` para arrancar nuevos proyectos derivados de nginx.
-- Usa la integración de pila de m6e (`STACK_ROOT_STAGE=base`, `STACK_EXTENSIONS=nginx`) para que los nuevos proyectos hereden automáticamente la cadena de compilación completa.
-- Los proyectos descendentes solo necesitan sobrescribir valores `ENV` concretos y, opcionalmente, añadir archivos `includes/` propios — el Dockerfile base, el entrypoint, la comprobación de estado y la jerarquía de plantillas se heredan por completo.
+- Content-Security-Policy, HSTS, Permissions-Policy, Cross-Origin-Embedder-Policy, Reporting-Endpoints, `nosniff` y la protección contra enmarcado se activan con un interruptor cada una, con valores restrictivos por defecto.
+- Las imágenes hijas añaden a la política los hashes de sus propios scripts en línea, así una CSP estricta no necesita `'unsafe-inline'`.
+- Las cabeceras también se envían en las respuestas de error, así una página 404 o 502 queda tan protegida como el sitio.
+- nginx responde directamente a las peticiones CORS preliminares, sin llegar al backend.
+- La redirección de HTTP a HTTPS está disponible por sitio.
+
+### Validación de la configuración y healthchecks propios de nginx
+
+- La configuración generada se prueba antes de arrancar nginx; si falla, se registra cada archivo generado, de modo que la línea errónea aparece en el registro del contenedor.
+- Los healthchecks consultan a nginx y hacen una petición HTTP real, no solo comprueban que el proceso exista.
+- Hay un endpoint de disponibilidad para balanceadores de carga y orquestadores.
+- Un comando de depuración muestra la configuración efectiva completa con cada include expandido.
+
+### Modos de servicio listos para usar
+
+- Un solo ajuste elige cómo se sirve un sitio: archivos estáticos, una aplicación PHP mediante FastCGI, archivos estáticos con respaldo en un backend de aplicación, o un listado de directorio.
+- Los backends se resuelven cuando llega la petición, así nginx arranca aunque la aplicación aún no esté disponible.
+- Las actualizaciones a WebSocket y las cabeceras de reenvío funcionan a través del proxy sin configuración adicional.
+- Las imágenes hijas añaden sus propios modos con un archivo de plantilla.
 
 ### Precompresión de recursos estáticos
 
-- Los archivos estáticos se precomprimen en tres formatos (gzip con pigz, brotli, zstd) para que nginx sirva directamente los hermanos preconstruidos `.gz`/`.br`/`.zst` — sin coste de CPU por petición.
-- La compresión se ejecuta por defecto en tiempo de compilación (el hook heredable `.i.sh` se propaga a las imágenes descendentes) y, opcionalmente, otra vez al arrancar el contenedor.
-- Las extensiones de archivo a comprimir son configurables (`O9S_NGINX_PRECOMPRESS_EXTENSIONS`); las salidas de plantillas Jinja2 se excluyen automáticamente.
-- Cada algoritmo tiene conmutadores de activación/desactivación y niveles de compresión independientes (la precompresión usa niveles máximos: gzip 9, brotli 11, zstd 19).
-- La orden autónoma `compress-static-assets` está disponible para invocarse manualmente sobre cualquier directorio.
+- Los archivos estáticos se comprimen una sola vez, con la máxima compresión, en gzip, brotli y zstd; nginx sirve el archivo listo sin coste de CPU por petición.
+- Se ejecuta en la compilación y lo heredan las imágenes hijas; también puede ejecutarse al arrancar el contenedor para contenido montado desde un volumen.
+- Puede vigilar un directorio de versiones montado y volver a comprimir por sí solo cuando se activa una nueva versión.
+- Un comando independiente comprime cualquier directorio a mano.
 
-### Jerarquía de plantillas basada en includes Jinja2
+### Valores TLS reforzados por defecto
 
-- Todo el árbol de configuración de nginx vive como plantillas Jinja2 (`.j2`) bajo `${XDG_CONFIG_HOME}/`, compuesto mediante directivas `include` — sin un archivo de configuración monolítico.
-- El bloque `http {}` incorpora 24 fragmentos numerados (`includes/http/*.nginx`) ordenados por prefijo: núcleo, AIO, DNS, compresión, ACME, cliente/ES, HTTP/2+3, keepalive, proxy, caché, TLS, registro, IP real y OpenTelemetry.
-- Los bloques de servidor se componen de includes modulares: `listen/` (configuración de socket), `server/` (páginas de error, ETag, prefetch de DNS, pistas de precarga), `index/` (gestor de contenido), `opt/` (conmutadores de características) y `realip/` (resolución de IP consciente de CDN).
-- Las plantillas que necesitan lógica condicional usan bloques Jinja2 `{% if %}`; los fragmentos sin condicionales son archivos `.nginx` planos renderizados tal cual.
-- Se pueden añadir nuevos comportamientos depositando un archivo en el directorio `includes/` apropiado — sin editar las plantillas existentes.
+- Solo TLS 1.2 y 1.3, con cifrados AEAD con secreto perfecto hacia adelante y renegociación desactivada.
+- Los parámetros Diffie-Hellman se generan en la compilación, así el primer handshake nunca los espera.
+- La versión de nginx se oculta en las cabeceras de respuesta y en las páginas de error.
 
 ## Heredado de B19 / Ubuntu
 

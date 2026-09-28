@@ -6,11 +6,10 @@ SPDX-License-Identifier: MIT
 
 <!-- textlint-disable terminology,common-misspellings -->
 
-# Módulo integrado de automatización de certificados ACME
+# Automatización integrada de certificados ACME
 
-- Se incluye un módulo cliente de ACME (compilado desde Rust) como módulo dinámico de nginx, lo que permite el aprovisionamiento automático de certificados TLS sin un agente externo.
-- Se activa con `O9S_NGINX_MODULE_ACME=Y`; el bloque del emisor ACME se emite automáticamente en la configuración HTTP.
-- La URL del servidor ACME (`O9S_NGINX_ACME_SERVER`) y el nombre del emisor (`O9S_NGINX_ACME_ISSUER_NAME`) son configurables, con soporte para cualquier CA compatible con ACME.
-- La configuración de certificados por servidor está disponible mediante el include opt/ `enable-acme`.
+- nginx obtiene y renueva sus propios certificados TLS: sin contenedor de certbot, sin cron, sin script de recarga.
+- Funciona con cualquier autoridad de certificación compatible con ACME, no solo Let’s Encrypt.
+- Desactivado por defecto; un interruptor lo activa y cada sitio lo habilita por separado.
 
 <!-- textlint-enable -->

@@ -6,11 +6,11 @@ SPDX-License-Identifier: MIT
 
 <!-- textlint-disable terminology,common-misspellings -->
 
-# Директиви Content-Signal і robots.txt
+# robots.txt із Content Signals для ШІ
 
-- Файл `robots.txt` генерується при запуску зі змінних середовища — монтувати статичний файл не потрібно.
-- Типову політику сканування налаштовує `O9S_NGINX_ROBOTS_TXT_DEFAULT_POLICY`: `disallow` (типово), `allow` або `none` (повністю пропустити типовий блок).
-- Випускаються директиви Content-Signal згідно з contentsignals.org: `CONTENT_SIGNALS_SEARCH`, `CONTENT_SIGNALS_AI_TRAIN`, `CONTENT_SIGNALS_AI_INPUT` керують тим, чи дозволено індексацію пошуковиками, тренування ШІ та вхід для ШІ (`yes`/`no`).
-- URL sitemap можна задати через `O9S_NGINX_ROBOTS_TXT_SITEMAP`.
+- `robots.txt` генерується під час запуску — жодного файлу, який треба монтувати чи підтримувати для кожного середовища.
+- Сканування заборонене за замовчуванням, тож тестове розгортання ніколи не потрапить в індекс випадково.
+- Видає Content Signals (contentsignals.org), щоб оголосити, чи дозволені пошукова індексація, навчання ШІ та використання як вхідних даних для ШІ.
+- Посилання на sitemap додається, якщо його вказано.
 
 <!-- textlint-enable -->

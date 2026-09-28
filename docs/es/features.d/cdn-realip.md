@@ -6,13 +6,12 @@ SPDX-License-Identifier: MIT
 
 <!-- textlint-disable terminology,common-misspellings -->
 
-# Resolución de IP real consciente de CDN
+# IP real del cliente detrás de CDN
 
-- Los rangos de IP de proxies de confianza de los principales CDN se obtienen en vivo en cada arranque del contenedor, garantizando que las listas `set_real_ip_from` estén siempre actualizadas.
-- Modos de CDN admitidos (`O9S_NGINX_REALIP_MODE`): `cloudflare` (cabecera CF-Connecting-IP), `akamai` (True-Client-IP), `aws` (rangos de CloudFront + ELB, X-Forwarded-For), `fastly` (Fastly-Client-IP).
-- También hay modos sin CDN: `docker` (rangos estáticos de la RFC 1918), `custom` (subred especificada por el usuario mediante `O9S_NGINX_REALIP_NETWORK`), `localhost`.
-- El `real_ip_header` apropiado se establece automáticamente según el modo de CDN.
-- Los backends proxificados reciben `X-Real-IP` como la dirección única ya resuelta del cliente, nunca la cadena cruda entrante, para que los analizadores de una sola IP lean el valor correcto.
-- La obtención de IP se omite en modo inmutable (`B19_IMMUTABLE=Y`).
+- Los registros, los límites de tasa y los backends ven la dirección del visitante, no el nodo de la CDN ni la pasarela de Docker.
+- Los ajustes para Cloudflare, Akamai, AWS CloudFront y Fastly descargan los rangos vigentes del proveedor en cada arranque, así la lista de confianza nunca queda obsoleta; la cabecera de IP del cliente se elige según el proveedor.
+- Los conjuntos de confianza se combinan: una CDN delante de otro proxy inverso resuelve el cliente real tanto en la ruta directa como en la proxificada.
+- Los backends proxificados reciben exactamente una dirección de cliente resuelta, nunca la cadena de reenvío completa.
+- Un proveedor mal escrito impide el arranque; una lista de proveedor inaccesible genera un aviso y conserva las demás fuentes.
 
 <!-- textlint-enable -->

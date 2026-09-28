@@ -20,21 +20,22 @@ Community-maintained distribution of Nginx based on B19/GCC
 
 ## Features
 
-- Built-in ACME certificate automation module
-- CDN-aware real IP resolution
-- Multiple compression modules (brotli, zstd, gzip)
-- Environment-driven configuration (zero config mounts)
-- Content-Signal and robots.txt directives
-- DH parameters pre-generation
-- Downstream consumption pattern
+- Built-in ACME certificate automation
+- CDN-aware real client IP
+- Brotli, zstd and gzip compression
+- Configuration through environment variables only
+- robots.txt with AI Content Signals
+- Base for nginx-based images
 - Localized, self-contained error pages
-- Feature toggle includes (opt/ system)
-- HTTP/3 (QUIC) support
-- OpenTelemetry tracing module
-- Preload hint scanning
-- Scaffold system for downstream nginx-based images
-- Pre-compression of static assets
-- Jinja2 include-based template hierarchy
+- HTTP/3 (QUIC)
+- Correct content types and caching
+- OpenTelemetry tracing and JSON access logs
+- Automatic resource hints
+- Security headers
+- Config validation and nginx-aware healthchecks
+- Ready-made serving modes
+- Static asset pre-compression
+- Hardened TLS defaults
 
 ### Inherited from B19 / Ubuntu
 
