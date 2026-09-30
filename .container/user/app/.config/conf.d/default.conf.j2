@@ -12,6 +12,14 @@ server
 
     include includes/server/*.nginx;
     include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
+{# ^~ prefix beats any regex location below, so denied paths never reach FastCGI/PHP. #}
+{% if ENV.O9S_NGINX_DENY_PREFIXES != "" %}
+{% for _prefix in (ENV.O9S_NGINX_DENY_PREFIXES | replace('"', '') | replace("'", '') | trim | split(",")) %}
+{% if _prefix | trim != "" %}
+    location ^~ {{ _prefix | trim }} { deny all; }
+{% endif %}
+{% endfor %}
+{% endif %}
 {% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
 {% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | replace('"', '') | replace("'", '') | trim | split(",")) %}
 {% if _opt | trim != "" %}
@@ -30,6 +38,13 @@ server
 
     include includes/server/*.nginx;
     include includes/index/{{ ENV.O9S_NGINX_INDEX_TYPE }}.nginx;
+{% if ENV.O9S_NGINX_DENY_PREFIXES != "" %}
+{% for _prefix in (ENV.O9S_NGINX_DENY_PREFIXES | replace('"', '') | replace("'", '') | trim | split(",")) %}
+{% if _prefix | trim != "" %}
+    location ^~ {{ _prefix | trim }} { deny all; }
+{% endif %}
+{% endfor %}
+{% endif %}
 {% if ENV.O9S_NGINX_INCLUDE_OPTIONAL != "" %}
 {% for _opt in (ENV.O9S_NGINX_INCLUDE_OPTIONAL | replace('"', '') | replace("'", '') | trim | split(",")) %}
 {% if _opt | trim != "" %}

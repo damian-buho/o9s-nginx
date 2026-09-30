@@ -229,6 +229,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_PH_*`                | Preload hint scanning                                             |
 | `O9S_NGINX_CACHE_*`             | Cache paths and policies                                          |
 | `O9S_NGINX_INCLUDE_OPTIONAL`    | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`) |
+| `O9S_NGINX_DENY_PREFIXES`       | CSV 403 prefixes, e.g. "/config,/tmp"; wins over .php handling    |
 | `O9S_NGINX_OPEN_FILE_CACHE_*`   | File descriptor caching                                           |
 | `CONTENT_SIGNALS_*`             | robots.txt Content-Signal directives                              |
 
