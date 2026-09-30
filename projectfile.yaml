@@ -23,6 +23,7 @@ includes:
   - .makefile/b19/images/ubuntu.yaml
   - .makefile/b19/traits/release.yaml
   - .makefile/container/traits/nginx.yaml
+  - .makefile/container/traits/readme-service.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/forge/github.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/registry/dockerhub.yaml
@@ -77,6 +78,17 @@ links:
     url: https://hub.docker.com/r/damianbuho/o9s-nginx
 org:
   projectfile:
+    artifacts:
+      nginx:
+        kind: service
+        summary:
+          en: nginx web server
+          es: Servidor web nginx
+          uk: Вебсервер nginx
+        ports:
+          - port: 8080
+            name: http
+            path: /
     architecture:
       - amd64
       - arm64
