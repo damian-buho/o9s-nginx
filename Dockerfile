@@ -2,10 +2,10 @@
 #
 # SPDX-License-Identifier: MIT
 
-ARG B19_GCC_BASE_IMAGE=registry.invalid/b19/gcc-16:latest
+ARG B19_GCC_BASE_IMAGE=registry.invalid/b19/gcc:16
 ARG B19_HOME="/app"
-ARG B19_RUST_GNU_BASE_IMAGE=registry.invalid/b19/rust-gnu:latest
-ARG B19_UBUNTU_BASE_IMAGE=registry.invalid/b19/ubuntu/resolute:latest
+ARG B19_RUST_GNU_BASE_IMAGE=registry.invalid/b19/rust:gnu
+ARG B19_UBUNTU_BASE_IMAGE=registry.invalid/b19/ubuntu:resolute
 ARG B19_UBUNTU_SERIES=resolute
 ARG O9S_NGINX_CACHE_PATH=${B19_HOME}/cache
 ARG O9S_NGINX_LOG_PATH=${B19_HOME}/log
