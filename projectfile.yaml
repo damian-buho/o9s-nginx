@@ -89,6 +89,7 @@ org:
           - port: 8080
             name: http
             path: /
+            protocol: tcp
     architecture:
       - amd64
       - arm64
