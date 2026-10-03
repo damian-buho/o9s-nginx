@@ -1,0 +1,15 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+# Static indexes only: proxy/php servers may mint feeds upstream, and a static root here would shadow them.
+{% if ENV.O9S_NGINX_INDEX_TYPE == "html" or ENV.O9S_NGINX_INDEX_TYPE == "auto" %}
+# Blink applies <?xml-stylesheet?> only to generic XML types, so .rss ships as application/xml instead of upstream application/rss+xml.
+location ~ \.rss$ {
+    root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
+    types {}
+    default_type application/xml;
+}
+{% endif %}
