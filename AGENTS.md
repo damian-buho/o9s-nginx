@@ -220,6 +220,9 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_CORS_*`                 | CORS headers                                                             |
 | `O9S_NGINX_PERMISSION_*`           | Permissions-Policy directives                                            |
 | `O9S_NGINX_MODULE_*`               | Dynamic module on/off (brotli, zstd, otel, acme)                         |
+| `O9S_NGINX_NEGOTIATE_MARKDOWN`     | Accept: text/markdown serves the .md sibling (default N)                 |
+| `O9S_NGINX_NEGOTIATE_AVIF`         | Accept: image/avif serves the prebuilt .avif sibling (default N)         |
+| `O9S_NGINX_NEGOTIATE_WEBP`         | Accept: image/webp serves the prebuilt .webp sibling (default N)         |
 | `O9S_NGINX_LISTEN_*`               | Socket options (reuseport, deferred, backlog, etc.)                      |
 | `O9S_NGINX_SSL_*`                  | TLS protocols, ciphers, session settings                                 |
 | `O9S_NGINX_ACCESS_LOG`             | Full `access_log` value — `/dev/stdout default`; `off` disables          |
@@ -319,6 +322,10 @@ one included); already-compressed media and archives stay out of compression.
 `170-cache` matches `$sent_http_content_type` with `~^…` prefix regexes so
 entries keep matching once charset appends `; charset=…` — an exact match
 would silently fall to `no-cache`.
+
+## Content negotiation
+
+Each `O9S_NGINX_NEGOTIATE_*` toggle serves a prebuilt variant when `Accept` lists its type, keeping the original the default: `MARKDOWN` reads the `.md` sibling, `AVIF`/`WEBP` the prebuilt image sibling (AVIF preferred over WebP, GIF sources excluded so animations never flatten). The maps live in `includes/http/165-negotiation.nginx.j2` and the `Vary: Accept` header in `includes/server/negotiation.nginx.j2`; each URL shape picks its probes, documents in `includes/index/html.nginx.j2` and images in `includes/server/image-negotiation.nginx.j2` (`html` index type only). `.md` MIME, charset, compression and cache entries already exist with `image/avif` cached long; `x-markdown-tokens` is edge-added by Cloudflare and never comes from this origin.
 
 ## Pre-generated assets
 

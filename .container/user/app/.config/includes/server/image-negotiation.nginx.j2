@@ -1,0 +1,15 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% if ENV.O9S_NGINX_INDEX_TYPE == "html" or ENV.O9S_NGINX_INDEX_TYPE == "auto" %}
+{% if ENV.O9S_NGINX_NEGOTIATE_AVIF == "Y" or ENV.O9S_NGINX_NEGOTIATE_WEBP == "Y" %}
+# Prebuilt AVIF/WebP siblings for image clients, original file otherwise.
+location ~* \.(jpe?g|png|webp)$ {
+    root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
+    try_files $variant_avif $variant_webp $uri =404;
+}
+{% endif %}
+{% endif %}

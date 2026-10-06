@@ -43,6 +43,7 @@ map $sent_http_content_type $cache_control_value {
 
     # Images
     "~^image/apng"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^image/avif"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/bmp"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/gif"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^image/heic"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";

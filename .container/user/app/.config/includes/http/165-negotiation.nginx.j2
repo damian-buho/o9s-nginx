@@ -1,0 +1,39 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+# One variant per family, chained by preference; doc suffix for text/markdown clients.
+map $http_accept $doc_suffix {
+    default "";
+{% if ENV.O9S_NGINX_NEGOTIATE_MARKDOWN == "Y" %}
+    "~*text/markdown" ".md";
+{% endif %}
+}
+# Request path without trailing slashes, so /about/ resolves onto /about.md.
+map $uri $doc_base {
+    default "";
+    "~^(/(?:.*[^/])?)/*$" "$1";
+}
+# Sibling Markdown file for Markdown clients, otherwise a guaranteed miss.
+map "$http_accept:$doc_base" $variant_doc {
+    default "/__no_variant";
+{% if ENV.O9S_NGINX_NEGOTIATE_MARKDOWN == "Y" %}
+    "~*text/markdown.*:/([^/].*)$" "/$1.md";
+{% endif %}
+}
+# Prebuilt AVIF sibling for clients that list image/avif in Accept.
+map "$http_accept:$uri" $variant_avif {
+    default "/__no_variant";
+{% if ENV.O9S_NGINX_NEGOTIATE_AVIF == "Y" %}
+    "~*image/avif.*:(.+)\.(jpg|jpeg|png|webp)$" "$1.avif";
+{% endif %}
+}
+# Prebuilt WebP sibling for clients that list image/webp in Accept.
+map "$http_accept:$uri" $variant_webp {
+    default "/__no_variant";
+{% if ENV.O9S_NGINX_NEGOTIATE_WEBP == "Y" %}
+    "~*image/webp.*:(.+)\.(jpg|jpeg|png)$" "$1.webp";
+{% endif %}
+}

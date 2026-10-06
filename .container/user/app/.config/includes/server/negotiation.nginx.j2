@@ -4,11 +4,7 @@ SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
 SPDX-License-Identifier: MIT
 #}
 
-location / {
-    root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
-    index index.html;
 {% if ENV.O9S_NGINX_NEGOTIATE_MARKDOWN == "Y" or ENV.O9S_NGINX_NEGOTIATE_AVIF == "Y" or ENV.O9S_NGINX_NEGOTIATE_WEBP == "Y" %}
-    # Preferred document variant first, original file last.
-    try_files $uri$doc_suffix $uri/index$doc_suffix $variant_doc $uri $uri/ =404;
+# Separate cache variants for each negotiated representation.
+add_header Vary "Accept" always;
 {% endif %}
-}
