@@ -8,8 +8,8 @@ root {{ ENV.O9S_NGINX_PUBLIC_PATH }};
 
 index index.php;
 
-{% if ENV.O9S_NGINX_PHP_ENTRY_POINTS | trim != "" %}
-{% for _entry in (ENV.O9S_NGINX_PHP_ENTRY_POINTS | replace('"', '') | replace("'", '') | trim | split(",")) %}
+{% if ENV.O9S_NGINX_INDEX_PHP_ENTRY_POINTS | trim != "" %}
+{% for _entry in (ENV.O9S_NGINX_INDEX_PHP_ENTRY_POINTS | replace('"', '') | replace("'", '') | trim | split(",")) %}
 {% if _entry | trim != "" %}
 location = /{{ _entry | trim }}.php {
     set            $backend "{{ ENV.O9S_NGINX_FASTCGI_BACKEND_HOST | default('backend-host.invalid', true) }}:{{ ENV.O9S_NGINX_FASTCGI_BACKEND_PORT | default('9000', true) }}";

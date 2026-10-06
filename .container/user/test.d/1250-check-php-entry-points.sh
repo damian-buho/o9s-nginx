@@ -16,7 +16,7 @@ cp "${XDG_CONFIG_HOME}/includes/index/php.nginx.j2" "${WORKDIR}/"
 export O9S_NGINX_PUBLIC_PATH="/matomo"
 export O9S_NGINX_FASTCGI_BACKEND_HOST="backend"
 export O9S_NGINX_FASTCGI_BACKEND_PORT="9000"
-export O9S_NGINX_PHP_ENTRY_POINTS="index,matomo,js/index"
+export O9S_NGINX_INDEX_PHP_ENTRY_POINTS="index,matomo,js/index"
 
 minijinja-cli --autoescape none --env "${WORKDIR}/php.nginx.j2" -o "${WORKDIR}/allow.nginx"
 
@@ -38,7 +38,7 @@ do
   fi
 done
 
-export O9S_NGINX_PHP_ENTRY_POINTS=""
+export O9S_NGINX_INDEX_PHP_ENTRY_POINTS=""
 
 minijinja-cli --autoescape none --env "${WORKDIR}/php.nginx.j2" -o "${WORKDIR}/open.nginx"
 
