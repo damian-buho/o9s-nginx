@@ -107,7 +107,7 @@ Files in `includes/opt/` are conditionally included by server-block templates in
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
 - `enable-coep.nginx.j2` — Cross-Origin-Embedder-Policy via `O9S_NGINX_COEP_*` (policy, Report-Only switch, report-to group)
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
-- `enable-reporting-endpoints.nginx.j2` — Reporting-Endpoints via `O9S_NGINX_REPORTING_ENDPOINTS` (emitted only when set)
+- `enable-reporting-endpoints.nginx.j2` — Reporting-Endpoints, Report-To and NEL via `O9S_NGINX_REPORTING_ENDPOINTS`, `O9S_NGINX_REPORT_TO`, `O9S_NGINX_NEL` (each emitted only when set)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)
 - `enable-acme.nginx.j2` — per-server ACME certificate (conditional)
 - `enable-certbot.nginx.j2` — certbot certificate paths
@@ -279,7 +279,7 @@ header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
 ## Security headers and `always`
 
 Every security `add_header` in `includes/opt/` (`Content-Security-Policy`,
-`Strict-Transport-Security`, `Permissions-Policy`, `Reporting-Endpoints`, `X-Frame-Options`,
+`Strict-Transport-Security`, `Permissions-Policy`, `Reporting-Endpoints`, `Report-To`, `NEL`, `X-Frame-Options`,
 `X-Content-Type-Options`, `Cache-Control`) carries the `always` argument so the
 header survives on 4xx/5xx responses — including the localized
 `/__error/<code>` pages. Resource hints (`Link` preconnect/dns-prefetch/

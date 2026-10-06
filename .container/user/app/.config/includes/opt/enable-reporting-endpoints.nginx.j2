@@ -5,3 +5,5 @@ SPDX-License-Identifier: MIT
 #}
 
 {% if ENV.O9S_NGINX_REPORTING_ENDPOINTS %}add_header Reporting-Endpoints {{ ENV.O9S_NGINX_REPORTING_ENDPOINTS }} always;{% endif %}
+{% if ENV.O9S_NGINX_REPORT_TO %}add_header Report-To {{ ENV.O9S_NGINX_REPORT_TO }} always;{% endif %}
+{% if ENV.O9S_NGINX_NEL %}add_header NEL {{ ENV.O9S_NGINX_NEL }} always;{% endif %}
