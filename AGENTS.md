@@ -195,10 +195,15 @@ path elsewhere on a mounted volume (e.g. a release dir a sibling container
 swaps in via symlink) — set it to that same path so precompression never
 wanders into unrelated sibling content sharing the mount. That first pass only
 runs once, at container start; `O9S_NGINX_PRECOMPRESS_WATCH_ENABLED=Y` adds a
-background poll (`O9S_NGINX_PRECOMPRESS_WATCH_INTERVAL`, default `30` seconds)
-that re-runs it whenever `O9S_NGINX_PRECOMPRESS_DIR` resolves to a new target —
-entirely in-container, no signal from the writer needed. It only catches a
-retarget (a symlink swap, as above), not an in-place file overwrite in a
+background inotify watch (`inotifywait -m` on the parent dir for a `moved_to`
+on the symlink name, re-armed on overflow with a converge pass, since the swap
+is an atomic rename) that re-runs it whenever `O9S_NGINX_PRECOMPRESS_DIR`
+resolves to a new target — entirely in-container, no signal from the writer
+needed. The boot pass still runs first, so a container that starts after a swap
+already happened never waits on an event that already fired. Without
+`inotifywait` in the image the watch falls back to a poll every
+`O9S_NGINX_PRECOMPRESS_WATCH_INTERVAL` seconds (default `30`). It only catches
+a retarget (a symlink swap, as above), not an in-place file overwrite in a
 directory whose path never changes.
 
 ## scaffold/
@@ -218,13 +223,14 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_FASTCGI_*`              | FastCGI buffer/cache/timeout settings                                    |
 | `O9S_NGINX_CSP_*`                  | Content-Security-Policy directives                                       |
 | `O9S_NGINX_CORS_*`                 | CORS headers                                                             |
-| `O9S_NGINX_PERMISSION_*`               | Permissions-Policy directives                                            |
-| `O9S_NGINX_INDEX_PHP_ENTRY_POINTS`           | Comma entry scripts reaching FastCGI (`index,matomo`); every other `.php` 403s (default empty = all `.php` pass) |
+| `O9S_NGINX_PERMISSION_*`           | Permissions-Policy directives                                            |
+| `O9S_NGINX_INDEX_PHP_ENTRY_POINTS` | Comma entry scripts reaching FastCGI; every other `.php` 403s            |
 | `O9S_NGINX_MODULE_*`               | Dynamic module on/off (brotli, zstd, otel, acme)                         |
 | `O9S_NGINX_NEGOTIATE_MARKDOWN`     | Accept: text/markdown serves the .md sibling (default N)                 |
 | `O9S_NGINX_NEGOTIATE_AVIF`         | Accept: image/avif serves the prebuilt .avif sibling (default N)         |
 | `O9S_NGINX_NEGOTIATE_WEBP`         | Accept: image/webp serves the prebuilt .webp sibling (default N)         |
 | `O9S_NGINX_LISTEN_*`               | Socket options (reuseport, deferred, backlog, etc.)                      |
+| `O9S_NGINX_LIVE_RELOAD_*`          | Live config reload (enabled, dir, debounce, HUP re-render)               |
 | `O9S_NGINX_SSL_*`                  | TLS protocols, ciphers, session settings                                 |
 | `O9S_NGINX_ACCESS_LOG`             | Full `access_log` value — `/dev/stdout default`; `off` disables          |
 | `O9S_NGINX_PRECOMPRESS_*`          | Build-time and startup pre-compression                                   |
@@ -290,8 +296,24 @@ is correct.
 | `0810-realip-extra.sh`          | Append extra providers’ live ranges to `REALIP_EXTRA_CIDRS`                |
 | `0900-csp-hashes.sh`            | Append `${O9S_NGINX_CSP_DIR}/<directive>.txt` tokens to `O9S_NGINX_CSP_*`  |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
-| `1310-precompress-watch.sh`     | Poll `O9S_NGINX_PRECOMPRESS_DIR`; recompress on retarget                   |
+| `1310-precompress-watch.sh`     | Watch `O9S_NGINX_PRECOMPRESS_DIR` with inotify; recompress on retarget     |
+| `4910-live-reload-watch.sh`     | Watch config tree with inotify; re-render and reload on template/SIGHUP    |
 | `5000-start.sh`                 | `b19-exec --stdout-level warn --stderr-level warn -- nginx`                |
+
+## Live reload
+
+`O9S_NGINX_LIVE_RELOAD_ENABLED=Y` backgrounds an inotify watch on
+`O9S_NGINX_LIVE_RELOAD_DIR` (default `${XDG_CONFIG_HOME}`) that re-renders the
+templates (`parallel-j2`, the same step startup runs), tests the config
+(`nginx -t`) and reloads (`nginx -s reload`, zero-downtime) whenever a `.j2`
+template is saved. Only `.j2` sources match, so the render’s own outputs never
+re-trigger it; saves arriving together batch into one render via
+`O9S_NGINX_LIVE_RELOAD_DEBOUNCE` (default `2` seconds). A failed test keeps the
+old config serving, and the watch re-arms itself after an overflow with one
+converge render. `O9S_NGINX_LIVE_RELOAD_ON_HUP=Y` (default) replaces the
+`0000` HUP forward with a re-render-then-reload, so `docker kill -s HUP` picks
+up mounted template edits too. Skipped under `B19_IMMUTABLE=Y`, and the reload
+is skipped while nginx is not up yet (startup covers that window).
 
 ## Commands
 
@@ -353,11 +375,18 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 
 ## Tests
 
-1. `0300-apt-versions.sh` — verify brotli binary
-1. `1100-nginx-version.sh` — verify nginx binary
 1. `1200-nginx-test.sh` — `nginx -t`
+1. `1210-check-realip-extra.sh` — extra real-IP trust rendering and unknown-provider refusal
+1. `1220-check-realip-header.sh` — `real_ip_header` emitted exactly once
+1. `1230-check-real-ip-header.sh` — real-IP header behavior
+1. `1240-check-deny-static.sh` — static-prefix deny handling
+1. `1250-check-php-entry-points.sh` — PHP entry-point gating
 1. `1300-nginx-modules.sh` — verify all 6 dynamic modules exist
+1. `1310-precompress-watch.sh` — symlink swap recompresses, sibling/same-target does not
 1. `1400-error-pages.sh` — verify every language dir holds all 10 error pages
+1. `2000-apt-versions.sh` — verify brotli and inotifywait binaries
+1. `2000-check-nginx-version.sh` — verify nginx binary
+1. `4910-live-reload-watch.sh` — template edit re-renders and reloads, bad config does not
 
 ## Immutable mode
 

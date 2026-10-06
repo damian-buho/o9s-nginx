@@ -7,3 +7,4 @@
   set -eou pipefail
 
   brotli    --version
+  inotifywait --version  # locked by the precompress and live-reload watchers

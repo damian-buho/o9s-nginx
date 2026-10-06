@@ -8,5 +8,5 @@ SPDX-License-Identifier: MIT
 
 - Static files are compressed once, at maximum ratio, in gzip, brotli and zstd; nginx serves the ready file with no per-request CPU cost.
 - Runs at build time and is inherited by child images; it can also run at container start for content mounted from a volume.
-- Can watch a mounted release directory and recompress on its own when a new release is swapped in.
+- Watches the parent directory for an atomic symlink swap and recompresses at once, with no polling to tune.
 - A standalone command compresses any directory by hand.

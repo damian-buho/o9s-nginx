@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MIT
 
 brotli                         # lossless compression algorithm and format (command line utility) | deps: libbrotli1, libc6
+inotify-tools                  # filesystem event watcher (inotifywait) | deps: libc6, libinotifytools0
 libcares2                      # asynchronous name resolver | deps: libc6
 libpcre2-8-0
 libre2-11                      # efficient, principled regular expression library | deps: libabsl20240722, libc6, libgcc-s1, libstdc++6
