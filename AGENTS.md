@@ -209,29 +209,31 @@ directory whose path never changes.
 
 All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `ENV` block (lines 107–318). Key categories:
 
-| Prefix                          | Controls                                                          |
-| ------------------------------- | ----------------------------------------------------------------- |
-| `O9S_NGINX_{HTTP,HTTPS}_PORT`   | Listen ports                                                      |
-| `O9S_NGINX_HTTP{2,3}*`          | HTTP/2 and HTTP/3 settings                                        |
-| `O9S_NGINX_{GZIP,BROTLI,ZSTD}*` | Compression algorithms and levels                                 |
-| `O9S_NGINX_PROXY_*`             | Reverse proxy buffer/cache/timeout settings                       |
-| `O9S_NGINX_FASTCGI_*`           | FastCGI buffer/cache/timeout settings                             |
-| `O9S_NGINX_CSP_*`               | Content-Security-Policy directives                                |
-| `O9S_NGINX_CORS_*`              | CORS headers                                                      |
-| `O9S_NGINX_PERMISSION_*`        | Permissions-Policy directives                                     |
-| `O9S_NGINX_MODULE_*`            | Dynamic module on/off (brotli, zstd, otel, acme)                  |
-| `O9S_NGINX_LISTEN_*`            | Socket options (reuseport, deferred, backlog, etc.)               |
-| `O9S_NGINX_SSL_*`               | TLS protocols, ciphers, session settings                          |
-| `O9S_NGINX_ACCESS_LOG`          | Full `access_log` value — `/dev/stdout default`; `off` disables   |
-| `O9S_NGINX_PRECOMPRESS_*`       | Build-time and startup pre-compression                            |
-| `O9S_NGINX_REALIP_*`            | Real-IP header, CDN mode, extra trust                             |
-| `O9S_NGINX_OTEL_*`              | OpenTelemetry endpoint and tracing                                |
-| `O9S_NGINX_PH_*`                | Preload hint scanning                                             |
-| `O9S_NGINX_CACHE_*`             | Cache paths and policies                                          |
-| `O9S_NGINX_INCLUDE_OPTIONAL`    | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`) |
-| `O9S_NGINX_DENY_PREFIXES`       | CSV 403 prefixes, e.g. "/config,/tmp"; wins over .php handling    |
-| `O9S_NGINX_OPEN_FILE_CACHE_*`   | File descriptor caching                                           |
-| `CONTENT_SIGNALS_*`             | robots.txt Content-Signal directives                              |
+| Prefix                             | Controls                                                                 |
+|------------------------------------|--------------------------------------------------------------------------|
+| `O9S_NGINX_{HTTP,HTTPS}_PORT`      | Listen ports                                                             |
+| `O9S_NGINX_HTTP{2,3}*`             | HTTP/2 and HTTP/3 settings                                               |
+| `O9S_NGINX_{GZIP,BROTLI,ZSTD}*`    | Compression algorithms and levels                                        |
+| `O9S_NGINX_PROXY_*`                | Reverse proxy buffer/cache/timeout settings                              |
+| `O9S_NGINX_FASTCGI_*`              | FastCGI buffer/cache/timeout settings                                    |
+| `O9S_NGINX_CSP_*`                  | Content-Security-Policy directives                                       |
+| `O9S_NGINX_CORS_*`                 | CORS headers                                                             |
+| `O9S_NGINX_PERMISSION_*`           | Permissions-Policy directives                                            |
+| `O9S_NGINX_MODULE_*`               | Dynamic module on/off (brotli, zstd, otel, acme)                         |
+| `O9S_NGINX_LISTEN_*`               | Socket options (reuseport, deferred, backlog, etc.)                      |
+| `O9S_NGINX_SSL_*`                  | TLS protocols, ciphers, session settings                                 |
+| `O9S_NGINX_ACCESS_LOG`             | Full `access_log` value — `/dev/stdout default`; `off` disables          |
+| `O9S_NGINX_PRECOMPRESS_*`          | Build-time and startup pre-compression                                   |
+| `O9S_NGINX_REALIP_*`               | Real-IP header, CDN mode, extra trust                                    |
+| `O9S_NGINX_OTEL_*`                 | OpenTelemetry endpoint and tracing                                       |
+| `O9S_NGINX_PH_*`                   | Preload hint scanning                                                    |
+| `O9S_NGINX_CACHE_*`                | Cache paths and policies                                                 |
+| `O9S_NGINX_INCLUDE_OPTIONAL`       | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`)        |
+| `O9S_NGINX_DENY_PREFIXES`          | CSV 403 prefixes, e.g. "/config,/tmp"; wins over .php handling           |
+| `O9S_NGINX_DENY_STATIC_PREFIXES`   | CSV subset of DENY_PREFIXES still serving static assets, e.g. "/plugins" |
+| `O9S_NGINX_DENY_STATIC_EXTENSIONS` | Static-extension alternation served under those prefixes                 |
+| `O9S_NGINX_OPEN_FILE_CACHE_*`      | File descriptor caching                                                  |
+| `CONTENT_SIGNALS_*`                | robots.txt Content-Signal directives                                     |
 
 ## Version pin discrepancy
 

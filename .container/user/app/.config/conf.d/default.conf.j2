@@ -16,7 +16,14 @@ server
 {% if ENV.O9S_NGINX_DENY_PREFIXES != "" %}
 {% for _prefix in (ENV.O9S_NGINX_DENY_PREFIXES | replace('"', '') | replace("'", '') | trim | split(",")) %}
 {% if _prefix | trim != "" %}
+{% if ("," ~ (_prefix | trim) ~ ",") in ("," ~ (ENV.O9S_NGINX_DENY_STATIC_PREFIXES | replace('"', '') | replace("'", '') | replace(" ", "")) ~ ",") and ENV.O9S_NGINX_DENY_STATIC_EXTENSIONS != "" %}
+    location ^~ {{ _prefix | trim }} {
+        location ~* \.({{ ENV.O9S_NGINX_DENY_STATIC_EXTENSIONS }})$ { allow all; }
+        deny all;
+    }
+{% else %}
     location ^~ {{ _prefix | trim }} { deny all; }
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -41,7 +48,14 @@ server
 {% if ENV.O9S_NGINX_DENY_PREFIXES != "" %}
 {% for _prefix in (ENV.O9S_NGINX_DENY_PREFIXES | replace('"', '') | replace("'", '') | trim | split(",")) %}
 {% if _prefix | trim != "" %}
+{% if ("," ~ (_prefix | trim) ~ ",") in ("," ~ (ENV.O9S_NGINX_DENY_STATIC_PREFIXES | replace('"', '') | replace("'", '') | replace(" ", "")) ~ ",") and ENV.O9S_NGINX_DENY_STATIC_EXTENSIONS != "" %}
+    location ^~ {{ _prefix | trim }} {
+        location ~* \.({{ ENV.O9S_NGINX_DENY_STATIC_EXTENSIONS }})$ { allow all; }
+        deny all;
+    }
+{% else %}
     location ^~ {{ _prefix | trim }} { deny all; }
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}
