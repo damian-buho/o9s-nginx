@@ -35,13 +35,6 @@ SPDX-License-Identifier: MIT
 - Ports, TLS, compression, proxying, caching, logging, security headers and tracing are all tuned from `docker run` or compose.
 - Optional behaviors (CORS, security headers, HTTPS redirect, certificates, tracing) are switched on per site by listing them, not by editing config.
 
-### Live config reload
-
-- Template edits under the config tree re-render and reload nginx with no restart and no dropped connections.
-- A filesystem watch reacts to saved templates; a reload signal re-renders first, then reloads.
-- A failing config test keeps the old config serving; the watch re-arms itself after an overflow.
-- Off by default; one switch turns it on.
-
 ### robots.txt with AI Content Signals
 
 - `robots.txt` is generated at startup — no file to mount or maintain per environment.
@@ -69,6 +62,13 @@ SPDX-License-Identifier: MIT
 - HTTP/3 is compiled in and on by default; browsers are told about it and upgrade on their own.
 - HTTP/2 and HTTP/3 share one port.
 - QUIC transport and socket options are tunable at runtime for high-traffic hosts.
+
+### Live config reload
+
+- Template edits under the config tree re-render and reload nginx with no restart and no dropped connections.
+- A filesystem watch reacts to saved templates; a reload signal re-renders first, then reloads.
+- A failing config test keeps the old config serving; the watch re-arms itself after an overflow.
+- Off by default; one switch turns it on.
 
 ### Correct content types and caching
 

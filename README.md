@@ -28,6 +28,7 @@ Community-maintained distribution of Nginx built on B19/GCC. This repository hol
 - Base for nginx-based images
 - Localized, self-contained error pages
 - HTTP/3 (QUIC)
+- Live config reload
 - Correct content types and caching
 - OpenTelemetry tracing and JSON access logs
 - Automatic resource hints

@@ -226,7 +226,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_PERMISSION_*`           | Permissions-Policy directives                                            |
 | `O9S_NGINX_INDEX_PHP_ENTRY_POINTS` | Comma entry scripts reaching FastCGI; every other `.php` 403s            |
 | `O9S_NGINX_MODULE_*`               | Dynamic module on/off (brotli, zstd, otel, acme)                         |
-| `O9S_NGINX_NEGOTIATE_MARKDOWN`     | Accept: text/markdown serves the .md sibling (default N)                 |
+| `O9S_NGINX_NEGOTIATE_MARKDOWN`     | Accept: text/Markdown serves the .md sibling (default N)                 |
 | `O9S_NGINX_NEGOTIATE_AVIF`         | Accept: image/avif serves the prebuilt .avif sibling (default N)         |
 | `O9S_NGINX_NEGOTIATE_WEBP`         | Accept: image/webp serves the prebuilt .webp sibling (default N)         |
 | `O9S_NGINX_LISTEN_*`               | Socket options (reuseport, deferred, backlog, etc.)                      |
