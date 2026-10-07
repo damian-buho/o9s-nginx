@@ -212,7 +212,7 @@ directory whose path never changes.
 
 ## ENV reference
 
-All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `ENV` block (lines 107–318). Key categories:
+All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `ENV` block (lines 133–395). Key categories:
 
 | Prefix                             | Controls                                                                 |
 |------------------------------------|--------------------------------------------------------------------------|
@@ -237,13 +237,32 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_REALIP_*`               | Real-IP header, CDN mode, extra trust                                    |
 | `O9S_NGINX_OTEL_*`                 | OpenTelemetry endpoint and tracing                                       |
 | `O9S_NGINX_PH_*`                   | Preload hint scanning                                                    |
-| `O9S_NGINX_CACHE_*`                | Cache paths and policies                                                 |
+| `O9S_NGINX_*CACHE_POLICY`          | `Cache-Control` per content type, cache dir is `O9S_NGINX_CACHE_PATH`    |
 | `O9S_NGINX_INCLUDE_OPTIONAL`       | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`)        |
 | `O9S_NGINX_DENY_PREFIXES`          | CSV 403 prefixes, e.g. "/config,/tmp"; wins over .php handling           |
 | `O9S_NGINX_DENY_STATIC_PREFIXES`   | CSV subset of DENY_PREFIXES still serving static assets, e.g. "/plugins" |
 | `O9S_NGINX_DENY_STATIC_EXTENSIONS` | Static-extension alternation served under those prefixes                 |
 | `O9S_NGINX_OPEN_FILE_CACHE_*`      | File descriptor caching                                                  |
 | `CONTENT_SIGNALS_*`                | robots.txt Content-Signal directives                                     |
+
+## Which cache window a type gets
+
+`170-cache` picks between two policy vars, and the split is by URL shape, not by
+file kind: `immutable` is only true when the URL changes when the bytes do.
+
+- `O9S_NGINX_CACHE_POLICY` (`max-age=31536000, immutable`) — content-addressed
+  build output: JS, CSS, fonts, images, audio, video, `wasm`, `model/gltf*`
+- `O9S_NGINX_REVALIDATE_CACHE_POLICY` (`max-age=300, must-revalidate`) —
+  documents, office files, subtitles, text, JSON/TOML/YAML, XML and feeds, web
+  manifests and archives: a publish overwrites the file behind the same URL
+- anything the map does not list, HTML included, stays `no-cache`
+
+The boundary is the one place a consumer holding BOTH kinds under one type has
+to choose: an unhashed asset (a logo PNG, a favicon, a hand-written `app.js`)
+still reads as content-addressed and keeps the long window until
+`O9S_NGINX_CACHE_POLICY` is lowered. Nothing detects the fingerprint in the
+path — every bundler spells it differently, and a pattern that misses one hands
+back the stale year this split exists to remove.
 
 ## Version pin discrepancy
 
@@ -381,6 +400,9 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `1230-check-real-ip-header.sh` — real-IP header behavior
 1. `1240-check-deny-static.sh` — static-prefix deny handling
 1. `1250-check-php-entry-points.sh` — PHP entry-point gating
+1. `1260-check-reporting-endpoints.sh` — reporting headers render only when set
+1. `1270-check-document-headers.sh` — CSP and COEP scoped to document types
+1. `1280-check-cache-policy.sh` — immutable for content-addressed assets, revalidation for regenerated documents
 1. `1300-nginx-modules.sh` — verify all 6 dynamic modules exist
 1. `1310-precompress-watch.sh` — symlink swap recompresses, sibling/same-target does not
 1. `1400-error-pages.sh` — verify every language dir holds all 10 error pages

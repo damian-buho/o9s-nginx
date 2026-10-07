@@ -8,31 +8,10 @@ SPDX-License-Identifier: MIT
 map $sent_http_content_type $cache_control_value {
     default                                 "no-cache"; # Default for non-matching MIME types
 
-    # Audio
-    "~^audio/mpeg"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^audio/ogg"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^audio/wav"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^audio/x-m4a"                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-
+    # Content-addressed assets: the URL changes with the bytes, so a long immutable window is safe
     # CSS and JavaScript
     "~^application/javascript"              "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^text/css"                            "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-
-    # Documents
-    "~^application/msword"                                                      "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/pdf"                                                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/rtf"                                                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/vnd.ms-excel"                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/vnd.openxmlformats-officedocument.wordprocessingml.document" "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/epub\+zip"                                                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/x-subrip"                                                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/calendar"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/csv"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/markdown"                                                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/plain"                                                              "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/vtt"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^text/xsl"                                                                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Fonts
     "~^application/vnd.ms-fontobject"       "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
@@ -58,21 +37,12 @@ map $sent_http_content_type $cache_control_value {
 
     # Audio
     "~^audio/flac"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^audio/mpeg"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^audio/mp4"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^audio/mpeg"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^audio/ogg"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^audio/wav"                           "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^audio/webm"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^audio/x-m4a"                         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-
-    # JSON and structured data
-    "~^application/geo\+json"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/json"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/ld\+json"                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/toml"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/yaml"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^model/gltf-binary"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^model/gltf\+json"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
     # Video
     "~^video/iso.segment"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
@@ -81,22 +51,48 @@ map $sent_http_content_type $cache_control_value {
     "~^video/webm"                          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
     "~^video/x-matroska"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
 
+    # Compiled and binary payloads; the gltf descriptor stays with its glb sibling so the pair cannot skew
+    "~^application/wasm"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^model/gltf-binary"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^model/gltf\+json"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+
+    # Documents and data a publish rewrites behind the same URL, so the long window would serve the previous file
+    # Documents
+    "~^application/msword"                                                      "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/pdf"                                                         "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/rtf"                                                         "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/vnd.ms-excel"                                                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"       "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/vnd.openxmlformats-officedocument.wordprocessingml.document" "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/epub\+zip"                                                   "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/x-subrip"                                                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/calendar"                                                           "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/csv"                                                                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/markdown"                                                           "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/plain"                                                              "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/vtt"                                                                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^text/xsl"                                                                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+
+    # JSON and structured data
+    "~^application/geo\+json"               "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/json"                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/ld\+json"                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/manifest\+json"          "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/toml"                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/yaml"                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+
     # XML and Feeds
-    "~^application/atom\+xml"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/dash\+xml"               "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/rss\+xml"                "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/xml"                     "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/atom\+xml"               "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/dash\+xml"               "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/rss\+xml"                "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/xml"                     "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
 
     # Archives
-    "~^application/gzip"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/vnd.rar"                 "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/x-7z-compressed"         "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/x-bzip2"                 "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/x-tar"                   "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/zip"                     "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/zstd"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-
-    # Specialized Web Assets
-    "~^application/manifest\+json"          "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
-    "~^application/wasm"                    "{{ ENV.O9S_NGINX_CACHE_POLICY }}";
+    "~^application/gzip"                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/vnd.rar"                 "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/x-7z-compressed"         "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/x-bzip2"                 "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/x-tar"                   "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/zip"                     "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
+    "~^application/zstd"                    "{{ ENV.O9S_NGINX_REVALIDATE_CACHE_POLICY }}";
 }
