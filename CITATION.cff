@@ -31,5 +31,5 @@ keywords:
   - reverse-proxy
   - http3
   - docker
-version: 0.15.4
-date-released: "2026-10-04"
+version: 0.16.0
+date-released: "2026-10-07"
