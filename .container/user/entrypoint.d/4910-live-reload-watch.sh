@@ -6,9 +6,12 @@
 
   live_reload_render() {
     local reason="${1:-unknown}"
+    local nginx_test_output
     b19-log info "NGINX" "$(_p "Re-rendering after %s" "${reason}")"
     parallel-j2 "${B19_HOME}"  # same render step the startup hook runs
-    if nginx -t 2>&1 | tee /dev/stderr | grep -q "successful"
+    nginx_test_output="$(nginx -t 2>&1)" || true
+    printf '%s\n' "${nginx_test_output}" >&2
+    if grep -q "successful" <<<"${nginx_test_output}"
     then
       if [ -f "${XDG_STATE_HOME}/nginx.pid" ] && kill -0 "$(cat "${XDG_STATE_HOME}/nginx.pid" 2>/dev/null)" 2>/dev/null
       then

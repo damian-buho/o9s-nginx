@@ -10,7 +10,10 @@
 
   b19-log info "NGINX" "Testing rendered configuration"
 
-  if nginx -t 2>&1 | tee /dev/stderr | grep -q "successful"
+  NGINX_TEST_OUTPUT="$(nginx -t 2>&1)" || true
+  printf '%s\n' "${NGINX_TEST_OUTPUT}" >&2
+
+  if grep -q "successful" <<<"${NGINX_TEST_OUTPUT}"
   then
     b19-log good "NGINX" "Configuration test passed"
     return 0
