@@ -102,6 +102,9 @@ ENV B19_COMPILE_CACHE=off
 
 RUN --mount=type=cache,id=apt-cache-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/cache/apt,sharing=shared     \
     --mount=type=cache,id=apt-lists-${B19_UBUNTU_SERIES}-${TARGETARCH},target=/var/lib/apt,sharing=shared       \
+    --mount=type=cache,target=${CARGO_HOME}/registry,sharing=locked                               \
+    --mount=type=cache,target=${CARGO_HOME}/git,sharing=locked                                    \
+    --mount=type=cache,id=o9s-nginx-cargo-build-${TARGETARCH},target=${CARGO_BUILD_BUILD_DIR},sharing=locked    \
     --mount=type=tmpfs,target=${B19_TEMP_PATH}                                                    \
     build-stage compile-rust
 
