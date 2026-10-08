@@ -23,6 +23,7 @@ includes:
   - .makefile/b19/images/rust.yaml
   - .makefile/b19/images/ubuntu.yaml
   - .makefile/b19/traits/release.yaml
+  - .makefile/b19/traits/signed-images.yaml
   - .makefile/container/traits/nginx.yaml
   - .makefile/container/traits/readme-service.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/forge/github.yaml
