@@ -22,6 +22,7 @@ includes:
   - .makefile/b19/images/gcc.yaml
   - .makefile/b19/images/rust.yaml
   - .makefile/b19/images/ubuntu.yaml
+  - .makefile/b19/traits/attested-images.yaml
   - .makefile/b19/traits/release.yaml
   - .makefile/b19/traits/signed-images.yaml
   - .makefile/container/traits/nginx.yaml
