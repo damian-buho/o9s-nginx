@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: MIT
 
-# Lock the document scope: CSP and COEP values come from maps keyed on the content type, so a PDF maps to empty and gets neither header.
+# Lock the header scope: CSP covers documents and PDFs (a viewer renders them), while COEP stays document-only.
 
 set -eou pipefail
 
@@ -24,7 +24,7 @@ do
 done
 
 # shellcheck disable=SC2016 # nginx variables, not shell expansions
-for EXPECTED in '"~^(text/html|image/svg[+]xml)" 1;' 'map $o9s_nginx_document $o9s_nginx_csp {' 'map $o9s_nginx_document $o9s_nginx_coep {' 'default "";'
+for EXPECTED in '"~^(text/html|image/svg[+]xml)" 1;' 'map $sent_http_content_type $o9s_nginx_pdf {' 'map "$o9s_nginx_document$o9s_nginx_pdf" $o9s_nginx_csp {' '"~^application/pdf" 1;' 'map $o9s_nginx_document $o9s_nginx_coep {' 'default "";'
 do
   if ! grep --quiet --fixed-strings "${EXPECTED}" "${WORKDIR}/176-document-headers.nginx"
   then
@@ -47,4 +47,4 @@ then
   exit 1
 fi
 
-echo "CSP and COEP are scoped to document types"
+echo "CSP covers documents and PDFs, COEP documents only"

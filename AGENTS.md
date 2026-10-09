@@ -103,9 +103,9 @@ include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;
 Files in `includes/opt/` are conditionally included by server-block templates in downstream images. Each is a self-contained feature:
 
 - `enable-cors.nginx.j2` — CORS via `O9S_NGINX_CORS_*` (6 vars)
-- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (21 vars, report-to/report-uri included when set); the value is the `$o9s_nginx_csp` map in `http/176-document-headers`, so only `O9S_NGINX_DOCUMENT_TYPES` responses carry it (`.*` restores every response)
+- `enable-csp.nginx.j2` — Content-Security-Policy via `O9S_NGINX_CSP_*` (21 vars, report-to/report-uri included when set); the value is the `$o9s_nginx_csp` map in `http/176-document-headers`, so `O9S_NGINX_DOCUMENT_TYPES` responses plus `application/pdf` carry it (`.*` restores every response)
 - `enable-hsts.nginx.j2` — HSTS via `O9S_NGINX_HSTS_*`
-- `enable-coep.nginx.j2` — Cross-Origin-Embedder-Policy via `O9S_NGINX_COEP_*` (policy, Report-Only switch, report-to group); document-scoped like CSP through `$o9s_nginx_coep`
+- `enable-coep.nginx.j2` — Cross-Origin-Embedder-Policy via `O9S_NGINX_COEP_*` (policy, Report-Only switch, report-to group); document-scoped through `$o9s_nginx_coep`, which never covers PDFs
 - `enable-permissions-policy.nginx.j2` — Permissions-Policy via `O9S_NGINX_PERMISSION_*` (12 vars)
 - `enable-reporting-endpoints.nginx.j2` — Reporting-Endpoints, Report-To and NEL via `O9S_NGINX_REPORTING_ENDPOINTS`, `O9S_NGINX_REPORT_TO`, `O9S_NGINX_NEL` (each emitted only when set)
 - `enable-otel.nginx.j2` — per-server OTel tracing (conditional on module)
@@ -401,7 +401,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `1240-check-deny-static.sh` — static-prefix deny handling
 1. `1250-check-php-entry-points.sh` — PHP entry-point gating
 1. `1260-check-reporting-endpoints.sh` — reporting headers render only when set
-1. `1270-check-document-headers.sh` — CSP and COEP scoped to document types
+1. `1270-check-document-headers.sh` — CSP on documents and PDFs, COEP on documents only
 1. `1280-check-cache-policy.sh` — immutable for content-addressed assets, revalidation for regenerated documents
 1. `1300-nginx-modules.sh` — verify all 6 dynamic modules exist
 1. `1310-precompress-watch.sh` — symlink swap recompresses, sibling/same-target does not
