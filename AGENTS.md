@@ -395,6 +395,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 ## Tests
 
 1. `1200-nginx-test.sh` — `nginx -t`
+1. `1205-check-worker-processes.sh` — `auto` workers follow the cgroup-aware `NUMPROCS`, an explicit count wins
 1. `1210-check-realip-extra.sh` — extra real-IP trust rendering and unknown-provider refusal
 1. `1220-check-realip-header.sh` — `real_ip_header` emitted exactly once
 1. `1230-check-real-ip-header.sh` — real-IP header behavior
