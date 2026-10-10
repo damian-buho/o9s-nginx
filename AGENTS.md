@@ -403,6 +403,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `1260-check-reporting-endpoints.sh` — reporting headers render only when set
 1. `1270-check-document-headers.sh` — CSP on documents and PDFs, COEP on documents only
 1. `1280-check-cache-policy.sh` — immutable for content-addressed assets, revalidation for regenerated documents
+1. `1290-check-ws-upgrade.sh` — `Connection` follows `Upgrade` through the `$connection_upgrade` map
 1. `1300-nginx-modules.sh` — verify all 6 dynamic modules exist
 1. `1310-precompress-watch.sh` — symlink swap recompresses, sibling/same-target does not
 1. `1400-error-pages.sh` — verify every language dir holds all 10 error pages
