@@ -297,6 +297,22 @@ Lint the Dockerfile for best practices
 
 > Image: HADOLINT_IMAGE
 
+### `pf-bridge-containerignore-check`
+
+Verify .containerignore still matches the projectfile
+
+`pf-bridge ignore .containerignore --check`
+
+> Image: PF_BRIDGE_IMAGE
+
+### `pf-bridge-containerignore-generate`
+
+Generate .containerignore from the projectfile
+
+`pf-bridge ignore .containerignore --force`
+
+> Image: PF_BRIDGE_IMAGE
+
 ### `pf-bridge-dockerignore-check`
 
 Verify .dockerignore still matches the projectfile
@@ -691,7 +707,7 @@ Pre-pull the base, tool and frontend images the projectfile names, so a later bu
 
 ### `usage-check`
 
-Verify the committed --help captures in docs/usage.d match the built image
+Verify the committed --help captures in docs/usage.d match the declared executable, else the built image
 
 ## License
 
@@ -1019,16 +1035,6 @@ Ensure the shared dev Docker network exists (no-op in the CI scenario)
 
 Remove the Docker network
 
-## Observability
-
-### `gonzo`
-
-Analyze log streams in a terminal UI
-
-`gonzo`
-
-> Image: D9T_GO_TOOLS_IMAGE
-
 ## Projectfile
 
 ### `pf-bridge-ai-policy-md-check`
@@ -1346,6 +1352,16 @@ Show the next patch version
 `svu patch --tag.mode=current --tag.prefix=${org.projectfile.release.tag-prefix}`
 
 > Image: D9T_GO_TOOLS_IMAGE
+
+## Rust
+
+### `check-outdated-deps-cargo`
+
+Check toolbox Cargo pins for upstream drift
+
+`.makefile/core/scripts/check-outdated.sh ' -> ' .makefile/core/scripts/check-outdated-deps.sh .container/*/deps/cargo.deps`
+
+> Image: B19_RUST_GNU_BASE_IMAGE
 
 ## Secrets
 
