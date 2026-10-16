@@ -7,6 +7,12 @@
   live_reload_render() {
     local reason="${1:-unknown}"
     local nginx_test_output
+    if declare -F o9s_nginx_csp_apply >/dev/null 2>&1; then
+      o9s_nginx_csp_apply "${reason}"
+    fi
+    if declare -F o9s_nginx_ph_scan >/dev/null 2>&1; then
+      o9s_nginx_ph_scan "${reason}"
+    fi
     b19-log info "NGINX" "$(_p "Re-rendering after %s" "${reason}")"
     parallel-j2 "${B19_HOME}"  # same render step the startup hook runs
     nginx_test_output="$(nginx -t 2>&1)" || true

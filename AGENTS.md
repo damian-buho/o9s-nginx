@@ -204,7 +204,8 @@ already happened never waits on an event that already fired. Without
 `inotifywait` in the image the watch falls back to a poll every
 `O9S_NGINX_PRECOMPRESS_WATCH_INTERVAL` seconds (default `30`). It only catches
 a retarget (a symlink swap, as above), not an in-place file overwrite in a
-directory whose path never changes.
+directory whose path never changes. On a staged tree the same swap also reloads
+the refreshed CSP policy through the CSP watch, so one publish moves both.
 
 ## scaffold/
 
@@ -222,6 +223,8 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_PROXY_*`                | Reverse proxy buffer/cache/timeout settings                              |
 | `O9S_NGINX_FASTCGI_*`              | FastCGI buffer/cache/timeout settings                                    |
 | `O9S_NGINX_CSP_*`                  | Content-Security-Policy directives                                       |
+| `O9S_NGINX_CSP_DIR`                | Token dir merged into the directives (default `${B19_HOME}/.csp`)        |
+| `O9S_NGINX_CSP_WATCH_*`            | Policy hot-reload (enabled, interval, debounce)                          |
 | `O9S_NGINX_CORS_*`                 | CORS headers                                                             |
 | `O9S_NGINX_PERMISSION_*`           | Permissions-Policy directives                                            |
 | `O9S_NGINX_INDEX_PHP_ENTRY_POINTS` | Comma entry scripts reaching FastCGI; every other `.php` 403s            |
@@ -278,9 +281,10 @@ Dockerfile ARG `O9S_NGINX_UPSTREAM_VERSION` differs from `deps/nginx/version.dep
 
 ## CSP tokens from downstream
 
-`entrypoint.d/0900-csp-hashes.sh` reads `${O9S_NGINX_CSP_DIR}` (default
-`/app/.csp`) and appends each `<directive>.txt`'s whitespace-separated tokens to
-the matching `O9S_NGINX_CSP_<DIRECTIVE>` before the templates render. It is how a
+`entrypoint.d/0900-csp-hashes.sh` merges `${O9S_NGINX_CSP_DIR}` (default
+`${B19_HOME}/.csp`) into the matching `O9S_NGINX_CSP_<DIRECTIVE>` before the
+templates render. The merge is idempotent: pristine values are snapshotted once,
+so a re-run never duplicates and a deleted file falls back to its base. It is how a
 consumer drops `'sha256-…'` for its own inline scripts into `script-src` without
 `'unsafe-inline'` and without this image knowing anything about that site.
 
@@ -291,6 +295,17 @@ handlers (`onload="…"`); those need removing at the source, not `'unsafe-hashe
 
 Keep the directory OUT of the document root. The policy is already public in the
 header, and a copy under `${O9S_NGINX_PUBLIC_PATH}` only invites drift.
+
+The merge re-runs on every policy event, not just at startup:
+`entrypoint.d/0920-csp-watch.sh` backgrounds a watch (inotify, poll fallback
+every `O9S_NGINX_CSP_WATCH_INTERVAL` seconds, default `30`) that re-merges,
+re-renders and reloads with zero downtime. A staged tree (`O9S_NGINX_PUBLIC_PATH`
+is a symlink the publisher swaps) reloads only on the swap itself: writers land
+the token files first, so reloading on the write would serve the new policy with
+the old HTML until the swap. A flat tree reloads on the write. Only a real change
+reloads, so content-only publishes never disturb a connection.
+`O9S_NGINX_CSP_WATCH_ENABLED=N` opts out; `docker kill -s HUP` always re-merges
+before reloading, with or without the watch.
 `O9S_NGINX_CSP_UPGRADE_INSECURE_REQUESTS` defaults to `upgrade-insecure-requests;`.
 `O9S_NGINX_CSP_REQUIRE_TRUSTED_TYPES_FOR` is empty until a consumer opts in with
 `require-trusted-types-for 'script';` — only after its scripts run clean under enforcement.
@@ -313,7 +328,8 @@ is correct.
 | `0800-scan-preload-assets.sh`   | Scan `${O9S_NGINX_ROOT}/${O9S_NGINX_PH_SCAN_PATH}` for CSS/JS/images/fonts |
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
 | `0810-realip-extra.sh`          | Append extra providers’ live ranges to `REALIP_EXTRA_CIDRS`                |
-| `0900-csp-hashes.sh`            | Append `${O9S_NGINX_CSP_DIR}/<directive>.txt` tokens to `O9S_NGINX_CSP_*`  |
+| `0900-csp-hashes.sh`            | Merge `${O9S_NGINX_CSP_DIR}` tokens into `O9S_NGINX_CSP_*` (idempotent)    |
+| `0920-csp-watch.sh`             | Watch token dir + served path; re-merge and reload                         |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
 | `1310-precompress-watch.sh`     | Watch `O9S_NGINX_PRECOMPRESS_DIR` with inotify; recompress on retarget     |
 | `4910-live-reload-watch.sh`     | Watch config tree with inotify; re-render and reload on template/SIGHUP    |
@@ -332,7 +348,9 @@ old config serving, and the watch re-arms itself after an overflow with one
 converge render. `O9S_NGINX_LIVE_RELOAD_ON_HUP=Y` (default) replaces the
 `0000` HUP forward with a re-render-then-reload, so `docker kill -s HUP` picks
 up mounted template edits too. Skipped under `B19_IMMUTABLE=Y`, and the reload
-is skipped while nginx is not up yet (startup covers that window).
+is skipped while nginx is not up yet (startup covers that window). Every
+re-render path re-merges the CSP tokens and re-scans the preload hints first,
+so a reload never serves a fresh config with a stale derived value.
 
 ## Commands
 
@@ -395,6 +413,9 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 ## Tests
 
 1. `1200-nginx-test.sh` — `nginx -t`
+1. `0800-preload-scan.sh` — rescan rewrites the data files, disabled stays silent
+1. `0900-csp-hashes.sh` — re-apply never duplicates, removal restores base
+1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat edit reloads
 1. `1205-check-worker-processes.sh` — `auto` workers follow the cgroup-aware `NUMPROCS`, an explicit count wins
 1. `1210-check-realip-extra.sh` — extra real-IP trust rendering and unknown-provider refusal
 1. `1220-check-realip-header.sh` — `real_ip_header` emitted exactly once
