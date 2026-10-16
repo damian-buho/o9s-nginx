@@ -9,7 +9,8 @@
 ---
 name: published
 "on":
-  push: {}
+  push:
+    branches: ["**"]
   pull_request: {}
   workflow_dispatch:
     inputs:
@@ -486,8 +487,8 @@ jobs:
       - run: echo images-are-ok
   inputs-are-ok:
     runs-on: ubuntu-26.04
-    needs: ["documentation-is-ok", "projectfile-is-ok", "signing-is-ready", "source-is-ok"]
-    if: ${{ !cancelled() && needs.documentation-is-ok.result == 'success' && needs.projectfile-is-ok.result == 'success' && (needs.signing-is-ready.result == 'success' || (needs.signing-is-ready.result == 'skipped' && !((startsWith(github.ref, 'refs/heads/')) || (startsWith(github.ref, 'refs/tags/'))))) && needs.source-is-ok.result == 'success' && ((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository)) }}
+    needs: ["documentation-is-ok", "projectfile-is-ok", "signing-is-ready", "source-is-ok", "tag-is-on-stable"]
+    if: ${{ !cancelled() && needs.documentation-is-ok.result == 'success' && needs.projectfile-is-ok.result == 'success' && (needs.signing-is-ready.result == 'success' || (needs.signing-is-ready.result == 'skipped' && !((startsWith(github.ref, 'refs/heads/')) || (startsWith(github.ref, 'refs/tags/'))))) && needs.source-is-ok.result == 'success' && (needs.tag-is-on-stable.result == 'success' || (needs.tag-is-on-stable.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && ((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository)) }}
     steps:
       - run: echo inputs-are-ok
   nginx-config-extracted:
@@ -637,8 +638,8 @@ jobs:
             COSIGN_PASSWORD=${{ secrets.COSIGN_PASSWORD }}
   published:
     runs-on: ubuntu-26.04
-    needs: ["image-has-sbom", "image-is-seeded", "image-is-signed", "publish-image", "ready-to-publish", "release-is-published", "release-notes-are-published"]
-    if: ${{ !cancelled() && (needs.image-has-sbom.result == 'success' || (needs.image-has-sbom.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.image-is-seeded.result == 'success' || (needs.image-is-seeded.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.image-is-signed.result == 'success' || (needs.image-is-signed.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.publish-image.result == 'success' || (needs.publish-image.result == 'skipped' && !((startsWith(github.ref, 'refs/heads/')) || (startsWith(github.ref, 'refs/tags/'))))) && needs.ready-to-publish.result == 'success' && (needs.release-is-published.result == 'success' || (needs.release-is-published.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.release-notes-are-published.result == 'success' || (needs.release-notes-are-published.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && ((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository)) }}
+    needs: ["image-has-sbom", "image-is-seeded", "image-is-signed", "publish-image", "ready-to-publish", "release-is-dispatched", "release-is-published", "release-notes-are-published"]
+    if: ${{ !cancelled() && (needs.image-has-sbom.result == 'success' || (needs.image-has-sbom.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.image-is-seeded.result == 'success' || (needs.image-is-seeded.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.image-is-signed.result == 'success' || (needs.image-is-signed.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.publish-image.result == 'success' || (needs.publish-image.result == 'skipped' && !((startsWith(github.ref, 'refs/heads/')) || (startsWith(github.ref, 'refs/tags/'))))) && needs.ready-to-publish.result == 'success' && (needs.release-is-dispatched.result == 'success' || (needs.release-is-dispatched.result == 'skipped' && !(startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/dev'))) && (needs.release-is-published.result == 'success' || (needs.release-is-published.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && (needs.release-notes-are-published.result == 'success' || (needs.release-notes-are-published.result == 'skipped' && !(startsWith(github.ref, 'refs/tags/')))) && ((github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository)) }}
     steps:
       - run: echo published
   ready-to-publish:
@@ -647,6 +648,24 @@ jobs:
     if: (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.repository)
     steps:
       - run: echo ready-to-publish
+  release-is-dispatched:
+    runs-on: ubuntu-26.04
+    needs: ["ready-to-publish"]
+    permissions:
+      actions: write
+    if: startsWith(github.ref, 'refs/heads/') && github.ref != 'refs/heads/dev'
+    env:
+      M6E_STABLE_BRANCH: main
+      M6E_TAG_PREFIX: ''
+      M6E_DISPATCH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: release-dispatch
+        if: vars.CI_SKIP_RELEASE_IS_DISPATCHED != 'true' && vars.CI_SKIP_RELEASE_DISPATCH != 'true'
+        run: .makefile/core/scripts/release-dispatch.sh published.yaml
   release-is-published:
     runs-on: ubuntu-26.04
     needs: ["image-is-seeded", "image-is-signed", "publish-image"]
@@ -944,3 +963,17 @@ jobs:
           image: ${{ vars.IGNORELINT_IMAGE || format('{0}/ignorelint', vars.SOURCE_DOCKER_REGISTRY || 'ghcr.io/damian-buho') }}
           version: ${{ env.M6E_TAG }}
           run: ignorelint
+  tag-is-on-stable:
+    runs-on: ubuntu-26.04
+    if: startsWith(github.ref, 'refs/tags/')
+    env:
+      M6E_STABLE_BRANCH: main
+      M6E_FETCH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: tag-on-stable-check
+        if: vars.CI_SKIP_TAG_IS_ON_STABLE != 'true' && vars.CI_SKIP_TAG_ON_STABLE_CHECK != 'true'
+        run: .makefile/core/scripts/tag-is-on-stable.sh
