@@ -412,6 +412,8 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `2000-check-nginx-version.sh` — verify nginx binary
 1. `4910-live-reload-watch.sh` — template edit re-renders and reloads, bad config does not
 
+Async `test.d` assertions poll with a deadline, never single-check: a watch effect lands after its trigger marker.
+
 ## Immutable mode
 
 When `B19_IMMUTABLE=Y`, the entrypoint skips all config generation — the image must contain pre-rendered configs. Used for hardened/readonly deployments.

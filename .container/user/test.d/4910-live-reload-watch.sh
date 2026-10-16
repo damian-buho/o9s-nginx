@@ -131,6 +131,10 @@ if ! grep --quiet "render" "${MARKER}" 2>/dev/null; then
   echo "FATAL: template edit did not trigger a re-render" >&2
   exit 1
 fi
+deadline=$((SECONDS + 10))
+while ! grep --quiet --fixed-strings "nginx -s reload" "${MARKER}" 2>/dev/null && [ "${SECONDS}" -lt "${deadline}" ]; do
+  sleep 1
+done
 if ! grep --quiet --fixed-strings "nginx -s reload" "${MARKER}"; then
   echo "FATAL: template edit did not trigger a reload" >&2
   exit 1
