@@ -26,10 +26,22 @@ contact:
 license: MIT
 repository-code: https://kiota.ch/o9s/nginx
 keywords:
-  - nginx
-  - web-server
-  - reverse-proxy
+  - acme
+  - brotli
+  - fastcgi
+  - http2
   - http3
-  - docker
+  - https
+  - letsencrypt
+  - nginx
+  - opentelemetry
+  - quic
+  - reverse-proxy
+  - security-headers
+  - self-hosted
+  - tls
+  - web-server
+  - websocket
+  - zstd
 version: 0.19.3
 date-released: "2026-10-16"

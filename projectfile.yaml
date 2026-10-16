@@ -12,11 +12,12 @@ identity:
     uk: Дистрибуція Nginx з підтримкою спільноти на основі B19/GCC
   title: O9S / Nginx
   description:
-    en: Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
-    es: Distribución de Nginx mantenida por la comunidad, construida sobre B19/GCC. Este repositorio contiene únicamente el empaquetado — Dockerfile, scripts de compilación y configuración, todo con licencia MIT; el código original de Nginx se obtiene en tiempo de compilación y conserva su propia licencia.
-    uk: Дистрибуція Nginx з підтримкою спільноти, зібрана на основі B19/GCC. Цей репозиторій містить лише пакування — Dockerfile, скрипти збирання та конфігурацію, усе під ліцензією MIT; вихідний код Nginx отримують під час збирання, і він зберігає власну ліцензію.
+    en: Nginx compiled from source with HTTP/3, brotli and zstd — every directive set by environment variable, with optional ACME, OpenTelemetry and security-header modules.
+    es: Nginx compilado desde fuente con HTTP/3, brotli y zstd — cada directiva por variable de entorno, con módulos opcionales ACME, OpenTelemetry y cabeceras de seguridad.
+    uk: Nginx, зібраний із джерел, з HTTP/3, brotli й zstd — кожна директива змінною середовища, з опційними модулями ACME, OpenTelemetry і безпекових заголовків.
   version: 0.19.3
   released: "2026-10-16"
+  modified: "2026-10-16"
 includes:
   - .makefile/b19/ci.yaml
   - .makefile/b19/images/gcc.yaml
@@ -25,33 +26,45 @@ includes:
   - .makefile/b19/traits/image/attested.yaml
   - .makefile/b19/traits/image/signed.yaml
   - .makefile/b19/traits/image/torrent.yaml
-  - .makefile/container/traits/image/malware-scan.yaml
   - .makefile/container/traits/audit/nginx.yaml
+  - .makefile/container/traits/image/malware-scan.yaml
   - .makefile/container/traits/readme/service.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/forge/github.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/include.yaml
   - https://kiota.ch/damian-buho/metadata/raw/branch/main/registry/dockerhub.yaml
   - https://kiota.ch/o9s/metadata/raw/branch/main/include.yaml
 keywords:
-  - nginx
-  - web-server
-  - reverse-proxy
+  - acme
+  - brotli
+  - fastcgi
+  - http2
   - http3
-  - docker
+  - https
+  - letsencrypt
+  - nginx
+  - opentelemetry
+  - quic
+  - reverse-proxy
+  - security-headers
+  - self-hosted
+  - tls
+  - web-server
+  - websocket
+  - zstd
 kind: SoftwareSourceCode
 links:
   - label:
-      en: O9S / Nginx on kiota.ch
-      es: O9S / Nginx en kiota.ch
-      uk: O9S / Nginx на kiota.ch
+      en: Repository on kiota.ch
+      es: Repositorio en kiota.ch
+      uk: Репозиторій на kiota.ch
     preferred: true
     priority: 10
     type: source-code
     url: https://kiota.ch/o9s/nginx
   - label:
-      en: O9S / Nginx on GitHub
-      es: O9S / Nginx en GitHub
-      uk: O9S / Nginx на GitHub
+      en: Repository on GitHub
+      es: Repositorio en GitHub
+      uk: Репозиторій на GitHub
     priority: 80
     tags:
       - public
@@ -66,6 +79,7 @@ links:
     priority: 80
     tags:
       - support
+      - readme
     type: bugs
     url: https://github.com/damian-buho/o9s-nginx/issues
   - label:

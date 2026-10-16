@@ -8,7 +8,7 @@ pf-cli-managed: yes
 
 # O9S / Nginx
 
-Community-maintained distribution of Nginx built on B19/GCC. This repository holds only the packaging — Dockerfile, build scripts, and configuration, all MIT-licensed; the upstream Nginx is fetched at build time and retains its own licensing.
+Nginx compiled from source with HTTP/3, brotli and zstd — every directive set by environment variable, with optional ACME, OpenTelemetry and security-header modules.
 
 [![Stand with Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://damian-buho.github.io/support-ukraine/) [![Projectfile inside](https://badges.kiota.ch/static/v1?label=projectfile&message=inside&labelColor=0d0d0d&color=8c6723&style=flat-square)](https://projectfile.org) [![License](https://badges.kiota.ch/static/v1?label=license&message=MIT&color=1e5913&style=flat-square)](LICENSE) [![Cosign](https://badges.kiota.ch/static/v1?label=cosign&message=enabled&color=1e5913&style=flat-square)](https://docs.sigstore.dev/cosign/verifying/verify/) ![ClamAV scanned](https://badges.kiota.ch/static/v1?label=clamav&message=scanned&color=1877aa&style=flat-square) [![PRs welcome](https://badges.kiota.ch/static/v1?label=PRs&message=welcome&color=1e5913&style=flat-square)](CONTRIBUTING.md) [![REUSE compliance](https://api.reuse.software/badge/github.com/damian-buho/o9s-nginx)](https://api.reuse.software/info/github.com/damian-buho/o9s-nginx)
 
@@ -153,6 +153,7 @@ See the [Roadmap](docs/ROADMAP.md) for what is planned next.
 
 ## Links
 
+- [Issues on GitHub](https://github.com/damian-buho/o9s-nginx/issues)
 - [Projectfile Specification](https://projectfile.org)
 
 ## License
