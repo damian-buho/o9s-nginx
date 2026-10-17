@@ -18,6 +18,7 @@ identity:
   version: 0.20.0
   released: "2026-10-16"
   modified: "2026-10-16"
+  visibility: public
 includes:
   - .makefile/b19/ci.yaml
   - .makefile/b19/images/gcc.yaml
