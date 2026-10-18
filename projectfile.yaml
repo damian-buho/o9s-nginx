@@ -117,7 +117,7 @@ org:
         # This project’s OWN container is always the nginx server, on every
         # plane, so the default (unmodified M6E_CONTAINER_INSTANCE) row from
         # nginx-gixy.yaml applies unchanged — no override needed here.
-        container-ready-to-test:
+        container-is-tested:
           needs:
             gixy-checked: true
     conventions:
