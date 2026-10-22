@@ -306,7 +306,9 @@ the old HTML until the swap. A flat tree reloads on the write. Only a real chang
 reloads, so content-only publishes never disturb a connection.
 `O9S_NGINX_CSP_WATCH_ENABLED=N` opts out; `docker kill -s HUP` always re-merges
 before reloading, with or without the watch.
-`O9S_NGINX_CSP_UPGRADE_INSECURE_REQUESTS` defaults to `upgrade-insecure-requests;`.
+`O9S_NGINX_CSP_UPGRADE_INSECURE_REQUESTS` defaults to `upgrade-insecure-requests;` and is sent only when the
+client-facing scheme is https (`X-Forwarded-Proto`, else `$scheme`): on a plain-http origin such as a Tor or
+I2P mirror it would rewrite every same-origin subresource to an `https://` URL nothing serves.
 `O9S_NGINX_CSP_REQUIRE_TRUSTED_TYPES_FOR` is empty until a consumer opts in with
 `require-trusted-types-for 'script';` — only after its scripts run clean under enforcement.
 
@@ -424,6 +426,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `1250-check-php-entry-points.sh` — PHP entry-point gating
 1. `1260-check-reporting-endpoints.sh` — reporting headers render only when set
 1. `1270-check-document-headers.sh` — CSP on documents and PDFs, COEP on documents only
+1. `1275-check-csp-upgrade-scheme.sh` — live nginx: `upgrade-insecure-requests` on https only, never on http or a missing header
 1. `1280-check-cache-policy.sh` — immutable for content-addressed assets, revalidation for regenerated documents
 1. `1290-check-ws-upgrade.sh` — `Connection` follows `Upgrade` through the `$connection_upgrade` map
 1. `1300-nginx-modules.sh` — verify all 6 dynamic modules exist
