@@ -472,7 +472,7 @@ jobs:
         with:
           image: ${{ vars.R8E_RQBIT_IMAGE || format('{0}/r8e/rqbit', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }}
           version: ${{ env.M6E_TAG }}
-          run: .makefile/core/scripts/torrent.sh create
+          run: auto-torrent create image
           env: |-
             M6E_RELEASE_TAG=${{ needs.release-tag.outputs.tag }}
             M6E_ARCH=${{ matrix.M6E_ARCH }}
@@ -494,7 +494,7 @@ jobs:
         with:
           image: ${{ vars.R8E_RQBIT_IMAGE || format('{0}/r8e/rqbit', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }}
           version: ${{ env.M6E_TAG }}
-          run: .makefile/core/scripts/torrent.sh seed
+          run: auto-torrent seed image
           env: |-
             M6E_RELEASE_TAG=${{ needs.release-tag.outputs.tag }}
             M6E_ARCH=${{ matrix.M6E_ARCH }}
@@ -684,7 +684,7 @@ jobs:
             ${{ vars.IGNORELINT_IMAGE || format('{0}/damian-buho/ignorelint', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }} ${{ env.M6E_TAG }} ignorelint -
             ${{ vars.PF_BRIDGE_IMAGE || format('{0}/projectfile/bridge', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }} ${{ env.M6E_TAG }} pf-bridge -
             ${{ vars.PF_CLI_IMAGE || format('{0}/projectfile/cli', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }} ${{ env.M6E_TAG }} pf-cli -
-            ${{ vars.R8E_RQBIT_IMAGE || format('{0}/r8e/rqbit', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }} ${{ env.M6E_TAG }} - -
+            ${{ vars.R8E_RQBIT_IMAGE || format('{0}/r8e/rqbit', vars.SOURCE_DOCKER_REGISTRY || 'kiota.ch') }} ${{ env.M6E_TAG }} auto-torrent -
   signing-is-ready:
     runs-on: docker
     needs: ["release-tag"]
