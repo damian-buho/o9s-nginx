@@ -5,3 +5,4 @@
 # Explicit value wins; otherwise on at info/debug verbosity, off below
 {%- set _default = "/dev/stdout default" if ENV.B19_VERBOSITY in ["info", "debug"] else "off" %}
 access_log      {{ ENV.O9S_NGINX_ACCESS_LOG or _default }};
+log_not_found   {{ ENV.O9S_NGINX_LOG_NOT_FOUND or "off" }};
