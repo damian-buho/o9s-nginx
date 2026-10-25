@@ -10,7 +10,7 @@ set -o pipefail
 
 # Test actual Nginx HTTP response
 # This checks real operational health, not just if nginx is installed
-if ! curl -I -s "http://localhost:${O9S_NGINX_HTTP_PORT}/${O9S_NGINX_STATUS_URL}" >/dev/null 2>&1; then
+if ! curl --fail --silent --max-time "${B19_HEALTH_CURL_TIMEOUT}" "http://localhost:${O9S_NGINX_HTTP_PORT}/${O9S_NGINX_STATUS_URL}" >/dev/null 2>&1; then
   b19-log bad "HEALTH.D" "$(_p "HTTP server (O9S_NGINX_HTTP_PORT: %s) not responding" "${O9S_NGINX_HTTP_PORT}")"
   exit 1
 fi
