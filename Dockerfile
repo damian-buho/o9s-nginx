@@ -433,3 +433,7 @@ RUN --mount=type=bind,from=fetch,source=.,target=/fetch                         
 STOPSIGNAL SIGQUIT
 # ENTRYPOINT ["entrypoint.d"] is inherited
 # HEALTHCHECK CMD ["healthcheck.d"] is inherited
+
+# Untagged payload lines are the JSON access log, the nginx tag carries error_log text; read by o9s/alloy
+LABEL org.o9s.log.format=json
+LABEL org.o9s.log.format.nginx=nginx-error

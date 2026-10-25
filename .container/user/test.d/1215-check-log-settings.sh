@@ -20,6 +20,14 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# The default access log follows B19_VERBOSITY and B19_LOG_FORMAT
+for CASE in 'warn:json:off' 'info:text:/dev/stdout default' 'info:json:/dev/stdout json_combined' 'debug:json:/dev/stdout json_combined'
+do
+  IFS=: read -r VERBOSITY FORMAT WANT <<<"${CASE}"
+  GOT="$(O9S_NGINX_ACCESS_LOG='' B19_VERBOSITY="${VERBOSITY}" B19_LOG_FORMAT="${FORMAT}" minijinja-cli --autoescape none --env "${XDG_CONFIG_HOME}/includes/http/210-access_log.nginx.j2" | grep '^access_log')"
+  b19-assert matches "ACCESS-LOG" "^access_log +${WANT};$" "${GOT}"
+done
+
 cp "${XDG_CONFIG_HOME}/includes/http/200-json_log_format.nginx" "${XDG_CONFIG_HOME}/includes/http/210-access_log.nginx.j2" "${WORKDIR}/"
 mkdir "${WORKDIR}/www"
 export O9S_NGINX_ACCESS_LOG="${WORKDIR}/access.log json_combined"

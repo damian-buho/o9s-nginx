@@ -336,7 +336,11 @@ is correct.
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
 | `1310-precompress-watch.sh`     | Watch `O9S_NGINX_PRECOMPRESS_DIR` with inotify; recompress on retarget     |
 | `4910-live-reload-watch.sh`     | Watch config tree with inotify; re-render and reload on template/SIGHUP    |
-| `5000-start.sh`                 | `b19-exec --stdout-level warn --stderr-level warn -- nginx`                |
+| `5000-start.sh`                 | `b19-exec --name nginx --stdout-level warn --stderr-level warn -- nginx`   |
+
+## Log formats
+
+`5000-start.sh` names the payload `nginx`, so under `B19_LOG_FORMAT=json` every `error_log` line arrives as a `b19-log` object tagged `nginx` with the native line in `msg`, while the access log, on by default at info/debug, is `json_combined` and passes through untouched. The image labels say so for collectors: `org.o9s.log.format=json` for untagged lines and `org.o9s.log.format.nginx=nginx-error` for the tag; o9s/alloy picks its parser from them. nginx has no format for `error_log`, so the fields come from that parser.
 
 ## Live reload
 

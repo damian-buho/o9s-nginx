@@ -7,5 +7,5 @@
   if [ "${ENTRYPOINT_COMMAND_EXECUTED:-N}" == "N" ];
   then
     b19-log info "NGINX" "$(_ "Starting server")"
-    b19-exec --stdout-level warn --stderr-level warn -- nginx
+    b19-exec --name nginx --stdout-level warn --stderr-level warn -- nginx
   fi
