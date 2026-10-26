@@ -15,7 +15,7 @@ identity:
     en: Nginx compiled from source with HTTP/3, brotli and zstd — every directive set by environment variable, with optional ACME, OpenTelemetry and security-header modules.
     es: Nginx compilado desde fuente con HTTP/3, brotli y zstd — cada directiva por variable de entorno, con módulos opcionales ACME, OpenTelemetry y cabeceras de seguridad.
     uk: Nginx, зібраний із джерел, з HTTP/3, brotli й zstd — кожна директива змінною середовища, з опційними модулями ACME, OpenTelemetry і безпекових заголовків.
-  version: 0.21.0
+  version: 0.22.0
   released: "2026-10-25"
   modified: "2026-10-16"
   visibility: public
