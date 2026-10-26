@@ -11,7 +11,6 @@
   b19-log info "NGINX" "Testing rendered configuration"
 
   NGINX_TEST_OUTPUT="$(nginx -t 2>&1)" || true
-  printf '%s\n' "${NGINX_TEST_OUTPUT}" >&2
 
   if grep -q "successful" <<<"${NGINX_TEST_OUTPUT}"
   then
@@ -19,12 +18,13 @@
     return 0
   fi
 
+  b19-log error "NGINX" <<<"${NGINX_TEST_OUTPUT}"
   b19-log error "NGINX" "Configuration test failed — dumping all rendered .nginx files"
 
   while IFS= read -r -d '' nginx_file
   do
     b19-log error "NGINX" "--- ${nginx_file} ---"
-    cat "${nginx_file}" >&2
+    b19-log error "NGINX" <"${nginx_file}"
   done < <(find /app/.config -name '*.nginx' -print0 | sort -z)
 
   sleep infinity

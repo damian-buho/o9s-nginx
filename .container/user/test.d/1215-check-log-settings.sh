@@ -28,6 +28,14 @@ do
   b19-assert matches "ACCESS-LOG" "^access_log +${WANT};$" "${GOT}"
 done
 
+# The startup config test writes nothing but JSON objects under B19_LOG_FORMAT=json
+GOT="$(B19_LOG_FORMAT=json B19_VERBOSITY=debug bash -c '. /entrypoint.d/4900-test-config.sh' 2>&1)"
+if [[ -z "${GOT}" ]] || ! jq --exit-status --slurp 'all(type == "object")' <<<"${GOT}" >/dev/null 2>&1; then
+  echo "FATAL: config test printed a non-JSON line under B19_LOG_FORMAT=json: ${GOT}" >&2
+  exit 1
+fi
+echo "Config test output is JSON only: $(wc --lines <<<"${GOT}") lines"
+
 cp "${XDG_CONFIG_HOME}/includes/http/200-json_log_format.nginx" "${XDG_CONFIG_HOME}/includes/http/210-access_log.nginx.j2" "${WORKDIR}/"
 mkdir "${WORKDIR}/www"
 export O9S_NGINX_ACCESS_LOG="${WORKDIR}/access.log json_combined"

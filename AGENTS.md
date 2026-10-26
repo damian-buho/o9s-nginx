@@ -425,7 +425,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat edit reloads
 1. `1205-check-worker-processes.sh` — `auto` workers follow the cgroup-aware `NUMPROCS`, an explicit count wins
 1. `1210-check-realip-extra.sh` — extra real-IP trust rendering and unknown-provider refusal
-1. `1215-check-log-settings.sh` — live nginx: a missing file logs no `open()` error unless `O9S_NGINX_LOG_NOT_FOUND=on`, `json_combined` carries every field
+1. `1215-check-log-settings.sh` — live nginx: a missing file logs no `open()` error unless `O9S_NGINX_LOG_NOT_FOUND=on`, `json_combined` carries every field, the startup config test prints only JSON under `B19_LOG_FORMAT=json`
 1. `1220-check-realip-header.sh` — `real_ip_header` emitted exactly once
 1. `1230-check-real-ip-header.sh` — real-IP header behavior
 1. `1240-check-deny-static.sh` — static-prefix deny handling

@@ -16,7 +16,6 @@
     b19-log info "NGINX" "$(_p "Re-rendering after %s" "${reason}")"
     parallel-j2 "${B19_HOME}"  # same render step the startup hook runs
     nginx_test_output="$(nginx -t 2>&1)" || true
-    printf '%s\n' "${nginx_test_output}" >&2
     if grep -q "successful" <<<"${nginx_test_output}"
     then
       if [ -f "${XDG_STATE_HOME}/nginx.pid" ] && kill -0 "$(cat "${XDG_STATE_HOME}/nginx.pid" 2>/dev/null)" 2>/dev/null
@@ -27,6 +26,7 @@
         b19-log warn "NGINX" "$(_p "Config tested, nginx not running yet after %s" "${reason}")"
       fi
     else
+      b19-log error "NGINX" <<<"${nginx_test_output}"
       b19-log error "NGINX" "$(_p "Config test failed after %s, keeping the old config" "${reason}")"
     fi
   }
