@@ -20,6 +20,11 @@ Nginx compilado desde fuente con HTTP/3, brotli y zstd — cada directiva por va
 
 [![Publish pipeline on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/published.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Vulnerability audit on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/audited.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Dependency freshness on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/check-outdated.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Analysis sweep on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/analyzed.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions)
 
+## Proyecto original
+
+Este proyecto empaqueta [nginx](https://nginx.org) (`BSD-2-Clause`).
+Gracias a: Igor Sysoev and Nginx, Inc.
+
 ## Características
 
 - Automatización integrada de certificados ACME
@@ -159,6 +164,6 @@ Consulta la [Hoja de ruta](../ROADMAP.md) para ver lo que viene.
 
 ## Licencia
 
-Este proyecto se publica bajo la licencia MIT — consulta el archivo [LICENSE](LICENSE) para más detalles.
+El empaquetado de este repositorio se publica bajo la licencia MIT — consulta el archivo [LICENSE](LICENSE) para más detalles.
 
 <!-- textlint-enable -->

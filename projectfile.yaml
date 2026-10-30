@@ -135,3 +135,8 @@ repositories:
     url: git@github.com:damian-buho/o9s-nginx.git
 technologies:
   - c
+upstream:
+  - authors: Igor Sysoev and Nginx, Inc.
+    license: BSD-2-Clause
+    name: nginx
+    url: https://nginx.org

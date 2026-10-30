@@ -18,6 +18,11 @@ Nginx compiled from source with HTTP/3, brotli and zstd — every directive set 
 
 [![Publish pipeline on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/published.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Vulnerability audit on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/audited.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Dependency freshness on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/check-outdated.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Analysis sweep on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/analyzed.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions)
 
+## Upstream
+
+This project packages [nginx](https://nginx.org) (`BSD-2-Clause`).
+Thanks to: Igor Sysoev and Nginx, Inc.
+
 ## Features
 
 - Built-in ACME certificate automation
@@ -158,4 +163,4 @@ See the [Roadmap](docs/ROADMAP.md) for what is planned next.
 
 ## License
 
-This project is licensed under MIT — see the [LICENSE](LICENSE) file for details.
+The packaging in this repository is licensed under MIT — see the [LICENSE](LICENSE) file for details.

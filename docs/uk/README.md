@@ -20,6 +20,11 @@ Nginx, зібраний із джерел, з HTTP/3, brotli й zstd — кож�
 
 [![Publish pipeline on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/published.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Vulnerability audit on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/audited.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Dependency freshness on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/check-outdated.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions) [![Analysis sweep on kiota.ch](https://kiota.ch/o9s/nginx/badges/workflows/analyzed.yaml/badge.svg?style=flat-square)](https://kiota.ch/o9s/nginx/actions)
 
+## Першоджерело
+
+Цей проєкт пакує [nginx](https://nginx.org) (`BSD-2-Clause`).
+Дякуємо: Igor Sysoev and Nginx, Inc.
+
 ## Можливості
 
 - Вбудована автоматизація сертифікатів ACME
@@ -159,6 +164,6 @@ make container-build
 
 ## Ліцензія
 
-Цей проєкт ліцензовано на умовах MIT — див. файл [LICENSE](LICENSE) для подробиць.
+Пакування в цьому репозиторії ліцензовано на умовах MIT — див. файл [LICENSE](LICENSE) для подробиць.
 
 <!-- textlint-enable -->
