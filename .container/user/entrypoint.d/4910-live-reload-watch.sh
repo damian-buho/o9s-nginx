@@ -66,9 +66,10 @@
         trap 'live_reload_on_hup' HUP  # render first, then reload; replaces the 0000 forward for HUP only
         b19-log info "NGINX" "$(_ "SIGHUP re-renders before reloading")"
       fi
+      export -f live_reload_render live_reload_on_hup live_reload_watch
       if command -v inotifywait >/dev/null 2>&1
       then
-        live_reload_watch &
+        b19-exec --background --optional --name live-reload-watch -- bash -c 'live_reload_watch'
         b19-log info "NGINX" "$(_p "Watching %s for template changes" "${O9S_NGINX_LIVE_RELOAD_DIR:-${XDG_CONFIG_HOME:-${B19_HOME:-/app}/.config}}")"
       else
         b19-log error "NGINX" "$(_ "Live reload watch needs inotifywait, HUP re-render still active")"

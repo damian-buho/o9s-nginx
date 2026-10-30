@@ -56,12 +56,13 @@
       done
     }
 
+    export -f precompress_watch_poll precompress_watch_inotify
     if command -v inotifywait >/dev/null 2>&1
     then
-      precompress_watch_inotify &
+      b19-exec --background --optional --name precompress-watch -- bash -c 'precompress_watch_inotify'
       b19-log info "ASSETS" "$(_p "Watching %s for moves of %s" "${O9S_NGINX_PRECOMPRESS_DIR:-${B19_HOME:-/app}}" "$(basename "${O9S_NGINX_PRECOMPRESS_DIR:-${B19_HOME:-/app}}")")"
     else
-      precompress_watch_poll &
+      b19-exec --background --optional --name precompress-watch -- bash -c 'precompress_watch_poll'
       b19-log info "ASSETS" "$(_p "Watching %s for changes every %ss (no inotifywait)" "${O9S_NGINX_PRECOMPRESS_DIR:-${B19_HOME:-/app}}" "${O9S_NGINX_PRECOMPRESS_WATCH_INTERVAL:-30}")"
     fi
   fi
