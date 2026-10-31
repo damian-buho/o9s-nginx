@@ -16,6 +16,7 @@ export PATH="${WORKDIR}/bin:${PATH}"
 export MARKER="${WORKDIR}/calls.txt"
 export B19_HOME="${WORKDIR}"
 export XDG_STATE_HOME="${WORKDIR}/state"
+export B19_RUNTIME_PATH="${WORKDIR}/run-staged"  # own b19-exec claims: the container's csp-watch keeps its name
 
 cat > "${WORKDIR}/bin/parallel-j2" <<'EOF'
 #!/usr/bin/env bash
@@ -106,6 +107,7 @@ trap - HUP
 
 rm -f "${MARKER}"
 export O9S_NGINX_PUBLIC_PATH="${WORKDIR}/flat"
+export B19_RUNTIME_PATH="${WORKDIR}/run-flat"  # the staged watcher still holds its csp-watch claim
 
 # shellcheck source=/dev/null
 . /entrypoint.d/0920-csp-watch.sh

@@ -86,7 +86,7 @@ fi
 unset NGINX_TEST_OK
 
 # env, not a subshell, keeps each gate run isolated without tripping SC2030.
-env O9S_NGINX_LIVE_RELOAD_ENABLED=Y O9S_NGINX_LIVE_RELOAD_ON_HUP=Y \
+env O9S_NGINX_LIVE_RELOAD_ENABLED=Y O9S_NGINX_LIVE_RELOAD_ON_HUP=Y B19_RUNTIME_PATH="${WORKDIR}/run-hup-on" \
   O9S_NGINX_LIVE_RELOAD_DIR="${WORKDIR}/state" PATH="${WORKDIR}/hupbin:${PATH}" \
   bash -c '. /entrypoint.d/4910-live-reload-watch.sh; trap -p HUP' >"${WORKDIR}/hup-on.txt" 2>/dev/null  # file, not pipe: orphans must not hold it
 if ! grep --quiet "live_reload_on_hup" "${WORKDIR}/hup-on.txt"; then
@@ -94,7 +94,7 @@ if ! grep --quiet "live_reload_on_hup" "${WORKDIR}/hup-on.txt"; then
   exit 1
 fi
 
-env O9S_NGINX_LIVE_RELOAD_ENABLED=Y O9S_NGINX_LIVE_RELOAD_ON_HUP=N \
+env O9S_NGINX_LIVE_RELOAD_ENABLED=Y O9S_NGINX_LIVE_RELOAD_ON_HUP=N B19_RUNTIME_PATH="${WORKDIR}/run-hup-off" \
   O9S_NGINX_LIVE_RELOAD_DIR="${WORKDIR}/state" PATH="${WORKDIR}/hupbin:${PATH}" \
   bash -c '. /entrypoint.d/4910-live-reload-watch.sh; trap -p HUP' >"${WORKDIR}/hup-off.txt" 2>/dev/null
 if grep --quiet "live_reload_on_hup" "${WORKDIR}/hup-off.txt"; then
@@ -113,6 +113,7 @@ rm -f "${MARKER}"
 echo "$$" > "${XDG_STATE_HOME}/nginx.pid"
 
 export O9S_NGINX_LIVE_RELOAD_ENABLED=Y
+export B19_RUNTIME_PATH="${WORKDIR}/run-watch"  # the placeholder watchers above still hold their live-reload-watch claims
 export O9S_NGINX_LIVE_RELOAD_DIR="${WORKDIR}/config"
 export O9S_NGINX_LIVE_RELOAD_DEBOUNCE=1
 
