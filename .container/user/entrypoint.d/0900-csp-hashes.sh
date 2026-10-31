@@ -47,4 +47,5 @@ o9s_nginx_csp_apply() {
   done
 }
 
+export -f o9s_nginx_csp_apply
 o9s_nginx_csp_apply "startup"

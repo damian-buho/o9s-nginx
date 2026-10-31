@@ -53,4 +53,5 @@ o9s_nginx_ph_scan() {
   fi
 }
 
+export -f o9s_nginx_ph_scan
 o9s_nginx_ph_scan "startup"

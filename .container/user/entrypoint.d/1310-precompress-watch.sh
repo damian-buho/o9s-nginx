@@ -56,7 +56,7 @@
       done
     }
 
-    export -f precompress_watch_poll precompress_watch_inotify
+    export -f _p precompress_watch_poll precompress_watch_inotify
     if command -v inotifywait >/dev/null 2>&1
     then
       b19-exec --background --optional --name precompress-watch -- bash -c 'precompress_watch_inotify'

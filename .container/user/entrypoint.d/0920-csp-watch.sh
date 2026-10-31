@@ -132,7 +132,7 @@ if [ "${O9S_NGINX_CSP_WATCH_ENABLED:-Y}" = "Y" ]; then
   else
     trap 'o9s_nginx_csp_on_hup' HUP
     b19-log info "CSP" "$(_ "SIGHUP refreshes the policy before reloading")"
-    export -f o9s_nginx_csp_reload o9s_nginx_csp_snapshot o9s_nginx_csp_due o9s_nginx_csp_remember o9s_nginx_csp_converge o9s_nginx_csp_poll o9s_nginx_csp_inotify o9s_nginx_csp_on_hup
+    export -f _p o9s_nginx_csp_reload o9s_nginx_csp_snapshot o9s_nginx_csp_due o9s_nginx_csp_remember o9s_nginx_csp_converge o9s_nginx_csp_poll o9s_nginx_csp_inotify o9s_nginx_csp_on_hup
     if command -v inotifywait >/dev/null 2>&1; then
       b19-exec --background --optional --name csp-watch -- bash -c 'o9s_nginx_csp_inotify'
       b19-log info "CSP" "$(_p "Watching %s for policy changes" "${O9S_NGINX_PUBLIC_PATH:-${O9S_NGINX_ROOT:-${B19_HOME:-/app}}/public}")"
