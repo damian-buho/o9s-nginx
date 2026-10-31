@@ -63,7 +63,7 @@ export O9S_NGINX_CSP_WATCH_DEBOUNCE=1
 . /entrypoint.d/0920-csp-watch.sh
 WATCHER=$!
 
-trap 'kill -TERM "${WATCHER:-}" 2>/dev/null; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
+trap 'kill -TERM "${WATCHER:-}" 2>/dev/null || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
 
 sleep 3
 if [ -f "${MARKER}" ]; then
@@ -112,7 +112,7 @@ export B19_RUNTIME_PATH="${WORKDIR}/run-flat"  # the staged watcher still holds 
 # shellcheck source=/dev/null
 . /entrypoint.d/0920-csp-watch.sh
 WATCHER=$!
-trap 'kill -TERM "${WATCHER:-}" 2>/dev/null; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
+trap 'kill -TERM "${WATCHER:-}" 2>/dev/null || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
 
 sleep 2
 if [ -f "${MARKER}" ]; then
