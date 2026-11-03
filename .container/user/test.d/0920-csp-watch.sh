@@ -61,9 +61,7 @@ export O9S_NGINX_CSP_WATCH_DEBOUNCE=1
 . /entrypoint.d/0900-csp-hashes.sh
 # shellcheck source=/dev/null
 . /entrypoint.d/0920-csp-watch.sh
-WATCHER=$!
-
-trap 'kill -TERM "${WATCHER:-}" 2>/dev/null || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
+trap 'b19-exec --stop csp-watch || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
 
 sleep 3
 if [ -f "${MARKER}" ]; then
@@ -101,18 +99,19 @@ if [ "$(grep --count --fixed-strings "nginx -s reload" "${MARKER}" || true)" != 
   exit 1
 fi
 
-kill -TERM "${WATCHER}" 2>/dev/null || true
-wait "${WATCHER}" 2>/dev/null || true
+if ! b19-exec --stop csp-watch; then
+  echo "FATAL: staged watcher did not stop" >&2
+  exit 1
+fi
 trap - HUP
 
 rm -f "${MARKER}"
 export O9S_NGINX_PUBLIC_PATH="${WORKDIR}/flat"
-export B19_RUNTIME_PATH="${WORKDIR}/run-flat"  # the staged watcher still holds its csp-watch claim
+export B19_RUNTIME_PATH="${WORKDIR}/run-flat"  # flat watcher claims its own dir, like the staged one
 
 # shellcheck source=/dev/null
 . /entrypoint.d/0920-csp-watch.sh
-WATCHER=$!
-trap 'kill -TERM "${WATCHER:-}" 2>/dev/null || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
+trap 'b19-exec --stop csp-watch || true; trap - HUP; rm --recursive --force "${WORKDIR}"' EXIT
 
 sleep 2
 if [ -f "${MARKER}" ]; then

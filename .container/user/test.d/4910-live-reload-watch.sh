@@ -102,6 +102,16 @@ if grep --quiet "live_reload_on_hup" "${WORKDIR}/hup-off.txt"; then
   exit 1
 fi
 
+# stop the watchers the two HUP probes started, under each probe's own claim dir
+if ! env B19_RUNTIME_PATH="${WORKDIR}/run-hup-on" b19-exec --stop live-reload-watch; then
+  echo "FATAL: SIGHUP placeholder watcher did not stop" >&2
+  exit 1
+fi
+if ! env B19_RUNTIME_PATH="${WORKDIR}/run-hup-off" b19-exec --stop live-reload-watch; then
+  echo "FATAL: ON_HUP=N placeholder watcher did not stop" >&2
+  exit 1
+fi
+
 if ! command -v inotifywait >/dev/null 2>&1; then
   echo "SKIP: inotifywait not installed, watcher loop untested" >&2
   exit 0
@@ -113,13 +123,13 @@ rm -f "${MARKER}"
 echo "$$" > "${XDG_STATE_HOME}/nginx.pid"
 
 export O9S_NGINX_LIVE_RELOAD_ENABLED=Y
-export B19_RUNTIME_PATH="${WORKDIR}/run-watch"  # the placeholder watchers above still hold their live-reload-watch claims
+export B19_RUNTIME_PATH="${WORKDIR}/run-watch"  # own claim dir: never the container's live-reload-watch
 export O9S_NGINX_LIVE_RELOAD_DIR="${WORKDIR}/config"
 export O9S_NGINX_LIVE_RELOAD_DEBOUNCE=1
 
-setsid bash -c '. /entrypoint.d/4910-live-reload-watch.sh; sleep 30' &
-WATCHER=$!
-trap 'kill -TERM -- -"${WATCHER}" 2>/dev/null; rm --recursive --force "${WORKDIR}"' EXIT
+# shellcheck source=/dev/null
+. /entrypoint.d/4910-live-reload-watch.sh
+trap 'b19-exec --stop live-reload-watch || true; rm --recursive --force "${WORKDIR}"' EXIT
 
 sleep 2  # let the watcher arm its inotifywait
 echo "changed" >> "${WORKDIR}/config/site.nginx.j2"  # template edit: must re-render
