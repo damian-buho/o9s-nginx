@@ -11,7 +11,7 @@
     set -euo pipefail
 
     ERRORS_DIR="${B19_HOME}/errors"
-    TEMPLATE="/templates/error-page.html.j2"
+    TEMPLATE="/build.d/user/error-page.html.j2"
     LANGS_DATA="${XDG_CONFIG_HOME}/includes/http/175-error-pages.nginx.data.json"
 
     CODES=(400 401 402 403 404 429 500 502 503 504)

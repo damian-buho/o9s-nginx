@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     fastcgi_send_timeout                {{ ENV.O9S_NGINX_FASTCGI_SEND_TIMEOUT }};
     fastcgi_socket_keepalive            {{ ENV.O9S_NGINX_FASTCGI_SOCKET_KEEPALIVE }};
     fastcgi_temp_file_write_size        {{ ENV.O9S_NGINX_FASTCGI_TEMP_FILE_WRITE_SIZE }};
-    fastcgi_temp_path                   {{ ENV.B19_HOME }}/cache/fastcgi_temp 1 2;
+    fastcgi_temp_path                   {{ ENV.O9S_NGINX_CACHE_PATH }}/fastcgi_temp 1 2;
 
     fastcgi_param CONTENT_LENGTH        $content_length;
     fastcgi_param CONTENT_TYPE          $content_type;

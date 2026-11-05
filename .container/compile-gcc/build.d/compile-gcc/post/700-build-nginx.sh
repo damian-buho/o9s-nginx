@@ -17,6 +17,7 @@
   # Phase 2: --add-dynamic-module modules
   b19-run "NGINX" "$(_ "Build")" --     make modules
   b19-run "NGINX" "$(_ "Install")" --   make install DESTDIR=/export
+  b19-run "NGINX" "$(_p "Remove %s" "/export/dev /export/run")" -- rm --recursive --force /export/dev /export/run
 
   # Phase 3: copy --add-dynamic-module .so to /export${O9S_NGINX_MODULES_PATH}/
   for MODULE_DIR in /deps/modules/*/; do

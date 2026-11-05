@@ -7,8 +7,8 @@
 # Rescan the preload-hint source tree; idempotent, safe to call on every reload.
 o9s_nginx_ph_scan() {
   local reason="${1:-unknown}"
-  local data_file="${XDG_CONFIG_HOME}/includes/server/preload_hints.nginx.data.json"
-  local http_map_data_file="${XDG_CONFIG_HOME}/includes/http/135-preload-hints-map.nginx.data.json"
+  local data_file="${B19_RUNTIME_PATH%/}${XDG_CONFIG_HOME}/includes/server/preload_hints.nginx.data.json"
+  local http_map_data_file="${B19_RUNTIME_PATH%/}${XDG_CONFIG_HOME}/includes/http/135-preload-hints-map.nginx.data.json"
   local file relative_path first=true
   local -a assets=()
   if [ "${O9S_NGINX_PH_SCAN_ENABLED:-N}" != "Y" ]; then

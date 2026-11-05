@@ -19,7 +19,7 @@ mkdir -p "${WORKDIR}/bin" "${WORKDIR}/state" "${WORKDIR}/config/includes"
 export PATH="${WORKDIR}/bin:${PATH}"
 export MARKER="${WORKDIR}/calls.txt"
 export B19_HOME="${WORKDIR}"
-export XDG_STATE_HOME="${WORKDIR}/state"
+export B19_RUNTIME_PATH="${WORKDIR}/state"
 
 cat > "${WORKDIR}/bin/parallel-j2" <<'EOF'
 #!/usr/bin/env bash
@@ -51,7 +51,7 @@ chmod +x "${WORKDIR}/hupbin/inotifywait"
 # shellcheck source=/dev/null
 . /entrypoint.d/4910-live-reload-watch.sh
 
-echo "$$" > "${XDG_STATE_HOME}/nginx.pid"  # nginx running: this shell is alive
+echo "$$" > "${B19_RUNTIME_PATH}/nginx.pid"  # nginx running: this shell is alive
 
 live_reload_render "test running"
 if ! grep --quiet --fixed-strings "render ${WORKDIR}" "${MARKER}"; then
@@ -63,7 +63,7 @@ if ! grep --quiet --fixed-strings "nginx -s reload" "${MARKER}"; then
   exit 1
 fi
 
-rm -f "${MARKER}" "${XDG_STATE_HOME}/nginx.pid"  # nginx stopped: nothing to signal
+rm -f "${MARKER}" "${B19_RUNTIME_PATH}/nginx.pid"  # nginx stopped: nothing to signal
 
 live_reload_render "test stopped"
 if ! grep --quiet --fixed-strings "render ${WORKDIR}" "${MARKER}"; then
@@ -120,10 +120,11 @@ fi
 echo "x" > "${WORKDIR}/config/site.nginx.j2"
 echo "y" > "${WORKDIR}/config/site.nginx"
 rm -f "${MARKER}"
-echo "$$" > "${XDG_STATE_HOME}/nginx.pid"
 
 export O9S_NGINX_LIVE_RELOAD_ENABLED=Y
 export B19_RUNTIME_PATH="${WORKDIR}/run-watch"  # own claim dir: never the container's live-reload-watch
+mkdir --parents "${B19_RUNTIME_PATH}"
+echo "$$" > "${B19_RUNTIME_PATH}/nginx.pid"
 export O9S_NGINX_LIVE_RELOAD_DIR="${WORKDIR}/config"
 export O9S_NGINX_LIVE_RELOAD_DEBOUNCE=1
 

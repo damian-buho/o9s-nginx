@@ -14,7 +14,7 @@ served to each visitor in their own language with zero JavaScript.
 
 | Path (source tree)                                                   | Role                                                          |
 | -------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `.container/user/templates/error-page.html.j2`                       | the one template every page renders from                      |
+| `.container/user/build.d/user/error-page.html.j2`                    | the one template every page renders from                      |
 | `.container/user/app/public/errors/error.css`                        | shared style sheet, served publicly at `/errors/error.css`    |
 | `.container/user/build.d/user/post/260-generate-error-pages.sh`      | build hook: renders `${B19_HOME}/errors/<lang>/<code>.html`   |
 | `.container/user/app/.config/includes/http/175-error-pages.nginx.j2` | `Accept-Language → $error_lang` map                           |

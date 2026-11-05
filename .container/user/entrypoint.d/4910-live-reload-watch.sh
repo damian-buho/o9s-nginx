@@ -18,7 +18,7 @@
     nginx_test_output="$(nginx -t 2>&1)" || true
     if grep -q "successful" <<<"${nginx_test_output}"
     then
-      if [ -f "${XDG_STATE_HOME}/nginx.pid" ] && kill -0 "$(cat "${XDG_STATE_HOME}/nginx.pid" 2>/dev/null)" 2>/dev/null
+      if [ -f "${B19_RUNTIME_PATH}/nginx.pid" ] && kill -0 "$(cat "${B19_RUNTIME_PATH}/nginx.pid" 2>/dev/null)" 2>/dev/null
       then
         nginx -s reload  # zero-downtime: old workers drain, new config takes over
         b19-log good "NGINX" "$(_p "Reloaded after %s" "${reason}")"
@@ -59,7 +59,7 @@
   then
     # shellcheck source=/dev/null
     . b19-i18n
-    if [ "${B19_IMMUTABLE:-N}" = "Y" ]; then
+    if b19-is-immutable "${B19_RUNTIME_PATH}"; then
       b19-log warn "NGINX" "$(_ "Live reload disabled: immutable image never re-renders")"
     else
       if [ "${O9S_NGINX_LIVE_RELOAD_ON_HUP:-Y}" = "Y" ]; then

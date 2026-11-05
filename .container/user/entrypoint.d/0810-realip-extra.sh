@@ -14,9 +14,9 @@ then
   return 0
 fi
 
-if [ "${B19_IMMUTABLE:-N}" = "Y" ]
+if b19-is-immutable "${B19_RUNTIME_PATH}"
 then
-  b19-log warn "REALIP" "$(_p "B19_IMMUTABLE=Y, skipping extra edge range fetch")"
+  b19-log warn "REALIP" "$(_p "%s is read-only, skipping extra edge range fetch" "${B19_RUNTIME_PATH}")"
   return 0
 fi
 

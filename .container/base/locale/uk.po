@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: o9s-nginx\n"
-"Report-Msgid-Bugs-To: https://codeberg.org/o9s/nginx/issues\n"
-"POT-Creation-Date: 2026-09-07 06:50+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/damian-buho/o9s-nginx/issues\n"
+"POT-Creation-Date: 2026-11-05 18:01+0000\n"
 "PO-Revision-Date: 2026-02-18 00:00+0000\n"
 "Last-Translator: b19 team\n"
 "Language-Team: Ukrainian\n"
@@ -31,7 +31,7 @@ msgstr "Налаштувати"
 
 #: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:9
 #: .container/compile-gcc/build.d/compile-gcc/post/301-export-source.sh:10
-#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:26
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:27
 msgid "Export %s"
 msgstr "Експортувати %s"
 
@@ -46,6 +46,10 @@ msgstr "Зібрати"
 #: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:19
 msgid "Install"
 msgstr "Встановити"
+
+#: .container/compile-gcc/build.d/compile-gcc/post/700-build-nginx.sh:20
+msgid "Remove %s"
+msgstr "Видалити %s"
 
 #: .container/compile-rust/build.d/compile-rust/post/100-install-modules.sh:11
 msgid "Install %s"
@@ -172,69 +176,199 @@ msgstr "Згенерувати з розміром %s"
 msgid "Found: %s"
 msgstr "Знайдено: %s"
 
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:12
-msgid "Scanning for preload-hints assets in %s"
+#: .container/user/entrypoint.d/0450-writable-paths.sh:9
+msgid "Prepared %s and %s"
+msgstr "%s і %s підготовлено"
+
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:17
+#, fuzzy
+msgid "Scanning for preload-hints assets in %s (%s)"
 msgstr "Сканування ресурсів preload-hints у %s"
 
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:63
-msgid "Found %s assets, saved to %s"
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:50
+#, fuzzy
+msgid "Found %s assets, saved to %s (%s)"
 msgstr "Знайдено %s ресурсів, збережено до %s"
 
-#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:65
-msgid "%s does not exist."
+#: .container/user/entrypoint.d/0800-scan-preload-assets.sh:52
+#, fuzzy
+msgid "%s does not exist (%s)"
 msgstr "%s не існує."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:13
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:17
 msgid "Fetching Cloudflare IPs..."
 msgstr "Отримання IP-адрес Cloudflare..."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:39
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:44
 msgid "Fetching Akamai IPs..."
 msgstr "Отримання IP-адрес Akamai..."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:63
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:69
 msgid "Fetching AWS IPs..."
 msgstr "Отримання IP-адрес AWS..."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:81
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:88
 msgid "Fetching Fastly IPs..."
 msgstr "Отримання IP-адрес Fastly..."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:105
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:113
 msgid "Non-CDN mode '%s' selected. Skipping IP fetching."
 msgstr "Вибрано не-CDN режим '%s'. Отримання IP-адрес пропущено."
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:111
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:119
 msgid "CDN IPs for %s saved to %s"
 msgstr "IP-адреси CDN для %s збережено до %s"
 
-#: .container/user/entrypoint.d/0800-update-realip-sources.sh:115
-msgid "B19_IMMUTABLE=Y, skipping configuration generation"
-msgstr "B19_IMMUTABLE=Y, генерацію конфігурації пропущено"
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:124
+msgid "Real-IP header for %s mode: %s"
+msgstr ""
 
-#: .container/user/entrypoint.d/0900-csp-hashes.sh:17
-msgid "No token directory at %s, serving the configured directives unchanged"
+#: .container/user/entrypoint.d/0800-update-realip-sources.sh:128
+msgid "%s is read-only, skipping configuration generation"
+msgstr "%s лише для читання, генерацію конфігурації пропущено"
+
+#: .container/user/entrypoint.d/0810-realip-extra.sh:19
+msgid "%s is read-only, skipping extra edge range fetch"
+msgstr "%s лише для читання, завантаження додаткових діапазонів edge пропущено"
+
+#: .container/user/entrypoint.d/0810-realip-extra.sh:55
+msgid ""
+"Refusing to start: unknown provider %s, want cloudflare, akamai, fastly or "
+"aws"
+msgstr ""
+
+#: .container/user/entrypoint.d/0810-realip-extra.sh:71
+msgid ""
+"Extra edge range fetch failed for %s, keeping the remaining sources only"
+msgstr ""
+
+#: .container/user/entrypoint.d/0810-realip-extra.sh:91
+msgid "Extra trusted real-IP peers: %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:26
+#, fuzzy
+msgid ""
+"No token directory at %s, serving the configured directives unchanged (%s)"
 msgstr "Немає каталогу токенів у %s, налаштовані директиви подаються без змін"
 
-#: .container/user/entrypoint.d/0900-csp-hashes.sh:30
-msgid "Ignoring %s: %s is not a directive this image renders"
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:34
+#, fuzzy
+msgid "Ignoring %s: %s is not a directive this image renders (%s)"
 msgstr "Ігнорується %s: %s не є директивою, яку відтворює цей образ"
 
 #: .container/user/entrypoint.d/0900-csp-hashes.sh:39
-msgid "Skipping %s: it carries no tokens"
+#, fuzzy
+msgid "Skipping %s: it carries no tokens (%s)"
 msgstr "Пропускається %s: він не містить токенів"
 
-#: .container/user/entrypoint.d/0900-csp-hashes.sh:48
-msgid "Appended %s token(s) from %s to %s"
+#: .container/user/entrypoint.d/0900-csp-hashes.sh:46
+#, fuzzy
+msgid "Serving %s token(s) from %s in %s (%s)"
 msgstr "Додано %s токен(ів) з %s до %s"
 
+#: .container/user/entrypoint.d/0920-csp-watch.sh:17
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:16
+msgid "Re-rendering after %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:23
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:24
+msgid "Reloaded after %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:25
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:26
+msgid "Config tested, nginx not running yet after %s"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:29
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:30
+msgid "Config test failed after %s, keeping the old config"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:70
+#, fuzzy
+msgid "%s changed; refreshing the policy (%s)"
+msgstr "%s змінено; повторне стиснення"
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:104
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:33
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:43
+msgid "%s missing, waiting for mount"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:117
+msgid "Policy watch ended, re-arming (%s)"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:131
+msgid "CSP watch disabled: immutable image never re-renders"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:134
+msgid "SIGHUP refreshes the policy before reloading"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:135
+msgid "o9s_nginx_csp_reload"
+msgstr ""
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:138
+#, fuzzy
+msgid "Watching %s for policy changes"
+msgstr "Стеження за %s на предмет змін кожні %sс"
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:141
+#, fuzzy
+msgid "Polling %s for policy changes every %ss (no inotifywait)"
+msgstr "Стеження за %s на предмет змін кожні %sс"
+
 #: .container/user/entrypoint.d/1310-precompress-watch.sh:21
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:44
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:51
 msgid "%s changed; recompressing"
 msgstr "%s змінено; повторне стиснення"
 
-#: .container/user/entrypoint.d/1310-precompress-watch.sh:28
-msgid "Watching %s for changes every %ss"
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:48
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:52
+msgid "%s watch ended, re-arming"
+msgstr ""
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:59
+msgid "precompress_watch_poll"
+msgstr ""
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:63
+#, fuzzy
+msgid "Watching %s for moves of %s"
 msgstr "Стеження за %s на предмет змін кожні %sс"
+
+#: .container/user/entrypoint.d/1310-precompress-watch.sh:66
+#, fuzzy
+msgid "Watching %s for changes every %ss (no inotifywait)"
+msgstr "Стеження за %s на предмет змін кожні %sс"
+
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:63
+msgid "Live reload disabled: immutable image never re-renders"
+msgstr ""
+
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:67
+msgid "SIGHUP re-renders before reloading"
+msgstr ""
+
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:69
+msgid "live_reload_render"
+msgstr ""
+
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:73
+#, fuzzy
+msgid "Watching %s for template changes"
+msgstr "Стеження за %s на предмет змін кожні %sс"
+
+#: .container/user/entrypoint.d/4910-live-reload-watch.sh:75
+msgid "Live reload watch needs inotifywait, HUP re-render still active"
+msgstr ""
 
 #: .container/user/entrypoint.d/5000-start.sh:9
 msgid "Starting server"

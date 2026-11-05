@@ -7,11 +7,10 @@ ARG B19_HOME="/app"
 ARG B19_RUST_GNU_BASE_IMAGE=registry.invalid/b19/rust:gnu
 ARG B19_UBUNTU_BASE_IMAGE=registry.invalid/b19/ubuntu:resolute
 ARG B19_UBUNTU_SERIES=resolute
-ARG O9S_NGINX_CACHE_PATH=${B19_HOME}/cache
-ARG O9S_NGINX_LOG_PATH=${B19_HOME}/log
+ARG O9S_NGINX_CACHE_PATH=/tmp/nginx/cache
 ARG O9S_NGINX_MODULES_PATH=/usr/local/lib/nginx
 ARG O9S_NGINX_ROOT="${B19_HOME}"
-ARG O9S_NGINX_TEMP_PATH=${B19_HOME}/tmp
+ARG O9S_NGINX_TEMP_PATH=/tmp/nginx/temp
 ARG O9S_NGINX_TLS_PATH=${B19_HOME}/tls
 ARG O9S_NGINX_UPSTREAM_VERSION=1.30.0
 
@@ -34,7 +33,6 @@ ARG M6E_NEAR_CACHE_PORT=""
 ARG M6E_NEAR_CACHE_SCHEME=""
 ARG M6E_PROJECT
 ARG O9S_NGINX_CACHE_PATH
-ARG O9S_NGINX_LOG_PATH
 ARG O9S_NGINX_MODULES_PATH
 ARG O9S_NGINX_TEMP_PATH
 ARG O9S_NGINX_TLS_PATH
@@ -43,7 +41,6 @@ ARG SCCACHE_REDIS_ENDPOINT
 ARG TARGETARCH
 
 ENV O9S_NGINX_CACHE_PATH=${O9S_NGINX_CACHE_PATH}            \
-    O9S_NGINX_LOG_PATH="${O9S_NGINX_LOG_PATH}"              \
     O9S_NGINX_MODULES_PATH="${O9S_NGINX_MODULES_PATH}"      \
     O9S_NGINX_TLS_PATH="${O9S_NGINX_TLS_PATH}"
 
@@ -132,7 +129,6 @@ ARG M6E_NEAR_CACHE_PORT=""
 ARG M6E_NEAR_CACHE_SCHEME=""
 ARG M6E_PROJECT
 ARG O9S_NGINX_CACHE_PATH
-ARG O9S_NGINX_LOG_PATH
 ARG O9S_NGINX_MODULES_PATH
 ARG O9S_NGINX_ROOT
 ARG O9S_NGINX_TEMP_PATH
@@ -281,7 +277,6 @@ ENV B19_CA_DHPARAMS_PATH=${O9S_NGINX_TLS_PATH}/dhparams.pem                     
     O9S_NGINX_LIVE_RELOAD_ENABLED=N                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               \
     O9S_NGINX_LIVE_RELOAD_ON_HUP=Y                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \
     O9S_NGINX_LOG_NOT_FOUND=off                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   \
-    O9S_NGINX_LOG_PATH="${O9S_NGINX_LOG_PATH}"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \
     O9S_NGINX_MAP_HASH_BUCKET_SIZE=128                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            \
     O9S_NGINX_NEGOTIATE_AVIF=N                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    \
     O9S_NGINX_NEGOTIATE_MARKDOWN=N                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                \

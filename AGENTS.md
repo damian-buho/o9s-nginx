@@ -278,7 +278,7 @@ Dockerfile ARG `O9S_NGINX_UPSTREAM_VERSION` differs from `deps/nginx/version.dep
 
 ## CDN real-IP
 
-`entrypoint.d/0800-update-realip-sources.sh` fetches live Cloudflare/Akamai/AWS/Fastly IP ranges at every container start. Skipped when `B19_IMMUTABLE=Y`.
+`entrypoint.d/0800-update-realip-sources.sh` fetches live Cloudflare/Akamai/AWS/Fastly IP ranges at every container start. Skipped when `b19-is-immutable` answers yes for `${B19_RUNTIME_PATH}`.
 
 ## CSP tokens from downstream
 
@@ -328,6 +328,7 @@ is correct.
 
 | Script                          | Purpose                                                                    |
 | ------------------------------- | -------------------------------------------------------------------------- |
+| `0450-writable-paths.sh`        | Make the cache and temp parents on the tmpfs                               |
 | `0800-scan-preload-assets.sh`   | Scan `${O9S_NGINX_ROOT}/${O9S_NGINX_PH_SCAN_PATH}` for CSS/JS/images/fonts |
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
 | `0810-realip-extra.sh`          | Append extra providers’ live ranges to `REALIP_EXTRA_CIDRS`                |
@@ -354,7 +355,7 @@ re-trigger it; saves arriving together batch into one render via
 old config serving, and the watch re-arms itself after an overflow with one
 converge render. `O9S_NGINX_LIVE_RELOAD_ON_HUP=Y` (default) replaces the
 `0000` HUP forward with a re-render-then-reload, so `docker kill -s HUP` picks
-up mounted template edits too. Skipped under `B19_IMMUTABLE=Y`, and the reload
+up mounted template edits too. Skipped when `${B19_RUNTIME_PATH}` is read-only, and the reload
 is skipped while nginx is not up yet (startup covers that window). Every
 re-render path re-merges the CSP tokens and re-scans the preload hints first,
 so a reload never serves a fresh config with a stale derived value.
@@ -420,6 +421,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 ## Tests
 
 1. `1200-nginx-test.sh` — `nginx -t`
+1. `0450-writable-paths.sh` — `/run/b19` keeps `1777`, nginx compile-time and rendered paths stay off the image layer
 1. `0800-preload-scan.sh` — rescan rewrites the data files, disabled stays silent
 1. `0900-csp-hashes.sh` — re-apply never duplicates, removal restores base
 1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat edit reloads
@@ -444,9 +446,16 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 
 Async `test.d` assertions poll with a deadline, never single-check: a watch effect lands after its trigger marker.
 
-## Immutable mode
+## Read-only root
 
-When `B19_IMMUTABLE=Y`, the entrypoint skips all config generation — the image must contain pre-rendered configs. Used for hardened/readonly deployments.
+The image runs with `read_only: true` beside a tmpfs on `/run/b19` and `/tmp`, and writes nothing else:
+
+- Rendered config and `nginx.pid` live in `${B19_RUNTIME_PATH}`. A hook feeding a template writes its `*.data.json` to the runtime copy (`${B19_RUNTIME_PATH}${XDG_CONFIG_HOME}/…`), never to `${XDG_CONFIG_HOME}`.
+- `O9S_NGINX_TEMP_PATH` (`/tmp/nginx/temp`) and `O9S_NGINX_CACHE_PATH` (`/tmp/nginx/cache`) sit on the tmpfs. `entrypoint.d/0450` makes both, since nginx creates only the last path segment.
+- A persistent cache is a volume plus `O9S_NGINX_CACHE_PATH` pointing at it, set by the child image that owns the volume.
+- nginx is configured with `--error-log-path=stderr`, so it opens no log file before it reads `nginx.conf`.
+- `make install` creates `dirname` of the pid and http-log paths, so `700-build-nginx.sh` drops `/export/dev` and `/export/run`: the final `COPY` to `/` must not touch the `1777` of `/run/b19`, which a tmpfs inherits.
+- `/build.d/user/error-page.html.j2` is build-only. `/templates` is the b19 template layer, and anything there is rendered at every start.
 
 ## Documentation
 

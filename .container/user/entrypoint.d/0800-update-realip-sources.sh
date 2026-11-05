@@ -4,9 +4,9 @@
 #
 # SPDX-License-Identifier: MIT
 
-  if [ "${B19_IMMUTABLE:-}" != "Y" ]; then
+  if ! b19-is-immutable "${B19_RUNTIME_PATH}"; then
 
-    REALIP_DIR="${XDG_CONFIG_HOME}/includes/realip"
+    REALIP_DIR="${B19_RUNTIME_PATH%/}${XDG_CONFIG_HOME}/includes/realip"
 
     # A CDN mode lends its required header through the environment because real_ip_header is emitted exactly once (230-realip.nginx.j2) and nginx refuses a duplicate.
     DATA_FILE=""
@@ -125,5 +125,5 @@
     fi
 
   else
-    b19-log warn "REALIP" "$(_ "B19_IMMUTABLE=Y, skipping configuration generation")"
+    b19-log warn "REALIP" "$(_p "%s is read-only, skipping configuration generation" "${B19_RUNTIME_PATH}")"
   fi

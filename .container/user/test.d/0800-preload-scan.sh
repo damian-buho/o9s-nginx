@@ -10,13 +10,14 @@ set -eou pipefail
 WORKDIR="$(mktemp --directory)"
 trap 'rm --recursive --force "${WORKDIR}"' EXIT
 
-mkdir -p "${WORKDIR}/config/includes/server" "${WORKDIR}/config/includes/http" "${WORKDIR}/assets"
+export B19_RUNTIME_PATH="${WORKDIR}/run"
+export XDG_CONFIG_HOME="/config"
+mkdir -p "${B19_RUNTIME_PATH}/config/includes/server" "${B19_RUNTIME_PATH}/config/includes/http" "${WORKDIR}/assets"
 
 b19-log() { printf '%s %s %s\n' "$1" "$2" "${3:-}"; }
 # shellcheck disable=SC2059 # stub replays the gettext format contract
 _p() { printf -- "$1" "${@:2}"; }
 
-export XDG_CONFIG_HOME="${WORKDIR}/config"
 export O9S_NGINX_PH_SCAN_ENABLED=Y
 export O9S_NGINX_PH_SCAN_PATH="${WORKDIR}/assets"
 export O9S_NGINX_PH_SCAN_ENABLED_STYLE=Y
@@ -30,7 +31,7 @@ echo "console.log(1)" > "${WORKDIR}/assets/app.js"
 # shellcheck source=/dev/null
 . /entrypoint.d/0800-scan-preload-assets.sh
 
-DATA="${WORKDIR}/config/includes/server/preload_hints.nginx.data.json"
+DATA="${B19_RUNTIME_PATH}/config/includes/server/preload_hints.nginx.data.json"
 if ! grep --quiet --fixed-strings '"path":"app.css","type":"style"' "${DATA}"; then
   echo "FATAL: startup scan missed the stylesheet" >&2
   exit 1
@@ -42,7 +43,7 @@ if ! grep --quiet --fixed-strings '"path":"late.js","type":"script"' "${DATA}"; 
   echo "FATAL: rescan missed the new script" >&2
   exit 1
 fi
-if ! grep --quiet --fixed-strings '"assets"' "${WORKDIR}/config/includes/http/135-preload-hints-map.nginx.data.json"; then
+if ! grep --quiet --fixed-strings '"assets"' "${B19_RUNTIME_PATH}/config/includes/http/135-preload-hints-map.nginx.data.json"; then
   echo "FATAL: rescan did not mirror the map data file" >&2
   exit 1
 fi

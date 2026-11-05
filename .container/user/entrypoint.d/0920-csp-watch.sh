@@ -18,7 +18,7 @@ o9s_nginx_csp_reload() {
   parallel-j2 "${B19_HOME}"
   nginx_test_output="$(nginx -t 2>&1)" || true
   if grep --quiet "successful" <<<"${nginx_test_output}"; then
-    if [ -f "${XDG_STATE_HOME}/nginx.pid" ] && kill -0 "$(cat "${XDG_STATE_HOME}/nginx.pid" 2>/dev/null)" 2>/dev/null; then
+    if [ -f "${B19_RUNTIME_PATH}/nginx.pid" ] && kill -0 "$(cat "${B19_RUNTIME_PATH}/nginx.pid" 2>/dev/null)" 2>/dev/null; then
       nginx -s reload
       b19-log good "NGINX" "$(_p "Reloaded after %s" "${reason}")"
     else
@@ -127,7 +127,7 @@ o9s_nginx_csp_on_hup() {
 if [ "${O9S_NGINX_CSP_WATCH_ENABLED:-Y}" = "Y" ]; then
   # shellcheck source=/dev/null
   . b19-i18n
-  if [ "${B19_IMMUTABLE:-N}" = "Y" ]; then
+  if b19-is-immutable "${B19_RUNTIME_PATH}"; then
     b19-log warn "CSP" "$(_ "CSP watch disabled: immutable image never re-renders")"
   else
     trap 'o9s_nginx_csp_on_hup' HUP
