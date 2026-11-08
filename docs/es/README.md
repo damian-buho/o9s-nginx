@@ -38,6 +38,7 @@ Gracias a: Igor Sysoev and Nginx, Inc.
 - Tipos de contenido y caché correctos
 - Trazas OpenTelemetry y registros de acceso en JSON
 - Indicaciones de recursos automáticas
+- Redirecciones para páginas movidas
 - Cabeceras de seguridad
 - Validación de la configuración y healthchecks propios de nginx
 - Modos de servicio listos para usar

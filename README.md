@@ -37,6 +37,7 @@ Thanks to: Igor Sysoev and Nginx, Inc.
 - Correct content types and caching
 - OpenTelemetry tracing and JSON access logs
 - Automatic resource hints
+- Redirects for moved pages
 - Security headers
 - Config validation and nginx-aware healthchecks
 - Ready-made serving modes
