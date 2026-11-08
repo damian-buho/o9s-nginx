@@ -421,7 +421,7 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 ## Tests
 
 1. `1200-nginx-test.sh` — `nginx -t`
-1. `0450-writable-paths.sh` — `/run/b19` keeps `1777`, nginx compile-time and rendered paths stay off the image layer
+1. `0450-writable-paths.sh` — `/run/b19` stays world-writable and sticky, nginx compile-time and rendered paths stay off the image layer
 1. `0800-preload-scan.sh` — rescan rewrites the data files, disabled stays silent
 1. `0900-csp-hashes.sh` — re-apply never duplicates, removal restores base
 1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat edit reloads
@@ -454,7 +454,7 @@ The image runs with `read_only: true` beside a tmpfs on `/run/b19` and `/tmp`, a
 - `O9S_NGINX_TEMP_PATH` (`/tmp/nginx/temp`) and `O9S_NGINX_CACHE_PATH` (`/tmp/nginx/cache`) sit on the tmpfs. `entrypoint.d/0450` makes both, since nginx creates only the last path segment.
 - A persistent cache is a volume plus `O9S_NGINX_CACHE_PATH` pointing at it, set by the child image that owns the volume.
 - nginx is configured with `--error-log-path=stderr`, so it opens no log file before it reads `nginx.conf`.
-- `make install` creates `dirname` of the pid and http-log paths, so `700-build-nginx.sh` drops `/export/dev` and `/export/run`: the final `COPY` to `/` must not touch the `1777` of `/run/b19`, which a tmpfs inherits.
+- `make install` creates `dirname` of the pid and http-log paths, so `700-build-nginx.sh` drops `/export/dev` and `/export/run`: the final `COPY` to `/` must not touch the base’s mode of `/run/b19`, which a tmpfs inherits.
 - `/build.d/user/error-page.html.j2` is build-only. `/templates` is the b19 template layer, and anything there is rendered at every start.
 
 ## Documentation
