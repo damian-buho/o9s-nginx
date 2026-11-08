@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: MIT
 
 # Lock the policy watch: arming never reloads, a staged swap reloads once, a
-# token edit alone never reloads ahead of the swap, a flat token edit reloads.
+# token edit alone never reloads ahead of the swap, a flat token or _redirects edit reloads.
 set -eou pipefail
 
 WORKDIR="$(mktemp --directory)"
@@ -133,5 +133,16 @@ if ! grep --quiet --fixed-strings "nginx -s reload" "${MARKER}" 2>/dev/null; the
 fi
 if ! grep --quiet --fixed-strings "policy 'self' 'sha256-CCC='" "${MARKER}" 2>/dev/null; then
   echo "FATAL: flat reload served stale tokens" >&2
+  exit 1
+fi
+
+reloads="$(grep --count --fixed-strings "nginx -s reload" "${MARKER}" || true)"
+echo "/old/ /new/" > "${WORKDIR}/flat/_redirects"
+deadline=$((SECONDS + 15))
+while [ "$(grep --count --fixed-strings "nginx -s reload" "${MARKER}" || true)" = "${reloads}" ] && [ "${SECONDS}" -lt "${deadline}" ]; do
+  sleep 1
+done
+if [ "$(grep --count --fixed-strings "nginx -s reload" "${MARKER}" || true)" = "${reloads}" ]; then
+  echo "FATAL: flat _redirects edit did not trigger a reload" >&2
   exit 1
 fi

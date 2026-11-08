@@ -1,0 +1,14 @@
+{#
+SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+
+SPDX-License-Identifier: MIT
+#}
+
+{% for _code in [301, 302, 307, 308] %}
+map $uri $o9s_nginx_redirect_{{ _code }} {
+    default "";
+{% for _r in (redirects or []) if _r.code == _code %}
+    "{{ _r.from }}" "{{ _r.to }}";
+{% endfor %}
+}
+{% endfor %}

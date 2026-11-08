@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: o9s-nginx\n"
 "Report-Msgid-Bugs-To: https://github.com/damian-buho/o9s-nginx/issues\n"
-"POT-Creation-Date: 2026-11-05 18:01+0000\n"
+"POT-Creation-Date: 2026-11-08 16:25+0000\n"
 "PO-Revision-Date: 2026-02-18 00:00+0000\n"
 "Last-Translator: b19 team\n"
 "Language-Team: Spanish\n"
@@ -271,59 +271,83 @@ msgstr "Se omite %s: no contiene ningún token"
 msgid "Serving %s token(s) from %s in %s (%s)"
 msgstr "Se añadieron %s token(s) de %s a %s"
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:17
+#: .container/user/entrypoint.d/0910-redirects.sh:20
+msgid "enable-redirects not in O9S_NGINX_INCLUDE_OPTIONAL, map left empty (%s)"
+msgstr "enable-redirects no está en O9S_NGINX_INCLUDE_OPTIONAL, el mapa queda vacío (%s)"
+
+#: .container/user/entrypoint.d/0910-redirects.sh:25
+msgid "No redirects file at %s, map left empty (%s)"
+msgstr "No hay archivo de redirecciones en %s, el mapa queda vacío (%s)"
+
+#: .container/user/entrypoint.d/0910-redirects.sh:34
+msgid "Skipping unsupported line in %s: %s (%s)"
+msgstr "Se omite una línea no admitida en %s: %s (%s)"
+
+#: .container/user/entrypoint.d/0910-redirects.sh:38
+msgid "Skipping %s: status %s is not 301, 302, 307 or 308 (%s)"
+msgstr "Se omite %s: el estado %s no es 301, 302, 307 ni 308 (%s)"
+
+#: .container/user/entrypoint.d/0910-redirects.sh:48
+msgid "Skipping duplicate %s → %s, already sent to %s (%s)"
+msgstr "Se omite el duplicado %s → %s, ya redirige a %s (%s)"
+
+#: .container/user/entrypoint.d/0910-redirects.sh:58
+msgid "Serving %s redirect(s) from %s (%s)"
+msgstr "Se sirven %s redirección(es) de %s (%s)"
+
+#: .container/user/entrypoint.d/0920-csp-watch.sh:20
 #: .container/user/entrypoint.d/4910-live-reload-watch.sh:16
 msgid "Re-rendering after %s"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:23
+#: .container/user/entrypoint.d/0920-csp-watch.sh:26
 #: .container/user/entrypoint.d/4910-live-reload-watch.sh:24
 msgid "Reloaded after %s"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:25
+#: .container/user/entrypoint.d/0920-csp-watch.sh:28
 #: .container/user/entrypoint.d/4910-live-reload-watch.sh:26
 msgid "Config tested, nginx not running yet after %s"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:29
+#: .container/user/entrypoint.d/0920-csp-watch.sh:32
 #: .container/user/entrypoint.d/4910-live-reload-watch.sh:30
 msgid "Config test failed after %s, keeping the old config"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:70
+#: .container/user/entrypoint.d/0920-csp-watch.sh:77
 #, fuzzy
 msgid "%s changed; refreshing the policy (%s)"
 msgstr "%s cambió; recomprimiendo"
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:104
+#: .container/user/entrypoint.d/0920-csp-watch.sh:114
 #: .container/user/entrypoint.d/1310-precompress-watch.sh:33
 #: .container/user/entrypoint.d/4910-live-reload-watch.sh:43
 msgid "%s missing, waiting for mount"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:117
+#: .container/user/entrypoint.d/0920-csp-watch.sh:127
 msgid "Policy watch ended, re-arming (%s)"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:131
+#: .container/user/entrypoint.d/0920-csp-watch.sh:141
 msgid "CSP watch disabled: immutable image never re-renders"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:134
+#: .container/user/entrypoint.d/0920-csp-watch.sh:144
 msgid "SIGHUP refreshes the policy before reloading"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:135
+#: .container/user/entrypoint.d/0920-csp-watch.sh:145
 msgid "o9s_nginx_csp_reload"
 msgstr ""
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:138
+#: .container/user/entrypoint.d/0920-csp-watch.sh:148
 #, fuzzy
 msgid "Watching %s for policy changes"
 msgstr "Vigilando %s en busca de cambios cada %ss"
 
-#: .container/user/entrypoint.d/0920-csp-watch.sh:141
+#: .container/user/entrypoint.d/0920-csp-watch.sh:151
 #, fuzzy
 msgid "Polling %s for policy changes every %ss (no inotifywait)"
 msgstr "Vigilando %s en busca de cambios cada %ss"

@@ -90,6 +90,13 @@ SPDX-License-Identifier: MIT
 - Each asset type can be switched on or off; scanning is opt-in.
 - Preconnect and DNS-prefetch hints for third-party origins are set from a comma list.
 
+### Redirects for moved pages
+
+- A site keeps its old addresses alive after a rename: each moved page answers with a permanent redirect to its new address, so search engines carry the ranking over.
+- The redirects ship as a `_redirects` file inside the published site, in the same format Netlify and Cloudflare Pages read, so they change together with the pages they point to.
+- A publish that swaps the site in picks up its new redirects with no restart.
+- A malformed line is skipped and named in the log; it never takes the rest of the site down.
+
 ### Security headers
 
 - Content-Security-Policy, HSTS, Permissions-Policy, Cross-Origin-Embedder-Policy, Reporting-Endpoints, `nosniff` and frame protection are each one switch away, with restrictive defaults.

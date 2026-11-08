@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Damián Búho <damian.buho@proton.me>
+#
+# SPDX-License-Identifier: MIT
+
+location = /_redirects { return 404; }
+if ($o9s_nginx_redirect_301) { return 301 $o9s_nginx_redirect_301; }
+if ($o9s_nginx_redirect_302) { return 302 $o9s_nginx_redirect_302; }
+if ($o9s_nginx_redirect_307) { return 307 $o9s_nginx_redirect_307; }
+if ($o9s_nginx_redirect_308) { return 308 $o9s_nginx_redirect_308; }

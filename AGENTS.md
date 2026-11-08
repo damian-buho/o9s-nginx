@@ -94,6 +94,7 @@ include includes/realip/{{ ENV.O9S_NGINX_REALIP_MODE }}.nginx;
 | 140–150 | Proxy, WebSocket      | Full proxy config with cache paths, `map $http_upgrade`            |
 | 160–170 | File cache, CDN cache | `open_file_cache`, `map $sent_http_content_type` for Cache-Control |
 | 175     | Error pages           | `map $http_accept_language $error_lang` (Accept-Language)          |
+| 177     | Redirects             | `map $uri $o9s_nginx_redirect_<code>`, one per 301/302/307/308     |
 | 180     | TLS                   | `ssl_protocols`, `ssl_ciphers`, `ssl_dhparam`, session settings    |
 | 190–210 | Logging               | log formats (text + JSON), access_log                              |
 | 220–240 | Root, realip, OTel    | `root`, `real_ip_recursive`, `otel_exporter`                       |
@@ -115,6 +116,7 @@ Files in `includes/opt/` are conditionally included by server-block templates in
 - `enable-favicon.nginx.j2` — favicon location
 - `enable-nosniff.nginx` / `enable-sameorigin.nginx` — security headers (static, no ENV)
 - `redirect-to-https.nginx` — HTTP→HTTPS redirect (static)
+- `enable-redirects.nginx` — per-path redirects from a Netlify-style `_redirects` file (see [Redirects](#redirects))
 
 ### index/ includes — content handlers
 
@@ -242,6 +244,7 @@ All 200+ `O9S_NGINX_*` env vars are declared with defaults in the Dockerfile `EN
 | `O9S_NGINX_OTEL_*`                 | OpenTelemetry endpoint and tracing                                       |
 | `O9S_NGINX_PH_*`                   | Preload hint scanning                                                    |
 | `O9S_NGINX_*CACHE_POLICY`          | `Cache-Control` per content type, cache dir is `O9S_NGINX_CACHE_PATH`    |
+| `O9S_NGINX_REDIRECTS_FILE`         | `_redirects` source; empty = `${O9S_NGINX_PUBLIC_PATH}/_redirects`       |
 | `O9S_NGINX_INCLUDE_OPTIONAL`       | Comma-separated opt/ includes (e.g. `"enable-cache,enable-cors"`)        |
 | `O9S_NGINX_DENY_PREFIXES`          | CSV 403 prefixes, e.g. "/config,/tmp"; wins over .php handling           |
 | `O9S_NGINX_DENY_STATIC_PREFIXES`   | CSV subset of DENY_PREFIXES still serving static assets, e.g. "/plugins" |
@@ -313,6 +316,15 @@ I2P mirror it would rewrite every same-origin subresource to an `https://` URL n
 `O9S_NGINX_CSP_REQUIRE_TRUSTED_TYPES_FOR` is empty until a consumer opts in with
 `require-trusted-types-for 'script';` — only after its scripts run clean under enforcement.
 
+## Redirects
+
+`enable-redirects` in `O9S_NGINX_INCLUDE_OPTIONAL` answers old URLs from a `_redirects` file, by default the one at the root of `O9S_NGINX_PUBLIC_PATH`, so a publisher ships its redirects inside the release they belong to. Format is the literal subset of Netlify’s: `from to [status]`, `#` comments, status 301 (default), 302, 307 or 308, a trailing `!` ignored.
+
+- `entrypoint.d/0910-redirects.sh` compiles the file into `177-redirects.nginx.data.json`; a line with a splat (`*`), a placeholder (`:name`), query matching, another status, or a `"`, `\`, `$`, `;` or control byte is skipped with a `warn` naming it, so one bad line never fails `nginx -t` for the rest
+- `from` matches `$uri`: decoded, without the query string; a path whose last segment has no dot also answers its trailing-slash twin. The first entry for a path wins, later ones warn
+- The redirect runs in the server rewrite phase, so it beats a file still sitting at the old path; `/_redirects` itself answers 404
+- The CSP watch recompiles it: on a staged tree the symlink swap reloads, on a flat tree an edit to the file does. Without the watch (`O9S_NGINX_CSP_WATCH_ENABLED=N`), `docker kill -s HUP` picks it up
+
 ## Security headers and `always`
 
 Every security `add_header` in `includes/opt/` (`Content-Security-Policy`,
@@ -333,6 +345,7 @@ is correct.
 | `0800-update-realip-sources.sh` | Fetch live CDN IP ranges                                                   |
 | `0810-realip-extra.sh`          | Append extra providers’ live ranges to `REALIP_EXTRA_CIDRS`                |
 | `0900-csp-hashes.sh`            | Merge `${O9S_NGINX_CSP_DIR}` tokens into `O9S_NGINX_CSP_*` (idempotent)    |
+| `0910-redirects.sh`             | Compile `_redirects` into the `177-redirects` map data (idempotent)        |
 | `0920-csp-watch.sh`             | Watch token dir + served path; re-merge and reload                         |
 | `1300-precompress-assets.sh`    | Pre-compress static assets if enabled                                      |
 | `1310-precompress-watch.sh`     | Watch `O9S_NGINX_PRECOMPRESS_DIR` with inotify; recompress on retarget     |
@@ -424,7 +437,8 @@ a duplicate `location` fails `nginx -t` and the container never becomes healthy.
 1. `0450-writable-paths.sh` — `/run/b19` stays world-writable and sticky, nginx compile-time and rendered paths stay off the image layer
 1. `0800-preload-scan.sh` — rescan rewrites the data files, disabled stays silent
 1. `0900-csp-hashes.sh` — re-apply never duplicates, removal restores base
-1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat edit reloads
+1. `0910-redirects.sh` — live nginx: each supported line answers its status and target, slash twin follows, unsupported lines and duplicates dropped
+1. `0920-csp-watch.sh` — swap reloads once, early token edit does not, flat token or `_redirects` edit reloads
 1. `1205-check-worker-processes.sh` — `auto` workers follow the cgroup-aware `NUMPROCS`, an explicit count wins
 1. `1210-check-realip-extra.sh` — extra real-IP trust rendering and unknown-provider refusal
 1. `1215-check-log-settings.sh` — live nginx: a missing file logs no `open()` error unless `O9S_NGINX_LOG_NOT_FOUND=on`, `json_combined` carries every field, the startup config test prints only JSON under `B19_LOG_FORMAT=json`

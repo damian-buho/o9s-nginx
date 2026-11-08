@@ -11,6 +11,9 @@ o9s_nginx_csp_reload() {
   if declare -F o9s_nginx_csp_apply >/dev/null 2>&1; then
     o9s_nginx_csp_apply "${reason}"
   fi
+  if declare -F o9s_nginx_redirects_apply >/dev/null 2>&1; then
+    o9s_nginx_redirects_apply "${reason}"
+  fi
   if declare -F o9s_nginx_ph_scan >/dev/null 2>&1; then
     o9s_nginx_ph_scan "${reason}"
   fi
@@ -39,6 +42,10 @@ o9s_nginx_csp_snapshot() {
     O9S_CSPW_NOW_DIGEST="$(cat -- "${O9S_CSPW_CSP_DIR}"/*.txt 2>/dev/null | sha256sum | cut --delimiter=' ' --fields=1 || true)"
   else
     O9S_CSPW_NOW_DIGEST="missing"
+  fi
+  O9S_CSPW_REDIRECTS="${O9S_NGINX_REDIRECTS_FILE:-${O9S_CSPW_PUBLIC_PATH}/_redirects}"
+  if [ -f "${O9S_CSPW_REDIRECTS}" ]; then
+    O9S_CSPW_NOW_DIGEST="${O9S_CSPW_NOW_DIGEST}:$(sha256sum < "${O9S_CSPW_REDIRECTS}" | cut --delimiter=' ' --fields=1 || true)"
   fi
 }
 
@@ -99,6 +106,9 @@ o9s_nginx_csp_inotify() {
     parent="$(dirname "${O9S_CSPW_PUBLIC_PATH}")"
     if [ -d "${parent}" ]; then
       watch_dirs+=("${parent}")
+    fi
+    if [ ! -L "${O9S_CSPW_PUBLIC_PATH}" ] && [ -d "$(dirname "${O9S_CSPW_REDIRECTS}")" ]; then
+      watch_dirs+=("$(dirname "${O9S_CSPW_REDIRECTS}")")
     fi
     if [ "${#watch_dirs[@]}" -eq 0 ]; then
       b19-log warn "CSP" "$(_p "%s missing, waiting for mount" "${O9S_CSPW_PUBLIC_PATH}")"
