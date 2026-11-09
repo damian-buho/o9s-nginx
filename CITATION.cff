@@ -43,5 +43,5 @@ keywords:
   - web-server
   - websocket
   - zstd
-version: 0.24.0
-date-released: "2026-11-06"
+version: 0.25.0
+date-released: "2026-11-08"
