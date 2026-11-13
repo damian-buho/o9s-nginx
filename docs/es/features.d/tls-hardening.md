@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
 # Valores TLS reforzados por defecto
 
 - Solo TLS 1.2 y 1.3, con cifrados AEAD con secreto perfecto hacia adelante y renegociación desactivada.
+- El intercambio de claves poscuántico (X25519MLKEM768) se ofrece primero, así los navegadores modernos usan un handshake híbrido; los clientes antiguos recurren a curvas clásicas.
 - Los parámetros Diffie-Hellman se generan en la compilación, así el primer handshake nunca los espera.
 - La versión de nginx se oculta en las cabeceras de respuesta y en las páginas de error.
 
