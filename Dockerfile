@@ -409,9 +409,9 @@ WORKDIR ${B19_HOME}
 
 USER 0
 
-COPY --chown=${B19_UID}:${B19_GID} --from=o9s-nginx-builder         /export/                    /
-COPY --chown=${B19_UID}:${B19_GID} --from=o9s-nginx-acme-builder    /export/                    /
-COPY --chown=${B19_UID}:${B19_GID}                                  .container/base/            /
+COPY --from=o9s-nginx-builder         /export/                    /
+COPY --from=o9s-nginx-acme-builder    /export/                    /
+COPY                                  .container/base/            /
 
 RUN --mount=type=bind,from=fetch,source=.,target=/fetch                                           \
     --mount=type=cache,target=${B19_DOWNLOAD_PATH},sharing=shared,uid=${B19_UID},gid=${B19_GID}   \
@@ -420,11 +420,19 @@ RUN --mount=type=bind,from=fetch,source=.,target=/fetch                         
     --mount=type=tmpfs,target=${B19_TEMP_PATH}                                                    \
     build-stage base
 
+# The builder export arrives root-owned where the user build writes
+RUN chown "${B19_UID}:0" "${B19_HOME}" && chown --recursive "${B19_UID}:0" "${XDG_CONFIG_HOME}/html"
+
 
 # hadolint ignore=DL3066 # B19_UID comes from the root
 USER ${B19_UID}
 
-COPY --chown=${B19_UID}:${B19_GID}                                  .container/user/                /
+COPY --chown=${B19_UID}:${B19_GID} .container/user/app/ /app/
+COPY --chown=${B19_UID}:${B19_GID} .container/user/build.d/ /build.d/
+COPY .container/user/command.d/ /command.d/
+COPY .container/user/entrypoint.d/ /entrypoint.d/
+COPY .container/user/healthcheck.d/ /healthcheck.d/
+COPY --chown=${B19_UID}:${B19_GID} .container/user/test.d/ /test.d/
 
 ARG M6E_VERSION
 RUN --mount=type=bind,from=fetch,source=.,target=/fetch                                             \
